@@ -31,3 +31,6 @@ the-goat/
 ## Team
 
 SYSEN 5151 — team details to be added.
+
+## Member
+Yuzheng Liu, Jingbo He, Siyuan Chen
