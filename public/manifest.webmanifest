@@ -1,0 +1,8 @@
+{
+  "name": "Wayly NYC",
+  "short_name": "Wayly NYC",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f1f4f2",
+  "theme_color": "#0d6b61"
+}

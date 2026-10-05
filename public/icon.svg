@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Wayly NYC">
+  <rect width="128" height="128" rx="26" fill="#0d6b61"/>
+  <path d="M20 94h88M35 94V63h14v31M57 94V38h15v56M80 94V55h13v39" fill="none" stroke="#f1f4f2" stroke-linecap="round" stroke-linejoin="round" stroke-width="8"/>
+  <circle cx="95" cy="31" r="10" fill="#e5b840"/>
+</svg>
