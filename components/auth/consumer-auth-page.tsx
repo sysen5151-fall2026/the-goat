@@ -2,241 +2,183 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { ArrowLeft, Compass, Eye, EyeOff, ShieldCheck } from "lucide-react";
+import { useEffect, useState, type ReactNode } from "react";
+import { ArrowRight, Check, ChevronLeft, CircleAlert, Eye, EyeOff, KeyRound, Loader2, Lock, Mail, ShieldCheck, Sparkles, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getSupabaseBrowserClient } from "@/lib/supabase-browser";
 
-type AuthMode = "login" | "register";
+type AuthMode = "login" | "register" | "reset";
+type Notice = { tone: "error" | "info"; text: string } | null;
+
+const HERO_IMAGE = "/images/nyc-hero.jpg";
 
 function isValidEmail(value: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
 }
 
-export function ConsumerAuthPage({ mode }: { mode: AuthMode }) {
+/** Supabase auth errors → short, user-facing copy. */
+function friendlyError(error: unknown) {
+  const message = error instanceof Error ? error.message : typeof error === "string" ? error : "";
+  if (/invalid login credentials/i.test(message)) return "That email and password don't match. Try again or reset your password.";
+  if (/already registered|already been registered/i.test(message)) return "An account with this email already exists — sign in instead.";
+  if (/email not confirmed/i.test(message)) return "Confirm your email first — check your inbox for the link from Wayly.";
+  if (/rate limit|too many/i.test(message)) return "Too many attempts. Wait a minute and try again.";
+  if (/password/i.test(message) && /(weak|short|least)/i.test(message)) return "Choose a stronger password (at least 8 characters).";
+  if (/fetch|network/i.test(message)) return "Can't reach the account service. Check your connection and try again.";
+  return message || "Sign-in couldn't be completed right now.";
+}
+
+/** Where to go after sign-in: a same-origin path from ?next=, else home. */
+function nextPath() {
+  if (typeof window === "undefined") return "/";
+  const next = new URLSearchParams(window.location.search).get("next");
+  return next && next.startsWith("/") && !next.startsWith("//") ? next : "/";
+}
+
+function Field({ icon: Icon, label, children, trailing }: { icon: typeof Mail; label: string; children: ReactNode; trailing?: ReactNode }) {
+  return <label className="flex min-h-[64px] items-center gap-2.5 rounded-2xl border border-line bg-white px-3 py-2.5 focus-within:border-pine">
+    <span className="grid size-[34px] shrink-0 place-items-center rounded-[11px] bg-sel text-pine"><Icon className="size-[17px]" /></span>
+    <span className="min-w-0 flex-1"><span className="block text-[11px] font-medium text-muted-ink">{label}</span>{children}</span>
+    {trailing}
+  </label>;
+}
+
+const inputClass = "mt-0.5 w-full bg-transparent text-[15px] font-semibold text-ink outline-none placeholder:font-medium placeholder:text-[#a7b3b9]";
+
+export function ConsumerAuthPage({ mode: initialMode }: { mode: "login" | "register" }) {
   const router = useRouter();
-  const isRegister = mode === "register";
+  const [mode, setMode] = useState<AuthMode>(initialMode);
+  const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
+  const [notice, setNotice] = useState<Notice>(null);
   const [submitting, setSubmitting] = useState(false);
+  const configured = Boolean(getSupabaseBrowserClient("consumer"));
+  const isRegister = mode === "register";
+
+  // A password-reset email link lands here with a recovery session.
+  useEffect(() => {
+    const client = getSupabaseBrowserClient("consumer");
+    const subscription = client?.auth.onAuthStateChange((event) => {
+      if (event === "PASSWORD_RECOVERY") { setMode("reset"); setNotice({ tone: "info", text: "Choose a new password for your account." }); }
+    });
+    return () => subscription?.data.subscription.unsubscribe();
+  }, []);
+
+  const switchMode = (next: AuthMode) => {
+    setMode(next); setNotice(null); setConfirmPassword("");
+    if (next !== "reset") window.history.replaceState(null, "", `/${next === "register" ? "register" : "login"}${window.location.search}`);
+  };
+
+  const finish = () => { router.replace(nextPath()); router.refresh(); };
 
   const submit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    if (!isValidEmail(email)) {
-      setMessage("Enter a valid email address.");
-      return;
-    }
-    if (password.length < 8) {
-      setMessage("Your password must contain at least 8 characters.");
-      return;
-    }
-    if (isRegister && password !== confirmPassword) {
-      setMessage("The two passwords do not match.");
-      return;
-    }
-    if (isRegister && !termsAccepted) {
-      setMessage("Review and accept the Terms and Privacy Notice first.");
-      return;
-    }
-    const supabase = getSupabaseBrowserClient();
-    if (!supabase) {
-      setMessage("The identity service is not configured for this preview.");
-      return;
-    }
+    const supabase = getSupabaseBrowserClient("consumer");
+    if (!supabase) { setNotice({ tone: "error", text: "Accounts aren't configured for this preview yet." }); return; }
+    if (mode !== "reset" && !isValidEmail(email)) { setNotice({ tone: "error", text: "Enter a valid email address." }); return; }
+    if (password.length < 8) { setNotice({ tone: "error", text: "Your password needs at least 8 characters." }); return; }
+    if ((isRegister || mode === "reset") && password !== confirmPassword) { setNotice({ tone: "error", text: "The two passwords don't match." }); return; }
+    if (isRegister && !displayName.trim()) { setNotice({ tone: "error", text: "Tell us what to call you." }); return; }
+    if (isRegister && !termsAccepted) { setNotice({ tone: "error", text: "Accept the Terms and Privacy Notice to continue." }); return; }
 
-    setSubmitting(true);
-    setMessage(null);
+    setSubmitting(true); setNotice(null);
     try {
-      const { data, error } = isRegister
-        ? await supabase.auth.signUp({ email: email.trim(), password })
-        : await supabase.auth.signInWithPassword({ email: email.trim(), password });
-      if (error) throw error;
-
-      if (!data.session) {
-        setMessage("Your sign-up request was submitted. Confirm the email from Supabase before signing in.");
+      if (mode === "reset") {
+        const { error } = await supabase.auth.updateUser({ password });
+        if (error) throw error;
+        finish();
         return;
       }
-
-      const response = await fetch("/api/auth/me", {
-        headers: { Authorization: `Bearer ${data.session.access_token}` },
-      });
-      const payload = (await response.json()) as {
-        user?: { role?: "user" | "admin" | "super_admin" };
-        error?: { message?: string };
-      };
-      if (!response.ok || !payload.user?.role) {
-        throw new Error(payload.error?.message ?? "The account role is not ready yet.");
+      if (isRegister) {
+        const { data, error } = await supabase.auth.signUp({
+          email: email.trim(), password,
+          options: { data: { display_name: displayName.trim().slice(0, 24) }, emailRedirectTo: `${window.location.origin}/login` },
+        });
+        if (error) throw error;
+        // Supabase returns a user with no identities when the email is already taken (enumeration-safe mode).
+        if (data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) throw new Error("already registered");
+        if (!data.session) {
+          setMode("login"); setPassword(""); setConfirmPassword("");
+          setNotice({ tone: "info", text: `We sent a confirmation link to ${email.trim()}. Open it, then sign in here.` });
+          return;
+        }
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+        if (error) throw error;
       }
-
-      router.replace(payload.user.role === "user" ? "/" : "/ops");
-      router.refresh();
+      finish();
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Sign-in could not be completed right now.");
+      setNotice({ tone: "error", text: friendlyError(error) });
     } finally {
       setSubmitting(false);
     }
   };
 
-  return (
-    <main className="min-h-dvh bg-[#f7f8f5] text-[#1e2939]">
-      <div className="mx-auto min-h-dvh max-w-[390px] bg-white shadow-[0_0_0_1px_rgba(30,87,56,0.04)]">
-        <header className="flex min-h-14 items-center justify-between px-5 py-3">
-          <Link
-            href="/"
-            aria-label="Return to home"
-            className="grid size-11 place-items-center rounded-full text-[#1e5738] hover:bg-[#edf6ef] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1e5738]"
-          >
-            <ArrowLeft className="size-5" />
-          </Link>
-          <p className="text-[22px] font-bold tracking-[-0.55px] text-[#1e5738]">Wayly</p>
-          <span className="size-11" />
-        </header>
+  const forgotPassword = async () => {
+    const supabase = getSupabaseBrowserClient("consumer");
+    if (!supabase) return;
+    if (!isValidEmail(email)) { setNotice({ tone: "error", text: "Enter your email above first, then tap “Forgot password”." }); return; }
+    setSubmitting(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), { redirectTo: `${window.location.origin}/login` });
+    setSubmitting(false);
+    setNotice(error ? { tone: "error", text: friendlyError(error) } : { tone: "info", text: `If ${email.trim()} has an account, a reset link is on its way.` });
+  };
 
-        <section className="px-5 pb-10 pt-2">
-          <div className="grid size-12 place-items-center rounded-2xl bg-[#e8f4eb] text-[#1e5738]">
-            <Compass className="size-6" />
-          </div>
-          <h1 className="mt-4 text-[22px] font-bold tracking-[-0.4px] text-[#101828]">
-            {isRegister ? "Create an account" : "Sign in to Wayly"}
-          </h1>
-          <p className="mt-1 text-xs leading-5 text-[#99a1af]">Save your NYC itineraries and exploration preferences.</p>
+  const title = mode === "reset" ? "Set a new password" : isRegister ? "Create your account" : "Welcome back";
+  const subtitle = mode === "reset" ? "You're almost back in." : isRegister ? "Save routes, keep your preferences, pick up where you left off." : "Sign in to plan, save and revisit your NYC days.";
 
-          <div className="mt-5 grid grid-cols-2 rounded-full bg-[#f3f4f6] p-1">
-            <Link
-              href="/login"
-              className={`flex h-9 items-center justify-center rounded-full text-sm font-semibold ${isRegister ? "text-[#6a7282]" : "bg-white text-[#1e5738] shadow-sm"}`}
-            >
-              Sign in
-            </Link>
-            <Link
-              href="/register"
-              className={`flex h-9 items-center justify-center rounded-full text-sm font-semibold ${isRegister ? "bg-white text-[#1e5738] shadow-sm" : "text-[#6a7282]"}`}
-            >
-              Create account
-            </Link>
-          </div>
-
-          <form className="mt-6 space-y-3.5" onSubmit={submit}>
-            <label className="block">
-              <span className="mb-1.5 block text-[11px] font-semibold text-[#6a7282]">Email</span>
-              <input
-                type="email"
-                autoComplete="email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                placeholder="you@example.com"
-                className="h-12 w-full rounded-xl border border-[#e5e7eb] px-3.5 text-sm outline-none placeholder:text-[#c6cbd3] focus:border-[#1e5738]"
-              />
-            </label>
-            <label className="block">
-              <span className="mb-1.5 block text-[11px] font-semibold text-[#6a7282]">Password</span>
-              <span className="relative block">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  autoComplete={isRegister ? "new-password" : "current-password"}
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  placeholder="At least 8 characters"
-                  className="h-12 w-full rounded-xl border border-[#e5e7eb] px-3.5 pr-12 text-sm outline-none placeholder:text-[#c6cbd3] focus:border-[#1e5738]"
-                />
-                <button
-                  type="button"
-                  aria-label={showPassword ? "Hide password" : "Show password"}
-                  onClick={() => setShowPassword((current) => !current)}
-                  className="absolute right-2 top-1/2 grid size-8 -translate-y-1/2 place-items-center rounded-lg text-[#99a1af] hover:bg-[#f3f4f6]"
-                >
-                  {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
-                </button>
-              </span>
-            </label>
-            {isRegister ? (
-              <label className="block">
-                <span className="mb-1.5 block text-[11px] font-semibold text-[#6a7282]">Confirm password</span>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  autoComplete="new-password"
-                  value={confirmPassword}
-                  onChange={(event) => setConfirmPassword(event.target.value)}
-                  placeholder="Enter your password again"
-                  className="h-12 w-full rounded-xl border border-[#e5e7eb] px-3.5 text-sm outline-none placeholder:text-[#c6cbd3] focus:border-[#1e5738]"
-                />
-              </label>
-            ) : (
-              <p className="text-right">
-                <button
-                  type="button"
-                  onClick={() => setMessage("Password recovery will be available after the identity service is configured.")}
-                  className="text-xs font-semibold text-[#1e5738]"
-                >
-                  Forgot password?
-                </button>
-              </p>
-            )}
-            {isRegister ? (
-              <label className="flex items-start gap-2.5 rounded-2xl bg-[#f8f9f8] p-3 text-xs leading-5 text-[#6a7282]">
-                <input
-                  type="checkbox"
-                  checked={termsAccepted}
-                  onChange={(event) => setTermsAccepted(event.target.checked)}
-                  className="mt-0.5 size-4 accent-[#1e5738]"
-                />
-                <span>
-                  I have read and agree to the
-                  <button type="button" className="px-1 font-semibold text-[#1e5738]" onClick={() => setMessage("The Terms are not published in this preview.")}>
-                    Terms
-                  </button>
-                  and
-                  <button type="button" className="px-1 font-semibold text-[#1e5738]" onClick={() => setMessage("The Privacy Notice is not published in this preview.")}>
-                    Privacy Notice
-                  </button>
-                </span>
-              </label>
-            ) : null}
-
-            {message ? (
-              <output className="block rounded-2xl bg-[#f6fbf7] px-3.5 py-3 text-xs leading-5 text-[#557462]">
-                {message}
-              </output>
-            ) : null}
-
-            <Button
-              size="lg"
-              type="submit"
-              disabled={submitting}
-              className="h-12 w-full rounded-2xl bg-[#1e5738] text-sm font-semibold hover:bg-[#18492f]"
-            >
-              {submitting ? "Submitting…" : isRegister ? "Create account" : "Sign in"}
-            </Button>
-          </form>
-
-          <p className="mt-4 text-center text-[11px] leading-5 text-[#99a1af]">
-            {isRegister
-              ? "After registration, you can save itineraries, bookmark places, and sync preferences."
-              : "After sign-in, you can view saved itineraries, bookmarked places, and synced preferences."}
-          </p>
-
-          <Link
-            href="/"
-            className="mt-5 flex min-h-11 items-center justify-center text-sm font-semibold text-[#1e5738]"
-          >
-            Continue as a guest
-          </Link>
-
-          <div className="mt-6 rounded-2xl bg-[#eef8f1] p-3.5">
-            <p className="flex items-center gap-1.5 text-xs font-semibold text-[#1e5738]">
-              <ShieldCheck className="size-4" />
-              Supabase Auth · local preview
-            </p>
-            <p className="mt-1 text-[11px] leading-5 text-[#557462]">
-              Registration does not grant or elevate roles. A server-side database trigger initializes new accounts as ordinary users. Do not enter production credentials in this preview.
-            </p>
-          </div>
-        </section>
+  return <main className="min-h-dvh bg-[#ece6d9] text-ink"><div className="relative mx-auto min-h-dvh max-w-[390px] overflow-x-clip bg-soft shadow-[0_0_40px_rgba(13,41,64,0.08)]">
+    <div className="relative h-[260px] overflow-hidden">
+      <img src={HERO_IMAGE} alt="Brooklyn Bridge and Lower Manhattan at sunset" className="absolute inset-0 size-full object-cover" />
+      <div className="absolute inset-x-0 top-0 h-[140px] bg-gradient-to-b from-ink/60 to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 h-[180px] bg-gradient-to-t from-ink/85 to-transparent" />
+      <header className="absolute inset-x-0 top-0 flex items-center justify-between px-5 pt-[max(16px,env(safe-area-inset-top))]">
+        <Link href="/" aria-label="Back to Wayly" className="grid size-[38px] place-items-center rounded-full bg-white/90 text-ink"><ChevronLeft className="size-5" /></Link>
+        <span className="text-[19px] font-extrabold tracking-[0.04em] text-white">WAYLY</span>
+        <span className="size-[38px]" />
+      </header>
+      <div className="absolute inset-x-5 bottom-14">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-white/35 bg-white/20 px-2.5 py-1 text-xs font-semibold text-white backdrop-blur"><Sparkles className="size-3" />Source-linked NYC plans</span>
+        <h1 className="mt-2 text-[30px] font-extrabold leading-[34px] tracking-[-0.02em] text-white">{title}</h1>
       </div>
-    </main>
-  );
+    </div>
+
+    <section className="relative -mt-10 rounded-t-[28px] bg-soft px-5 pb-10 pt-[22px] shadow-sheet">
+      {mode !== "reset" && <div role="tablist" aria-label="Account" className="grid grid-cols-2 rounded-2xl bg-sage p-1">
+        {(["login", "register"] as const).map((item) => <button key={item} type="button" role="tab" aria-selected={mode === item} onClick={() => switchMode(item)} className={`min-h-10 rounded-xl text-[13px] font-bold transition ${mode === item ? "bg-white text-pine shadow-sm" : "text-muted-ink"}`}>{item === "login" ? "Sign in" : "Create account"}</button>)}
+      </div>}
+      <p className="mt-3.5 text-[13px] leading-5 text-muted-ink">{subtitle}</p>
+
+      {!configured && <div className="mt-3 flex gap-2 rounded-2xl border border-[#f2deb7] bg-[#fffaf0] p-3 text-xs leading-5 text-[#8a5a16]"><CircleAlert className="mt-0.5 size-4 shrink-0" />Accounts aren&apos;t configured for this preview. Add the Supabase URL and publishable key to .env.local and restart.</div>}
+
+      <form onSubmit={submit} noValidate className="mt-3.5 space-y-2.5">
+        {isRegister && <Field icon={UserRound} label="Your name"><input autoComplete="name" value={displayName} maxLength={24} onChange={(event) => setDisplayName(event.target.value)} placeholder="What should we call you?" className={inputClass} /></Field>}
+        {mode !== "reset" && <Field icon={Mail} label="Email"><input type="email" inputMode="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="you@example.com" className={inputClass} /></Field>}
+        <Field icon={Lock} label={mode === "reset" ? "New password" : "Password"} trailing={<button type="button" onClick={() => setShowPassword((value) => !value)} aria-label={showPassword ? "Hide password" : "Show password"} className="grid size-9 place-items-center rounded-full text-muted-ink hover:bg-sel">{showPassword ? <EyeOff className="size-[18px]" /> : <Eye className="size-[18px]" />}</button>}>
+          <input type={showPassword ? "text" : "password"} autoComplete={mode === "login" ? "current-password" : "new-password"} value={password} onChange={(event) => setPassword(event.target.value)} placeholder="At least 8 characters" className={inputClass} />
+        </Field>
+        {(isRegister || mode === "reset") && <Field icon={KeyRound} label="Confirm password"><input type={showPassword ? "text" : "password"} autoComplete="new-password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} placeholder="Type it again" className={inputClass} /></Field>}
+
+        {mode === "login" && <div className="flex justify-end"><button type="button" onClick={() => void forgotPassword()} className="min-h-8 px-1 text-xs font-bold text-pine">Forgot password?</button></div>}
+        {isRegister && <button type="button" onClick={() => setTermsAccepted((value) => !value)} aria-pressed={termsAccepted} className="flex w-full items-start gap-2.5 rounded-2xl px-1 py-1.5 text-left text-xs leading-5 text-muted-ink">
+          <span className={`mt-0.5 grid size-5 shrink-0 place-items-center rounded-md border ${termsAccepted ? "border-pine bg-pine text-white" : "border-line bg-white"}`}>{termsAccepted && <Check className="size-3.5" />}</span>
+          I agree to the Terms and Privacy Notice. Wayly stores my email, saved routes and planning preferences.
+        </button>}
+
+        {notice && <p role={notice.tone === "error" ? "alert" : "status"} className={`flex gap-2 rounded-2xl p-3 text-xs leading-5 ${notice.tone === "error" ? "bg-rust/10 text-rust" : "bg-sel text-pine"}`}>{notice.tone === "error" ? <CircleAlert className="mt-0.5 size-4 shrink-0" /> : <Check className="mt-0.5 size-4 shrink-0" />}{notice.text}</p>}
+
+        <Button type="submit" size="lg" disabled={submitting || !configured} className="h-14 w-full rounded-[18px] bg-pine text-base font-bold shadow-cta hover:bg-pine-dark">
+          {submitting ? <Loader2 className="size-[18px] animate-spin" /> : <ArrowRight className="size-[18px]" />}
+          {submitting ? "One moment…" : mode === "reset" ? "Save new password" : isRegister ? "Create account" : "Sign in"}
+        </Button>
+      </form>
+
+      <Link href="/" className="mt-3 flex min-h-11 items-center justify-center text-[13px] font-semibold text-muted-ink">Continue browsing without an account</Link>
+      <p className="mt-2 flex items-center justify-center gap-1.5 text-xs font-medium text-muted-ink"><ShieldCheck className="size-3.5 text-pine" />Your password never touches Wayly&apos;s servers</p>
+    </section>
+  </div></main>;
 }

@@ -5,6 +5,8 @@ const dateSchema = z
   .regex(/^\d{4}-\d{2}-\d{2}$/, "Use YYYY-MM-DD for the travel date.")
   .refine((value) => !Number.isNaN(new Date(`${value}T12:00:00`).getTime()), "Enter a valid travel date.");
 
+const placeIdList = z.array(z.string().min(1).max(80)).max(10);
+
 export const nycPlanRequestSchema = z.object({
   cityCode: z.literal("nyc"),
   date: dateSchema,
@@ -19,8 +21,17 @@ export const nycPlanRequestSchema = z.object({
   dining: z.enum(["no_preference", "vegetarian", "coffee", "local"]),
   accessibility: z.boolean(),
   adjustment: z.object({
-    action: z.enum(["replace", "shorten", "budget"]),
     itineraryId: z.string().min(1),
+    action: z.enum(["replace", "shorten", "budget"]).optional(),
     targetStopId: z.string().min(1).optional(),
+    previousPlaceIds: placeIdList.optional(),
+    pinnedPlaceIds: placeIdList.optional(),
+    addPlaceIds: placeIdList.optional(),
+    removePlaceIds: placeIdList.optional(),
+    neverVisitPlaceIds: placeIdList.optional(),
+    laterStart: z.boolean().optional(),
+    earlierEnd: z.boolean().optional(),
+    fewerStops: z.boolean().optional(),
+    moreRest: z.boolean().optional(),
   }).optional(),
 });

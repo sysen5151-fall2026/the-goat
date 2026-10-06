@@ -5,9 +5,26 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  /* Wayly NYC design tokens (Figma: Wayly NYC / Mobile app v2) */
+  --color-ink: #0d2940;
+  --color-muted-ink: #58707c;
+  --color-pine: #185e56;
+  --color-pine-dark: #124a45;
+  --color-rust: #c66230;
+  --color-paper: #f5f0e6;
+  --color-soft: #fcfaf5;
+  --color-sel: #e3f0ea;
+  --color-sage: #edf3ed;
+  --color-line: #dde3dc;
+  --color-sand: #e2be8c;
+  --color-mint: #8fc1a9;
+  --shadow-card: 0 4px 14px rgb(13 41 64 / 0.06);
+  --shadow-float: 0 4px 12px rgb(13 41 64 / 0.14);
+  --shadow-sheet: 0 -6px 24px rgb(13 41 64 / 0.12);
+  --shadow-cta: 0 8px 18px rgb(24 94 86 / 0.25);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-jakarta), var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -49,29 +66,81 @@
 }
 
 body {
-  font-family: "PingFang SC", "Microsoft YaHei", var(--font-geist-sans), Arial, Helvetica, sans-serif;
-  background: #f7f7f2;
+  font-family: var(--font-jakarta), var(--font-geist-sans), "PingFang SC", Arial, Helvetica, sans-serif;
+  background: #ece6d9;
+}
+
+/* Budget slider (Figma: Total budget) */
+.wayly-range {
+  appearance: none;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(to right, var(--color-pine) var(--fill, 50%), var(--color-line) var(--fill, 50%));
+  outline: none;
+}
+.wayly-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: #fff;
+  border: 5px solid var(--color-pine);
+  box-shadow: 0 2px 6px rgb(13 41 64 / 0.18);
+  cursor: pointer;
+}
+.wayly-range::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: #fff;
+  border: 5px solid var(--color-pine);
+  box-shadow: 0 2px 6px rgb(13 41 64 / 0.18);
+  cursor: pointer;
+}
+
+/* Numbered route markers on the MapLibre map */
+.wayly-marker {
+  cursor: pointer;
+}
+.wayly-pin {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px 999px 999px 4px;
+  transform: rotate(-45deg);
+  background: var(--color-rust);
+  border: 2.5px solid #fff;
+  box-shadow: 0 4px 10px rgb(13 41 64 / 0.25);
+}
+.wayly-pin span {
+  transform: rotate(45deg);
+  color: #fff;
+  font: 700 13px/1 var(--font-jakarta), sans-serif;
+}
+.wayly-pin.is-active {
+  background: var(--color-pine);
 }
 
 :root {
-  --background: oklch(0.982 0.008 100);
-  --foreground: oklch(0.23 0.03 240);
+  --background: #fcfaf5;
+  --foreground: #0d2940;
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.23 0.03 240);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.23 0.03 240);
-  --primary: oklch(0.49 0.09 184);
+  --primary: #185e56;
   --primary-foreground: oklch(0.99 0.005 180);
   --secondary: oklch(0.96 0.014 185);
   --secondary-foreground: oklch(0.29 0.05 190);
   --muted: oklch(0.96 0.008 240);
-  --muted-foreground: oklch(0.52 0.025 240);
+  --muted-foreground: #58707c;
   --accent: oklch(0.95 0.027 177);
   --accent-foreground: oklch(0.29 0.05 190);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.9 0.012 230);
+  --border: #dde3dc;
   --input: oklch(0.9 0.012 230);
-  --ring: oklch(0.58 0.1 184);
+  --ring: #185e56;
   --chart-1: oklch(0.56 0.1 184);
   --chart-2: oklch(0.7 0.1 170);
   --chart-3: oklch(0.76 0.1 85);
@@ -132,4 +201,20 @@ body {
   html {
     @apply font-sans;
   }
+}
+
+/* MapLibre popup + attribution in Wayly style */
+.maplibregl-popup-content {
+  border-radius: 14px;
+  padding: 10px 12px;
+  font: 500 12px/1.4 var(--font-jakarta), sans-serif;
+  color: var(--color-ink);
+  box-shadow: 0 4px 12px rgb(13 41 64 / 0.14);
+}
+.maplibregl-ctrl-attrib.maplibregl-compact {
+  background: rgb(255 255 255 / 0.85);
+}
+/* Keep map attribution visible above the overlapping itinerary sheet */
+.wayly-map-sheet .maplibregl-ctrl-bottom-left {
+  bottom: 34px;
 }

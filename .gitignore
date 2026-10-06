@@ -68,17 +68,17 @@ next-env.d.ts
 /lib/types.ts
 /scripts/*
 !/scripts/verify-nyc-catalog.mjs
+!/scripts/copy-maplibre-worker.mjs
 /app/ops/*
 !/app/ops/page.tsx
 !/app/ops/login/
 !/app/ops/login/page.tsx
 !/app/ops/login/layout.tsx
 /app/api/ops/
-/lib/auth.ts
-/lib/supabase.ts
-/lib/supabase-browser.ts
-/supabase/
 /.cursor/
 /.openai/
 /public/figma/
 /public/og.png
+
+# MapLibre worker copied from node_modules at install/dev/build time
+/public/maplibre/

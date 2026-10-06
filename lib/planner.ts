@@ -12,7 +12,7 @@ function score(place: Place, interests: PlanRequest['interests']) {
 }
 
 export function buildItinerary(request: PlanRequest): Itinerary | null {
-  const candidates = publishedPlaces()
+  const candidates = publishedPlaces
     .map((place) => ({ place, score: score(place, request.interests) }))
     .filter((candidate) => candidate.score > 0)
     .sort(
@@ -23,7 +23,7 @@ export function buildItinerary(request: PlanRequest): Itinerary | null {
 
   const ranked = candidates.length
     ? candidates.map((candidate) => candidate.place)
-    : publishedPlaces();
+    : publishedPlaces;
   const selected: Place[] = [];
   let totalAllowanceUsd = 0;
 
