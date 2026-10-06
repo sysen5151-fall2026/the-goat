@@ -1,6 +1,6 @@
 # NYC Catalog Provenance
 
-`data/nyc-poi-v1.json` is a 20-place seed catalog for the MVP. It was reviewed
+`data/nyc-poi-v1.json` is a 40-place seed catalog for the MVP. It was reviewed
 on October 5, 2026. The catalog records a primary public source for each place;
 it is not a real-time feed. Coordinates and USD planning allowances are used to
 exercise the product flow and should be revalidated before a production release.
@@ -27,6 +27,26 @@ exercise the product flow and should be revalidated before a production release.
 | Edge at Hudson Yards | Edge — `edgenyc.com` |
 | Intrepid Sea, Air & Space Museum | Intrepid Museum — `intrepidmuseum.org` |
 | Brooklyn Museum | Brooklyn Museum — `brooklynmuseum.org` |
+| Brooklyn Bridge Park | Brooklyn Bridge Park — `brooklynbridgepark.org` |
+| Prospect Park | Prospect Park Alliance — `prospectpark.org` |
+| Brooklyn Botanic Garden | Brooklyn Botanic Garden — `bbg.org` |
+| The Met Cloisters | The Metropolitan Museum of Art — `metmuseum.org` |
+| Whitney Museum of American Art | Whitney Museum of American Art — `whitney.org` |
+| Staten Island Ferry | Staten Island Ferry — `siferry.com` |
+| Governors Island | Trust for Governors Island — `govisland.com` |
+| Little Island | Little Island — `littleisland.org` |
+| Washington Square Park | NYC Parks — `nycgovparks.org` |
+| SUMMIT One Vanderbilt | SUMMIT One Vanderbilt — `summitov.com` |
+| St. Patrick's Cathedral | St. Patrick's Cathedral — `saintpatrickscathedral.org` |
+| Bryant Park | Bryant Park Corporation — `bryantpark.org` |
+| New York Botanical Garden | New York Botanical Garden — `nybg.org` |
+| Bronx Zoo | Wildlife Conservation Society — `bronxzoo.com` |
+| Tenement Museum | Tenement Museum — `tenement.org` |
+| Essex Market | Essex Market — `essexmarket.nyc` |
+| Katz's Delicatessen | Katz's Delicatessen — `katzsdelicatessen.com` |
+| Coney Island Beach & Boardwalk | NYC Parks — `nycgovparks.org` |
+| Roosevelt Island Tramway | Roosevelt Island Operating Corporation — `rioc.ny.gov` |
+| The Frick Collection | The Frick Collection — `frick.org` |
 
 ## Data rules
 

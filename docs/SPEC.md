@@ -31,7 +31,7 @@ are external systems.
 | RQ-PLAN-03 | The planner shall select only published catalog records. | `lib/nyc-places.ts` filters `published` records before selection. |
 | RQ-PLAN-04 | The planner shall reject an itinerary when place allowances plus the minimum static transport estimate exceed the submitted USD budget. | `lib/nyc-planner.ts` checks this condition before returning an itinerary; the client labels the resulting total as an estimate. |
 | RQ-PLAN-05 | Each returned stop shall expose its source link and planning limitation. | The API returns source data; the client renders source links and limitation notes. |
-| RQ-PLAN-06 | The operations page shall display every published catalog record. | `/ops` lists the 20 published records with category, source name, USD allowance, review date, and status. |
+| RQ-PLAN-06 | The operations page shall display every published catalog record. | `/ops` lists the 40 published records with category, source name, USD allowance, review date, and status. |
 
 ## Non-goals
 

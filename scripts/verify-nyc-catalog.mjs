@@ -3,8 +3,8 @@ import { readFile } from "node:fs/promises";
 const file = new URL("../data/nyc-poi-v1.json", import.meta.url);
 const places = JSON.parse(await readFile(file, "utf8"));
 
-if (!Array.isArray(places) || places.length !== 20) {
-  throw new Error("The NYC catalog must contain exactly 20 places.");
+if (!Array.isArray(places) || places.length < 20) {
+  throw new Error("The NYC catalog must contain at least 20 places.");
 }
 
 const ids = new Set();
@@ -20,4 +20,4 @@ for (const place of places) {
   if (!place.published) throw new Error(`${place.id} must be published.`);
 }
 
-console.log("Verified 20 published NYC catalog records with source and image fields.");
+console.log(`Verified ${places.length} published NYC catalog records with source and image fields.`);
