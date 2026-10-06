@@ -68,9 +68,12 @@ next-env.d.ts
 /lib/types.ts
 /scripts/*
 !/scripts/verify-nyc-catalog.mjs
-/app/ops/
+/app/ops/*
+!/app/ops/page.tsx
+!/app/ops/login/
+!/app/ops/login/page.tsx
+!/app/ops/login/layout.tsx
 /app/api/ops/
-/components/ops-chart.tsx
 /lib/auth.ts
 /lib/supabase.ts
 /lib/supabase-browser.ts
