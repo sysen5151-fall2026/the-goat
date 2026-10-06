@@ -1,46 +1,38 @@
-# Wayly NYC MVP1
+# Wayly NYC MVP
 
-Wayly NYC is an English-language itinerary-planning MVP for short NYC visits. It
-creates a transparent route from a published 20-place catalog, a party size, a
-time window, selected interests, and a total USD planning budget.
+Wayly is a mobile-first trip-planning preview for short New York City visits. It preserves the original Wayly interaction design while using an English-only interface, a USD planning budget, and a source-linked NYC catalog.
 
-## What is implemented
+## Current scope
 
-- A mobile-friendly planner at `/`.
-- A deterministic `POST /api/plan` route that accepts only `city: "nyc"`.
-- A published NYC catalog with 20 places, coordinates, source URLs, review dates,
-  access notes, and USD planning allowances.
-- A catalog inspection page at `/ops`.
-- A requirement-to-code trace for Milestone 1 in
-  [`docs/MILESTONE_1_TRACEABILITY.md`](docs/MILESTONE_1_TRACEABILITY.md).
+- Build a short NYC itinerary from a published catalog of 20 places.
+- Collect date, available hours, party size, total USD budget, interests, free-text intent, transportation preference, walking pace, dining preference, and an accessibility request.
+- Show place details, a reference image with a credit link, a primary place source, static route estimates, and explicit planning limitations.
+- Allow a local preview of itinerary adjustment, feedback, profile, and map handoff flows.
+
+## Boundary
+
+Wayly does not provide live hours, ticket inventory, reservation status, real-time routing, ride hailing, payment, or accessibility certification. Each stop links to a published source; travelers must confirm live conditions before departure.
 
 ## Run locally
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
-Open the local URL printed by the development server. Before handoff, run:
+Open the local URL printed by the dev server.
+
+## Verify
 
 ```bash
-npm run verify:catalog
 npm run lint
 npm run build
 ```
 
-## Boundaries
+The build validates that the application routes compile. It does not establish live availability or ticketing information.
 
-The catalog is a planning aid, not a booking or live-travel service. A source
-link and a review date mean that a source was recorded for the MVP; they do not
-guarantee current opening hours, tickets, admissions, accessibility services,
-directions, transit conditions, or availability. Every price in the MVP is a
-USD planning allowance and must be reconfirmed at the place's source before
-travel.
+## Data
 
-## Documentation
+[`data/nyc-poi-v1.json`](./data/nyc-poi-v1.json) is the single catalog used by the current planner. All 20 records have an official or venue source URL, a reviewed-on date, a USD planning allowance, coordinates, access notes, and a detail-image field.
 
-- [`docs/SPEC.md`](docs/SPEC.md) — scope, requirements, and acceptance criteria.
-- [`docs/DATA_PROVENANCE.md`](docs/DATA_PROVENANCE.md) — catalog source records and limitations.
-- [`docs/MILESTONE_1_TRACEABILITY.md`](docs/MILESTONE_1_TRACEABILITY.md) — live demonstration trace.
-- [`docs/AI_PROVENANCE.md`](docs/AI_PROVENANCE.md) — AI-assisted work record and review boundary.
+See [`docs/README.md`](./docs/README.md) for the NYC MVP documentation index.

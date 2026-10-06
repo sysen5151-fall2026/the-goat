@@ -1,34 +1,52 @@
-import { NextResponse } from 'next/server';
-import { planRequestSchema } from '@/lib/plan-contract';
-import { buildItinerary } from '@/lib/planner';
+import { NextResponse } from "next/server";
+import { z } from "zod";
+import { nycPlanRequestSchema } from "@/lib/nyc-plan-contract";
+import { planNycItinerary } from "@/lib/nyc-planner";
+
+function invalidRequest(error: z.ZodError, requestId: string) {
+  return NextResponse.json(
+    {
+      error: {
+        code: "invalid_request",
+        message: "Check the trip details and try again.",
+        fieldErrors: z.treeifyError(error),
+      },
+      requestId,
+    },
+    { status: 400 },
+  );
+}
 
 export async function POST(request: Request) {
-  const body: unknown = await request.json().catch(() => null);
-  const parsed = planRequestSchema.safeParse(body);
-
-  if (!parsed.success) {
+  const requestId = `req_${crypto.randomUUID()}`;
+  let payload: unknown;
+  try {
+    payload = await request.json();
+  } catch {
     return NextResponse.json(
-      {
-        error:
-          'Enter a date, 2–12 hours, 1–12 travelers, a USD budget, and at least one interest.',
-      },
+      { error: { code: "invalid_json", message: "The request body must be valid JSON." }, requestId },
       { status: 400 },
     );
   }
 
-  const itinerary = buildItinerary(parsed.data);
-  if (!itinerary) {
-    return NextResponse.json(
-      {
-        error:
-          'No published NYC stop fits this party size and planning budget. Increase the budget or reduce the party size.',
-      },
-      { status: 422 },
-    );
+  const parsed = nycPlanRequestSchema.safeParse(payload);
+  if (!parsed.success) return invalidRequest(parsed.error, requestId);
+
+  const result = planNycItinerary(parsed.data);
+  if (!result.itinerary) {
+    return NextResponse.json({
+      requestId,
+      mode: "insufficient_information",
+      itinerary: null,
+      insufficiencyReason: result.insufficiencyReason,
+    });
   }
 
   return NextResponse.json({
-    itinerary,
-    catalogVersion: 'nyc-poi-v1',
+    requestId,
+    mode: "controlled_fallback",
+    itinerary: result.itinerary,
+    constraintStatus: { hardConstraintsSatisfied: true, sourceCoverage: 1 },
+    versions: { dataVersionId: "nyc-poi-v1", plannerVersion: "nyc-controlled-planner-v1" },
   });
 }
