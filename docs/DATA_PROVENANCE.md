@@ -1,6 +1,6 @@
 # NYC Catalog Provenance
 
-`data/nyc-poi-v1.json` is a 40-place seed catalog for the MVP. It was reviewed
+`data/nyc-poi-v1.json` is a 100-place seed catalog for the MVP. It was reviewed
 on October 5, 2026. The catalog records a primary public source for each place;
 it is not a real-time feed. Coordinates and USD planning allowances are used to
 exercise the product flow and should be revalidated before a production release.
@@ -47,6 +47,66 @@ exercise the product flow and should be revalidated before a production release.
 | Coney Island Beach & Boardwalk | NYC Parks — `nycgovparks.org` |
 | Roosevelt Island Tramway | Roosevelt Island Operating Corporation — `rioc.ny.gov` |
 | The Frick Collection | The Frick Collection — `frick.org` |
+| Museum of the City of New York | Museum of the City of New York — `mcny.org` |
+| Cooper Hewitt, Smithsonian Design Museum | Cooper Hewitt, Smithsonian Design Museum — `cooperhewitt.org` |
+| Neue Galerie New York | Neue Galerie New York — `neuegalerie.org` |
+| The Morgan Library & Museum | The Morgan Library & Museum — `themorgan.org` |
+| New York Historical | New York Historical — `nyhistory.org` |
+| El Museo del Barrio | El Museo del Barrio — `elmuseo.org` |
+| MoMA PS1 | MoMA PS1 — `momaps1.org` |
+| Museum of the Moving Image | Museum of the Moving Image — `movingimage.org` |
+| Queens Museum | Queens Museum — `queensmuseum.org` |
+| The Noguchi Museum | The Noguchi Museum — `noguchi.org` |
+| New York Transit Museum | New York Transit Museum — `nytransitmuseum.org` |
+| Fraunces Tavern Museum | Fraunces Tavern Museum — `frauncestavernmuseum.org` |
+| The Jewish Museum | The Jewish Museum — `thejewishmuseum.org` |
+| Museum of Arts and Design | Museum of Arts and Design — `madmuseum.org` |
+| Louis Armstrong House Museum | Louis Armstrong House Museum — `louisarmstronghouse.org` |
+| Federal Hall National Memorial | National Park Service — `nps.gov/feha` |
+| Apollo Theater | Apollo Theater — `apollotheater.org` |
+| Lincoln Center | Lincoln Center — `lincolncenter.org` |
+| Carnegie Hall | Carnegie Hall — `carnegiehall.org` |
+| Radio City Music Hall | Radio City Music Hall — `msg.com` |
+| Cathedral of St. John the Divine | Cathedral of St. John the Divine — `stjohndivine.org` |
+| Trinity Church Wall Street | Trinity Church Wall Street — `trinitychurchnyc.org` |
+| General Grant National Memorial | National Park Service — `nps.gov/gegr` |
+| Stonewall National Monument | National Park Service — `nps.gov/ston` |
+| Castle Clinton National Monument | National Park Service — `nps.gov/cacl` |
+| Hamilton Grange National Memorial | National Park Service — `nps.gov/hagr` |
+| Yankee Stadium | New York Yankees (MLB) — `mlb.com` |
+| Flushing Meadows–Corona Park | NYC Parks — `nycgovparks.org` |
+| The Battery | The Battery Conservancy — `thebattery.org` |
+| Hudson River Park | Hudson River Park — `hudsonriverpark.org` |
+| Riverside Park | Riverside Park Conservancy — `riversideparknyc.org` |
+| Fort Tryon Park | NYC Parks — `nycgovparks.org` |
+| Domino Park | Domino Park — `dominopark.com` |
+| Gantry Plaza State Park | New York State Parks — `parks.ny.gov` |
+| Socrates Sculpture Park | Socrates Sculpture Park — `socratessculpturepark.org` |
+| Green-Wood Cemetery | Green-Wood — `green-wood.com` |
+| Jacob Riis Park | National Park Service (Gateway National Recreation Area) — `nps.gov/gate` |
+| Madison Square Park | Madison Square Park Conservancy — `madisonsquarepark.org` |
+| Union Square | Union Square Partnership — `unionsquarenyc.org` |
+| South Street Seaport | The Seaport — `theseaport.nyc` |
+| Luna Park | Luna Park — `lunaparknyc.com` |
+| New York Aquarium | Wildlife Conservation Society — `nyaquarium.com` |
+| Wave Hill | Wave Hill — `wavehill.org` |
+| Snug Harbor Cultural Center & Botanical Garden | Snug Harbor — `snug-harbor.org` |
+| Smorgasburg | Smorgasburg — `smorgasburg.com` |
+| Russ & Daughters | Russ & Daughters — `russanddaughters.com` |
+| Peter Luger Steak House | Peter Luger Steak House — `peterluger.com` |
+| Grand Central Oyster Bar | Grand Central Oyster Bar — `oysterbarny.com` |
+| Joe's Pizza | Joe's Pizza — `joespizzanyc.com` |
+| Lombardi's Pizza | Lombardi's — `firstpizza.com` |
+| Junior's Restaurant | Junior's — `juniorscheesecake.com` |
+| Sylvia's Restaurant | Sylvia's Restaurant — `sylviasrestaurant.com` |
+| Di Fara Pizza | Di Fara Pizza — `difarapizzany.com` |
+| Zabar's | Zabar's — `zabars.com` |
+| Ferrara Bakery & Cafe | Ferrara Bakery & Cafe — `ferraranyc.com` |
+| Veselka | Veselka — `veselka.com` |
+| The Halal Guys | The Halal Guys — `thehalalguys.com` |
+| Nathan's Famous | Nathan's Famous — `nathansfamous.com` |
+| Keens Steakhouse | Keens Steakhouse — `keens.com` |
+| Arthur Avenue | Arthur Avenue Bronx — `arthuravenuebronx.com` |
 
 ## Data rules
 

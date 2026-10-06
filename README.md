@@ -4,7 +4,7 @@ Wayly is a mobile-first trip-planning preview for short New York City visits. It
 
 ## Current scope
 
-- Build a short NYC itinerary from a published catalog of 40 places.
+- Build a short NYC itinerary from a published catalog of 100 places.
 - Collect date, available hours, party size, total USD budget, interests, free-text intent, transportation preference, walking pace, dining preference, and an accessibility request.
 - Show place details, a reference image with a credit link, a primary place source, static route estimates, and explicit planning limitations.
 - Allow a local preview of itinerary adjustment, feedback, profile, and map handoff flows.
@@ -33,6 +33,6 @@ The build validates that the application routes compile. It does not establish l
 
 ## Data
 
-[`data/nyc-poi-v1.json`](./data/nyc-poi-v1.json) is the single catalog used by the current planner. All 40 records have an official or venue source URL, a reviewed-on date, a USD planning allowance, coordinates, access notes, and a detail-image field.
+[`data/nyc-poi-v1.json`](./data/nyc-poi-v1.json) is the single catalog used by the current planner. All 100 records have an official or venue source URL, a reviewed-on date, a USD planning allowance, coordinates, access notes, and a detail-image field.
 
 See [`docs/README.md`](./docs/README.md) for the NYC MVP documentation index.
