@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { nycPlanRequestSchema } from "@/lib/nyc-plan-contract";
-import { planNycItinerary } from "@/lib/nyc-planner";
+import { NYC_PLANNER_VERSION, planNycItinerary } from "@/lib/nyc-planner";
 
 function invalidRequest(error: z.ZodError, requestId: string) {
   return NextResponse.json(
@@ -47,6 +47,6 @@ export async function POST(request: Request) {
     mode: "controlled_fallback",
     itinerary: result.itinerary,
     constraintStatus: { hardConstraintsSatisfied: true, sourceCoverage: 1 },
-    versions: { dataVersionId: "nyc-poi-v1", plannerVersion: "nyc-controlled-planner-v1" },
+    versions: { dataVersionId: "nyc-poi-v1", plannerVersion: NYC_PLANNER_VERSION },
   });
 }

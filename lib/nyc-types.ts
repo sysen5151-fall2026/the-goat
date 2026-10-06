@@ -44,6 +44,8 @@ export type PlanRequest = {
     action: "replace" | "shorten" | "budget";
     itineraryId: string;
     targetStopId?: string;
+    previousPlaceIds?: string[];
+    replacementPlaceId?: string;
   };
 };
 

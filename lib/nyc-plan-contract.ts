@@ -22,5 +22,7 @@ export const nycPlanRequestSchema = z.object({
     action: z.enum(["replace", "shorten", "budget"]),
     itineraryId: z.string().min(1),
     targetStopId: z.string().min(1).optional(),
+    previousPlaceIds: z.array(z.string().min(1)).max(12).optional(),
+    replacementPlaceId: z.string().min(1).optional(),
   }).optional(),
 });

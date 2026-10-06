@@ -16,7 +16,9 @@ are external systems.
    budget, and at least one interest.
 2. The client submits the request to `POST /api/plan`.
 3. The API validates the request and sends it to deterministic planner logic.
-4. The planner selects only `published` records from `nyc-poi-v1`, calculates
+4. The planner selects only `published` records from `nyc-poi-v1`, scores them
+   against the selected interests, free-text request, and preferences, builds a
+   compact route that fits the available hours and USD budget, calculates
    per-stop group allowances and static transport estimates, and returns source
    links with the itinerary.
 5. The client shows the itinerary, estimated total, limitations, and source
@@ -35,7 +37,7 @@ are external systems.
 
 ## Non-goals
 
-- Live directions, travel-time calculations, or route optimization.
+- Live directions, live travel-time data, or exact route optimization.
 - Ticket purchases, reservations, payment, or availability confirmation.
 - Claims that a catalog source validates every current operating condition.
 - Personalized safety, medical, or accessibility advice.
