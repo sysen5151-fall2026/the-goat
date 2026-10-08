@@ -14,7 +14,7 @@ uses only reviewed places and makes the group's USD planning allowance visible.
 | System behavior | `POST /api/plan` validates the request and returns a constrained itinerary |
 | Code | `app/api/plan/route.ts`, `lib/nyc-plan-contract.ts`, `lib/nyc-planner.ts`, `lib/nyc-places.ts` |
 | User-facing proof | `app/page.tsx` renders stops, source links, group allowances, estimated total, and limitations |
-| Deterministic check | `npm run verify:catalog` confirms 100 published records with source and image fields |
+| Deterministic check | `npm run verify:catalog` confirms 200 published records with source and image fields |
 
 ## Live demonstration script
 

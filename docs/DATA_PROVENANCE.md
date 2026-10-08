@@ -1,6 +1,6 @@
 # NYC Catalog Provenance
 
-`data/nyc-poi-v1.json` is a 100-place seed catalog for the MVP. It was reviewed
+`data/nyc-poi-v1.json` is a 200-place seed catalog for the MVP. It was reviewed
 on October 5, 2026. The catalog records a primary public source for each place;
 it is not a real-time feed. Coordinates and USD planning allowances are used to
 exercise the product flow and should be revalidated before a production release.
@@ -107,6 +107,106 @@ exercise the product flow and should be revalidated before a production release.
 | Nathan's Famous | Nathan's Famous — `nathansfamous.com` |
 | Keens Steakhouse | Keens Steakhouse — `keens.com` |
 | Arthur Avenue | Arthur Avenue Bronx — `arthuravenuebronx.com` |
+| Museum of Jewish Heritage | Museum of Jewish Heritage — `mjhnyc.org` |
+| Museum of Chinese in America | Museum of Chinese in America — `mocanyc.org` |
+| Asia Society and Museum | Asia Society — `asiasociety.org` |
+| National Museum of the American Indian, New York | National Museum of the American Indian — `americanindian.si.edu` |
+| Theodore Roosevelt Birthplace National Historic Site | Theodore Roosevelt Birthplace National Historic Site — `nps.gov` |
+| Merchant's House Museum | Merchant's House Museum — `merchantshouse.org` |
+| Morris-Jumel Mansion | Morris-Jumel Mansion — `morrisjumel.org` |
+| Dyckman Farmhouse Museum | Dyckman Farmhouse Museum — `dyckmanfarmhouse.org` |
+| Bronx Museum of the Arts | Bronx Museum of the Arts — `bronxmuseum.org` |
+| The Studio Museum in Harlem | The Studio Museum in Harlem — `studiomuseum.org` |
+| Staten Island Museum | Staten Island Museum — `statenislandmuseum.org` |
+| Historic Richmond Town | Historic Richmond Town — `historicrichmondtown.org` |
+| Alice Austen House | Alice Austen House — `aliceausten.org` |
+| New York Hall of Science | New York Hall of Science — `nysci.org` |
+| Edgar Allan Poe Cottage | Edgar Allan Poe Cottage — `poecottage.org` |
+| Van Cortlandt House Museum | Van Cortlandt House Museum — `vchm.org` |
+| International Center of Photography | International Center of Photography — `icp.org` |
+| American Folk Art Museum | American Folk Art Museum — `folkartmuseum.org` |
+| SculptureCenter | SculptureCenter — `sculpture-center.org` |
+| Weeksville Heritage Center | Weeksville Heritage Center — `weeksvillesociety.org` |
+| Bowne House | Bowne House — `bownehouse.org` |
+| Bartow-Pell Mansion Museum | Bartow-Pell Mansion Museum — `bartowpellmansionmuseum.org` |
+| New Museum | New Museum — `newmuseum.org` |
+| Flatiron Building | Flatiron NoMad Partnership — `flatironnomad.nyc` |
+| Chrysler Building | NYC Landmarks Preservation Commission — `s-media.nyc.gov` |
+| New York Stock Exchange | New York Stock Exchange — `nyse.com` |
+| Charging Bull | Charging Bull — `chargingbull.com` |
+| Woolworth Building | Woolworth Building Lobby Tours — `woolworthtours.com` |
+| The Oculus, World Trade Center | Westfield World Trade Center — `westfield.com` |
+| St. Paul's Chapel | Trinity Church Wall Street — `trinitychurchnyc.org` |
+| New York City Hall | NYC Public Design Commission — `nyc.gov` |
+| United Nations Headquarters | United Nations Visitor Centre — `visit.un.org` |
+| Columbus Circle | Columbus Circle — `nycgovparks.org` |
+| The Riverside Church | The Riverside Church — `trcnyc.org` |
+| Columbia University | Columbia University — `columbia.edu` |
+| Temple Emanu-El | Temple Emanu-El — `emanuelnyc.org` |
+| The Plaza Hotel | The Plaza Hotel — `theplazany.com` |
+| Manhattan Bridge | NYC Department of Transportation — `nyc.gov` |
+| Williamsburg Bridge | NYC Department of Transportation — `nyc.gov` |
+| Little Red Lighthouse | NYC Parks — `nycgovparks.org` |
+| Grand Army Plaza | Grand Army Plaza — `nycgovparks.org` |
+| Brooklyn Heights Promenade | Brooklyn Heights Promenade — `nycgovparks.org` |
+| Deno's Wonder Wheel | Deno's Wonder Wheel — `denoswonderwheel.com` |
+| Hotel Chelsea | Hotel Chelsea — `hotelchelsea.com` |
+| Jefferson Market Library | New York Public Library — `nypl.org` |
+| Brooklyn Navy Yard | Brooklyn Navy Yard — `brooklynnavyyard.org` |
+| Industry City | Industry City — `industrycity.com` |
+| Gracie Mansion | Gracie Mansion — `nyc.gov` |
+| Vessel | Hudson Yards — `hudsonyardsnewyork.com` |
+| High Bridge | NYC Parks — `nycgovparks.org` |
+| Madison Square Garden | Madison Square Garden — `msg.com` |
+| Citi Field | Citi Field — `mlb.com` |
+| Brooklyn Academy of Music | Brooklyn Academy of Music — `bam.org` |
+| Kings Theatre | Kings Theatre — `us.atgtickets.com` |
+| Village Vanguard | Village Vanguard — `villagevanguard.com` |
+| Strand Bookstore | Strand Bookstore — `strandbooks.com` |
+| Macy's Herald Square | Macy's Herald Square — `l.macys.com` |
+| Pelham Bay Park | Pelham Bay Park — `nycgovparks.org` |
+| City Island | NYC Tourism + Conventions — `nyctourism.com` |
+| Van Cortlandt Park | Van Cortlandt Park — `nycgovparks.org` |
+| Inwood Hill Park | Inwood Hill Park — `nycgovparks.org` |
+| Carl Schurz Park | Carl Schurz Park — `carlschurzparknyc.org` |
+| Tompkins Square Park | Tompkins Square Park — `nycgovparks.org` |
+| Fort Greene Park | NYC Parks — `nycgovparks.org` |
+| Floyd Bennett Field | Floyd Bennett Field — `nps.gov` |
+| Jamaica Bay Wildlife Refuge | Jamaica Bay Wildlife Refuge — `nps.gov` |
+| Rockaway Beach | NYC Parks — `nycgovparks.org` |
+| Brighton Beach | NYC Tourism + Conventions — `nyctourism.com` |
+| Astoria Park | NYC Parks — `nycgovparks.org` |
+| Queens Botanical Garden | Queens Botanical Garden — `queensbotanical.org` |
+| Staten Island Greenbelt | Staten Island Greenbelt — `sigreenbelt.org` |
+| Fort Wadsworth | Fort Wadsworth — `nps.gov` |
+| Conference House | Conference House — `conferencehouse.org` |
+| Randall's Island Park | Randall's Island Park Alliance — `randallsisland.org` |
+| Shirley Chisholm State Park | New York State Parks — `parks.ny.gov` |
+| Fort Totten Park | NYC Parks — `nycgovparks.org` |
+| FDR Boardwalk and Beach | NYC Parks — `nycgovparks.org` |
+| Barney Greengrass | Barney Greengrass — `barneygreengrass.com` |
+| Sardi's | Sardi's — `sardis.com` |
+| Balthazar | Balthazar — `balthazarny.com` |
+| Tavern on the Green | Tavern on the Green — `tavernonthegreen.com` |
+| The River Café | The River Café — `rivercafe.com` |
+| Yonah Schimmel Knish Bakery | Yonah Schimmel Knish Bakery — `knishery.com` |
+| Economy Candy | Economy Candy — `economycandy.com` |
+| Magnolia Bakery | Magnolia Bakery — `magnoliabakery.com` |
+| Nom Wah Tea Parlor | Nom Wah Tea Parlor — `nomwah.com` |
+| Joe's Shanghai | Joe's Shanghai — `joeshanghairestaurants.com` |
+| Totonno's Pizzeria Napolitano | Totonno's Pizzeria Napolitano — `totonnosconeyisland.com` |
+| John's of Bleecker Street | John's of Bleecker Street — `johnsofbleecker.com` |
+| L&B Spumoni Gardens | L&B Spumoni Gardens — `spumonigardens.com` |
+| Minetta Tavern | Minetta Tavern — `minettatavernny.com` |
+| McSorley's Old Ale House | McSorley's Old Ale House — `mcsorleysoldalehouse.nyc` |
+| White Horse Tavern | White Horse Tavern — `whitehorsetavern1880.com` |
+| Grimaldi's Pizzeria | Grimaldi's Pizzeria — `grimaldispizzeria.com` |
+| Manhattan Chinatown | Manhattan Chinatown — `explorechinatown.com` |
+| Flushing Chinatown | NYC Tourism + Conventions — `nyctourism.com` |
+| Serendipity 3 | Serendipity 3 — `serendipity3.com` |
+| Pete's Tavern | Pete's Tavern — `petestavern.com` |
+| Jackson Heights | NYC Tourism + Conventions — `nyctourism.com` |
+| The Paley Center for Media | The Paley Center for Media — `paleycenter.org` |
 
 ## Data rules
 
