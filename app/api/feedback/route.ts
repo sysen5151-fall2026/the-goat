@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { errorResponse, newRequestId } from "@/lib/api-helpers";
-import { getCurrentUser } from "@/lib/auth";
+import { requireAuthenticatedUser, requireRole } from "@/lib/auth";
 import { listFeedback, saveFeedback } from "@/lib/nyc-account";
 
 const feedbackSchema = z.object({
@@ -15,9 +15,11 @@ const feedbackSchema = z.object({
   dataVersionId: z.string().max(120).optional(),
 });
 
-export async function GET() {
+// Visitor feedback (incl. free-text notes) is for operators only.
+export async function GET(request: Request) {
   const requestId = newRequestId();
   try {
+    await requireRole(request, ["admin", "super_admin"]);
     return NextResponse.json({ requestId, feedback: await listFeedback() });
   } catch (error) {
     return errorResponse(error, requestId, "Feedback can't be loaded right now.", 500);
@@ -27,10 +29,10 @@ export async function GET() {
 export async function POST(request: Request) {
   const requestId = newRequestId();
   try {
+    // Sign-in required, so feedback can't be spammed anonymously.
+    const user = await requireAuthenticatedUser(request);
     const payload = feedbackSchema.parse(await request.json());
-    // Feedback is attributed when the caller is signed in; otherwise anonymous.
-    const userId = request.headers.get("authorization") ? await getCurrentUser(request).then((user) => user.id).catch(() => null) : null;
-    const result = await saveFeedback(userId, payload);
+    const result = await saveFeedback(user.id, payload);
     return NextResponse.json({ ok: true, requestId, ...result });
   } catch (error) {
     return errorResponse(error, requestId, "Feedback couldn't be saved right now.");

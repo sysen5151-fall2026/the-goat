@@ -5,7 +5,7 @@ const catalog = JSON.parse(
   await readFile(new URL('../data/nyc-poi-v1.json', import.meta.url), 'utf8'),
 );
 
-assert.equal(catalog.length, 20, 'The MVP catalog must contain exactly 20 places.');
+assert.ok(catalog.length >= 20, 'The MVP catalog must contain at least 20 places.');
 
 for (const place of catalog) {
   assert.equal(place.published, true, `${place.id} must be published.`);

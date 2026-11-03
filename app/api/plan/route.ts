@@ -9,6 +9,7 @@ import {
   WAYLY_PLANNER_PROMPT_VERSION,
   WAYLY_PLANNER_RUNTIME_VERSION,
 } from "@/lib/nyc-model-planner";
+import { effectiveInterests } from "@/lib/nyc-hashtags";
 import { nycPlanRequestSchema } from "@/lib/nyc-plan-contract";
 import { planWithResolvedCandidates, resolveCandidatesWithRealtimeFallback } from "@/lib/nyc-planner";
 import { NYC_POI_DATA_VERSION } from "@/lib/nyc-places";
@@ -48,9 +49,12 @@ async function withRouteValidation(itinerary: Itinerary, partySize: number) {
 export async function POST(request: Request) {
   const requestId = `req_${crypto.randomUUID()}`;
   // Planning can trigger a paid model call, so sign-in is enforced on the server
-  // (same rule as mvp2) whenever the account service is configured. Hiding the
-  // button in the UI is not a boundary; direct requests are rejected here.
-  if (isAuthConfigured()) {
+  // (same rule as mvp2). Fails closed: with no account service configured the
+  // endpoint refuses instead of becoming public. Hiding the button in the UI
+  // is not a boundary; direct requests are rejected here.
+  if (!isAuthConfigured())
+    return NextResponse.json({ error: { code: "AUTH_CONFIGURATION_ERROR", message: "Sign-in isn't available right now.", retryable: false }, requestId }, { status: 503 });
+  {
     try {
       await requireAuthenticatedUser(request);
     } catch (error) {
@@ -70,6 +74,8 @@ export async function POST(request: Request) {
   if (!parsed.success)
     return NextResponse.json({ error: { code: "invalid_request", message: "Check the trip details and try again.", fieldErrors: z.treeifyError(parsed.error), retryable: false }, requestId }, { status: 400 });
   const body = parsed.data as PlanRequest;
+  // #tags typed in the request are the interest filter; saved defaults apply only when none are typed.
+  body.interests = effectiveInterests(body.intentText ?? "", body.interests);
 
   const rateLimit = checkPlanRateLimit(request);
   if (!rateLimit.allowed)

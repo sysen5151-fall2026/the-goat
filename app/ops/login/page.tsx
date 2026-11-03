@@ -14,7 +14,7 @@ export default function OpsLoginPage() {
           </div>
           <h1 className="mt-8 text-3xl font-semibold tracking-[-0.04em] text-[#16211d]">Operations preview</h1>
           <p className="mt-3 text-sm leading-6 text-[#5a6963]">
-            This prototype preserves the operations-console experience for the NYC catalog. It does not include a configured account service or a production authorization boundary.
+            This prototype preserves the operations-console experience for the NYC catalog. Access requires a signed-in Wayly account with an operator role, checked on the server.
           </p>
           <ul className="mt-6 space-y-2 text-[13px] text-[#5a6963]">
             <li className="flex gap-2"><ShieldCheck className="mt-0.5 size-4 text-[#0b5d3b]" />Published NYC places expose a source link and review date.</li>
@@ -28,12 +28,9 @@ export default function OpsLoginPage() {
             <LockKeyhole className="size-4" />
             <p className="text-[13px] font-semibold">Preview access</p>
           </div>
-          <p className="mt-1 text-[12px] text-[#8a978f]">The current deployment has no account provider configured.</p>
-          <div className="mt-6 rounded-lg border border-[#fff0cd] bg-[#fff9eb] p-3 text-xs leading-5 text-[#8a6c2f]">
-            This page is an honest preview state, not a sign-in form. Add a real server-side authentication service before using it for operational access.
-          </div>
-          <a href="/ops" className="mt-5 flex h-10 w-full items-center justify-center rounded-lg bg-[#0b5d3b] text-[13px] font-semibold text-white hover:bg-[#094c30]">
-            Open NYC operations console
+          <p className="mt-1 text-[12px] text-[#8a978f]">Only admin and super_admin accounts can open the console.</p>
+          <a href="/login?next=%2Fops" className="mt-5 flex h-10 w-full items-center justify-center rounded-lg bg-[#0b5d3b] text-[13px] font-semibold text-white hover:bg-[#094c30]">
+            Sign in with an operator account
           </a>
           <div className="mt-5 border-t border-[#e7ebe9] pt-4">
             <a href="/" className="flex h-10 items-center justify-center rounded-lg border border-[#e7ebe9] text-[13px] font-medium text-[#5a6963] hover:bg-[#f4f6f5]">

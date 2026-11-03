@@ -1,0 +1,3207 @@
+[
+  {
+    "id": "new-york-hall-of-science",
+    "name": "New York Hall of Science",
+    "neighborhood": "Flushing Meadows–Corona Park",
+    "latitude": 40.7471,
+    "longitude": -73.8516,
+    "interests": [
+      "museum",
+      "science",
+      "family"
+    ],
+    "planningAllowanceUsd": 16,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 150,
+    "sourceName": "New York Hall of Science",
+    "sourceUrl": "https://nysci.org/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Hands-on science center; Time Out lists Wed–Sun hours, so confirm opening days on the source.",
+    "priceNote": "Planning allowance only; confirm current admission with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "nysci",
+      "hall of science"
+    ],
+    "keywordTags": [
+      "science",
+      "kids",
+      "hands-on"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "New York Hall of Science",
+    "address": "47-01 111th St, Queens, NY 11368"
+  },
+  {
+    "id": "museum-of-mathematics",
+    "name": "National Museum of Mathematics (MoMath)",
+    "neighborhood": "NoMad",
+    "latitude": 40.7437,
+    "longitude": -73.9877,
+    "interests": [
+      "museum",
+      "science",
+      "family"
+    ],
+    "planningAllowanceUsd": 30,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 90,
+    "sourceName": "National Museum of Mathematics",
+    "sourceUrl": "https://momath.org/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Interactive math exhibits; the museum is at a temporary Fifth Avenue location.",
+    "priceNote": "Planning allowance only; confirm current admission with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "momath",
+      "math museum"
+    ],
+    "keywordTags": [
+      "science",
+      "kids",
+      "hands-on"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "National Museum of Mathematics",
+    "address": "225 Fifth Ave, New York, NY 10010"
+  },
+  {
+    "id": "childrens-museum-of-manhattan",
+    "name": "Children's Museum of Manhattan",
+    "neighborhood": "Upper West Side",
+    "latitude": 40.7857,
+    "longitude": -73.9772,
+    "interests": [
+      "museum",
+      "family"
+    ],
+    "planningAllowanceUsd": 18,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 90,
+    "sourceName": "Children's Museum of Manhattan",
+    "sourceUrl": "https://cmom.org/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Designed for young children; confirm timed tickets and hours.",
+    "priceNote": "Planning allowance only; confirm current admission with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "cmom"
+    ],
+    "keywordTags": [
+      "kids",
+      "family"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Children's Museum of Manhattan",
+    "address": "212 W 83rd St, New York, NY 10024"
+  },
+  {
+    "id": "brooklyn-childrens-museum",
+    "name": "Brooklyn Children's Museum",
+    "neighborhood": "Crown Heights",
+    "latitude": 40.6745,
+    "longitude": -73.9437,
+    "interests": [
+      "museum",
+      "family"
+    ],
+    "planningAllowanceUsd": 15,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 90,
+    "sourceName": "Brooklyn Children's Museum",
+    "sourceUrl": "https://www.brooklynkids.org/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "One of the first children's museums in the US; aimed at families.",
+    "priceNote": "Planning allowance only; confirm current admission with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "brooklyn kids"
+    ],
+    "keywordTags": [
+      "kids",
+      "family",
+      "science"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Brooklyn Children's Museum",
+    "address": "145 Brooklyn Ave, Brooklyn, NY 11213"
+  },
+  {
+    "id": "museum-of-jewish-heritage",
+    "name": "Museum of Jewish Heritage",
+    "neighborhood": "Battery Park City",
+    "latitude": 40.7063,
+    "longitude": -74.0186,
+    "interests": [
+      "museum",
+      "history"
+    ],
+    "planningAllowanceUsd": 18,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 120,
+    "sourceName": "Museum of Jewish Heritage",
+    "sourceUrl": "https://mjhnyc.org/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "A living memorial to the Holocaust; security screening at entry.",
+    "priceNote": "Planning allowance only; confirm current admission with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "jewish heritage museum"
+    ],
+    "keywordTags": [
+      "holocaust",
+      "history"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Museum of Jewish Heritage",
+    "address": "36 Battery Pl, New York, NY 10280"
+  },
+  {
+    "id": "national-museum-american-indian-ny",
+    "name": "National Museum of the American Indian – George Gustav Heye Center",
+    "neighborhood": "Financial District",
+    "latitude": 40.7043,
+    "longitude": -74.0137,
+    "interests": [
+      "museum",
+      "architecture",
+      "history"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 75,
+    "sourceName": "Smithsonian National Museum of the American Indian",
+    "sourceUrl": "https://americanindian.si.edu/visit/newyork",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free Smithsonian museum inside the Beaux-Arts Custom House; ID-free security check.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "american indian museum",
+      "heye center",
+      "custom house"
+    ],
+    "keywordTags": [
+      "smithsonian",
+      "free museum"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Alexander Hamilton U.S. Custom House",
+    "address": "1 Bowling Green, New York, NY 10004"
+  },
+  {
+    "id": "international-center-of-photography",
+    "name": "International Center of Photography",
+    "neighborhood": "Lower East Side",
+    "latitude": 40.7186,
+    "longitude": -73.9883,
+    "interests": [
+      "museum",
+      "art"
+    ],
+    "planningAllowanceUsd": 20,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 75,
+    "sourceName": "International Center of Photography",
+    "sourceUrl": "https://www.icp.org/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Photography museum next to Essex Market.",
+    "priceNote": "Planning allowance only; confirm current admission with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "icp"
+    ],
+    "keywordTags": [
+      "photography",
+      "art"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "International Center of Photography",
+    "address": "79 Essex St, New York, NY 10002"
+  },
+  {
+    "id": "asia-society-museum",
+    "name": "Asia Society and Museum",
+    "neighborhood": "Upper East Side",
+    "latitude": 40.7699,
+    "longitude": -73.9644,
+    "interests": [
+      "museum",
+      "art"
+    ],
+    "planningAllowanceUsd": 15,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 75,
+    "sourceName": "Asia Society",
+    "sourceUrl": "https://asiasociety.org/new-york",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Rotating exhibitions of Asian art; confirm gallery days.",
+    "priceNote": "Planning allowance only; confirm current admission with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "asia society"
+    ],
+    "keywordTags": [
+      "art",
+      "asian art"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Asia Society",
+    "address": "725 Park Ave, New York, NY 10021"
+  },
+  {
+    "id": "hispanic-society-museum",
+    "name": "Hispanic Society Museum & Library",
+    "neighborhood": "Washington Heights",
+    "latitude": 40.8335,
+    "longitude": -73.9469,
+    "interests": [
+      "museum",
+      "architecture",
+      "art"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 90,
+    "sourceName": "Hispanic Society Museum & Library",
+    "sourceUrl": "https://hispanicsociety.org/visit/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free with suggested donation; reserve a free ticket. Museum open Thu–Sun, noon–5 pm.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "hispanic society"
+    ],
+    "keywordTags": [
+      "art",
+      "audubon terrace"
+    ],
+    "closedWeekdays": [
+      "mon",
+      "tue",
+      "wed"
+    ],
+    "wikipediaTitle": "Hispanic Society of America",
+    "address": "3741 Broadway, New York, NY 10032"
+  },
+  {
+    "id": "studio-museum-harlem",
+    "name": "Studio Museum in Harlem",
+    "neighborhood": "Harlem",
+    "latitude": 40.8085,
+    "longitude": -73.948,
+    "interests": [
+      "museum",
+      "architecture",
+      "art"
+    ],
+    "planningAllowanceUsd": 16,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 90,
+    "sourceName": "Studio Museum in Harlem",
+    "sourceUrl": "https://www.studiomuseum.org/visit",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "New building opened Nov 2025. Pay-what-you-can (suggested adult $16); free on Sundays.",
+    "priceNote": "Planning allowance only; confirm current admission with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "studio museum"
+    ],
+    "keywordTags": [
+      "art",
+      "harlem",
+      "free sunday"
+    ],
+    "closedWeekdays": [
+      "mon",
+      "tue"
+    ],
+    "wikipediaTitle": "Studio Museum in Harlem",
+    "address": "144 W 125th St, New York, NY 10027"
+  },
+  {
+    "id": "poster-house",
+    "name": "Poster House",
+    "neighborhood": "Chelsea",
+    "latitude": 40.7432,
+    "longitude": -73.9933,
+    "interests": [
+      "museum",
+      "art"
+    ],
+    "planningAllowanceUsd": 15,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 60,
+    "sourceName": "Poster House",
+    "sourceUrl": "https://posterhouse.org/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Small museum dedicated to posters; easy add-on near the Flatiron.",
+    "priceNote": "Planning allowance only; confirm current admission with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [],
+    "keywordTags": [
+      "design",
+      "art"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Poster House",
+    "address": "119 W 23rd St, New York, NY 10011"
+  },
+  {
+    "id": "bronx-museum-of-the-arts",
+    "name": "Bronx Museum of the Arts",
+    "neighborhood": "Concourse",
+    "latitude": 40.8309,
+    "longitude": -73.9196,
+    "interests": [
+      "museum",
+      "art"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 60,
+    "sourceName": "Bronx Museum of the Arts",
+    "sourceUrl": "https://www.bronxmuseum.org/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free contemporary art museum a few blocks from Yankee Stadium.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "bronx museum"
+    ],
+    "keywordTags": [
+      "art",
+      "free museum"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Bronx Museum of the Arts",
+    "address": "1040 Grand Concourse, Bronx, NY 10456"
+  },
+  {
+    "id": "american-folk-art-museum",
+    "name": "American Folk Art Museum",
+    "neighborhood": "Upper West Side",
+    "latitude": 40.7731,
+    "longitude": -73.9818,
+    "interests": [
+      "museum",
+      "art"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 45,
+    "sourceName": "American Folk Art Museum",
+    "sourceUrl": "https://folkartmuseum.org/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free admission; across from Lincoln Center.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "folk art museum"
+    ],
+    "keywordTags": [
+      "art",
+      "free museum"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "American Folk Art Museum",
+    "address": "2 Lincoln Square, New York, NY 10023"
+  },
+  {
+    "id": "paley-center-for-media",
+    "name": "The Paley Center for Media",
+    "neighborhood": "Midtown",
+    "latitude": 40.7608,
+    "longitude": -73.9774,
+    "interests": [
+      "museum"
+    ],
+    "planningAllowanceUsd": 20,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 75,
+    "sourceName": "The Paley Center for Media",
+    "sourceUrl": "https://www.paleycenter.org/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Television and radio archive with exhibits; confirm open days.",
+    "priceNote": "Planning allowance only; confirm current admission with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "paley center"
+    ],
+    "keywordTags": [
+      "tv",
+      "media"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Paley Center for Media",
+    "address": "25 W 52nd St, New York, NY 10019"
+  },
+  {
+    "id": "skyscraper-museum",
+    "name": "The Skyscraper Museum",
+    "neighborhood": "Battery Park City",
+    "latitude": 40.7056,
+    "longitude": -74.0169,
+    "interests": [
+      "museum",
+      "architecture"
+    ],
+    "planningAllowanceUsd": 10,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 45,
+    "sourceName": "The Skyscraper Museum",
+    "sourceUrl": "https://skyscraper.org/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Compact museum on high-rise architecture; confirm limited weekly hours.",
+    "priceNote": "Planning allowance only; confirm current admission with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [],
+    "keywordTags": [
+      "architecture",
+      "skyline"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Skyscraper Museum",
+    "address": "39 Battery Pl, New York, NY 10280"
+  },
+  {
+    "id": "new-york-city-fire-museum",
+    "name": "New York City Fire Museum",
+    "neighborhood": "Hudson Square",
+    "latitude": 40.7254,
+    "longitude": -74.008,
+    "interests": [
+      "museum",
+      "history",
+      "family"
+    ],
+    "planningAllowanceUsd": 15,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 60,
+    "sourceName": "New York City Fire Museum",
+    "sourceUrl": "https://www.nycfiremuseum.org/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Historic firehouse with antique engines; includes the FDNY 9/11 memorial room.",
+    "priceNote": "Planning allowance only; confirm current admission with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "fire museum",
+      "fdny museum"
+    ],
+    "keywordTags": [
+      "kids",
+      "history"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "New York City Fire Museum",
+    "address": "278 Spring St, New York, NY 10013"
+  },
+  {
+    "id": "museum-of-broadway",
+    "name": "The Museum of Broadway",
+    "neighborhood": "Times Square",
+    "latitude": 40.7576,
+    "longitude": -73.984,
+    "interests": [
+      "museum",
+      "performance"
+    ],
+    "planningAllowanceUsd": 45,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 90,
+    "sourceName": "The Museum of Broadway",
+    "sourceUrl": "https://www.themuseumofbroadway.com/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Timed-entry tickets; prices vary by time slot.",
+    "priceNote": "Planning allowance only; confirm current admission with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "broadway museum"
+    ],
+    "keywordTags": [
+      "theater",
+      "broadway"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Museum of Broadway",
+    "address": "145 W 45th St, New York, NY 10036"
+  },
+  {
+    "id": "spyscape",
+    "name": "SPYSCAPE",
+    "neighborhood": "Midtown West",
+    "latitude": 40.7653,
+    "longitude": -73.9844,
+    "interests": [
+      "museum",
+      "family"
+    ],
+    "planningAllowanceUsd": 40,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 90,
+    "sourceName": "SPYSCAPE",
+    "sourceUrl": "https://spyscape.com/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Interactive spy museum; book timed tickets ahead.",
+    "priceNote": "Planning allowance only; confirm current admission with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [],
+    "keywordTags": [
+      "interactive",
+      "kids"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Spyscape",
+    "address": "928 Eighth Ave, New York, NY 10019"
+  },
+  {
+    "id": "merchants-house-museum",
+    "name": "Merchant's House Museum",
+    "neighborhood": "NoHo",
+    "latitude": 40.7276,
+    "longitude": -73.9925,
+    "interests": [
+      "museum",
+      "architecture",
+      "history"
+    ],
+    "planningAllowanceUsd": 20,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 60,
+    "sourceName": "Merchant's House Museum",
+    "sourceUrl": "https://merchantshouse.org/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Intact 1832 row house with original furnishings; limited weekly hours.",
+    "priceNote": "Planning allowance only; confirm current admission with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "merchants house"
+    ],
+    "keywordTags": [
+      "19th century",
+      "history"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Merchant's House Museum",
+    "address": "29 E 4th St, New York, NY 10003"
+  },
+  {
+    "id": "theodore-roosevelt-birthplace",
+    "name": "Theodore Roosevelt Birthplace National Historic Site",
+    "neighborhood": "Flatiron District",
+    "latitude": 40.7388,
+    "longitude": -73.9895,
+    "interests": [
+      "museum",
+      "history"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 45,
+    "sourceName": "National Park Service",
+    "sourceUrl": "https://www.nps.gov/thrb/index.htm",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free NPS site; period rooms are seen on ranger-led tours—confirm tour times.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "teddy roosevelt birthplace"
+    ],
+    "keywordTags": [
+      "president",
+      "history"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Theodore Roosevelt Birthplace National Historic Site",
+    "address": "28 E 20th St, New York, NY 10003"
+  },
+  {
+    "id": "african-burial-ground",
+    "name": "African Burial Ground National Monument",
+    "neighborhood": "Civic Center",
+    "latitude": 40.7146,
+    "longitude": -74.0048,
+    "interests": [
+      "landmark",
+      "history"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 45,
+    "sourceName": "National Park Service",
+    "sourceUrl": "https://www.nps.gov/afbg/index.htm",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free outdoor memorial; the visitor center is in a federal building with security screening.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "african burial ground"
+    ],
+    "keywordTags": [
+      "history",
+      "memorial"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "African Burial Ground National Monument",
+    "address": "290 Broadway, New York, NY 10007"
+  },
+  {
+    "id": "museum-at-eldridge-street",
+    "name": "Museum at Eldridge Street",
+    "neighborhood": "Chinatown / Lower East Side",
+    "latitude": 40.7147,
+    "longitude": -73.9936,
+    "interests": [
+      "museum",
+      "architecture",
+      "history"
+    ],
+    "planningAllowanceUsd": 15,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 60,
+    "sourceName": "Museum at Eldridge Street",
+    "sourceUrl": "https://www.eldridgestreet.org/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Restored 1887 synagogue; visits are often by guided tour.",
+    "priceNote": "Planning allowance only; confirm current admission with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "eldridge street synagogue"
+    ],
+    "keywordTags": [
+      "history",
+      "religious architecture"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Eldridge Street Synagogue",
+    "address": "12 Eldridge St, New York, NY 10002"
+  },
+  {
+    "id": "center-for-brooklyn-history",
+    "name": "Center for Brooklyn History",
+    "neighborhood": "Brooklyn Heights",
+    "latitude": 40.6949,
+    "longitude": -73.9925,
+    "interests": [
+      "museum",
+      "architecture",
+      "history"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 45,
+    "sourceName": "Brooklyn Public Library",
+    "sourceUrl": "https://www.bklynlibrary.org/locations/center-brooklyn-history",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free; pairs well with the Brooklyn Heights Promenade.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "brooklyn historical society"
+    ],
+    "keywordTags": [
+      "history",
+      "library"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Brooklyn Historical Society",
+    "address": "128 Pierrepont St, Brooklyn, NY 11201"
+  },
+  {
+    "id": "weeksville-heritage-center",
+    "name": "Weeksville Heritage Center",
+    "neighborhood": "Crown Heights",
+    "latitude": 40.6743,
+    "longitude": -73.9254,
+    "interests": [
+      "museum",
+      "history"
+    ],
+    "planningAllowanceUsd": 10,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 60,
+    "sourceName": "Weeksville Heritage Center",
+    "sourceUrl": "https://www.weeksvillesociety.org/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Historic houses of a 19th-century free Black community; tours on set days.",
+    "priceNote": "Planning allowance only; confirm current admission with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "weeksville"
+    ],
+    "keywordTags": [
+      "black history",
+      "history"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Weeksville, Brooklyn",
+    "address": "158 Buffalo Ave, Brooklyn, NY 11213"
+  },
+  {
+    "id": "historic-richmond-town",
+    "name": "Historic Richmond Town",
+    "neighborhood": "Richmondtown, Staten Island",
+    "latitude": 40.5711,
+    "longitude": -74.146,
+    "interests": [
+      "museum",
+      "history"
+    ],
+    "planningAllowanceUsd": 10,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 120,
+    "sourceName": "Historic Richmond Town",
+    "sourceUrl": "https://www.historicrichmondtown.org/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Open-air history village; far from the ferry, so allow bus or car time.",
+    "priceNote": "Planning allowance only; confirm current admission with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "richmond town"
+    ],
+    "keywordTags": [
+      "living history",
+      "staten island"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Historic Richmond Town",
+    "address": "441 Clarke Ave, Staten Island, NY 10306"
+  },
+  {
+    "id": "edgar-allan-poe-cottage",
+    "name": "Edgar Allan Poe Cottage",
+    "neighborhood": "Fordham, Bronx",
+    "latitude": 40.8653,
+    "longitude": -73.8945,
+    "interests": [
+      "museum",
+      "history"
+    ],
+    "planningAllowanceUsd": 5,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 45,
+    "sourceName": "The Bronx County Historical Society",
+    "sourceUrl": "https://bronxhistoricalsociety.org/poe-cottage/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Poe's last home; small house with limited weekend-heavy hours.",
+    "priceNote": "Planning allowance only; confirm current admission with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "poe cottage"
+    ],
+    "keywordTags": [
+      "literature",
+      "history"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Edgar Allan Poe Cottage",
+    "address": "2640 Grand Concourse, Bronx, NY 10458"
+  },
+  {
+    "id": "morris-jumel-mansion",
+    "name": "Morris-Jumel Mansion",
+    "neighborhood": "Washington Heights",
+    "latitude": 40.8344,
+    "longitude": -73.9389,
+    "interests": [
+      "museum",
+      "architecture",
+      "history"
+    ],
+    "planningAllowanceUsd": 10,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 60,
+    "sourceName": "Morris-Jumel Mansion",
+    "sourceUrl": "https://www.morrisjumel.org/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Manhattan's oldest house; Washington's 1776 headquarters.",
+    "priceNote": "Planning allowance only; confirm current admission with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "jumel mansion"
+    ],
+    "keywordTags": [
+      "revolutionary war",
+      "history"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Morris–Jumel Mansion",
+    "address": "65 Jumel Terrace, New York, NY 10032"
+  },
+  {
+    "id": "van-cortlandt-house-museum",
+    "name": "Van Cortlandt House Museum",
+    "neighborhood": "Van Cortlandt Park, Bronx",
+    "latitude": 40.8907,
+    "longitude": -73.896,
+    "interests": [
+      "museum",
+      "history"
+    ],
+    "planningAllowanceUsd": 5,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 45,
+    "sourceName": "Van Cortlandt House Museum",
+    "sourceUrl": "https://www.vchm.org/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Oldest building in the Bronx, inside Van Cortlandt Park.",
+    "priceNote": "Planning allowance only; confirm current admission with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "van cortlandt house"
+    ],
+    "keywordTags": [
+      "colonial",
+      "history"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Van Cortlandt House Museum",
+    "address": "6036 Broadway, Bronx, NY 10471"
+  },
+  {
+    "id": "dyckman-farmhouse",
+    "name": "Dyckman Farmhouse Museum",
+    "neighborhood": "Inwood",
+    "latitude": 40.8673,
+    "longitude": -73.9218,
+    "interests": [
+      "museum",
+      "history"
+    ],
+    "planningAllowanceUsd": 5,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 30,
+    "sourceName": "Dyckman Farmhouse Museum",
+    "sourceUrl": "https://www.dyckmanfarmhouse.org/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Manhattan's last Dutch colonial farmhouse; short visit.",
+    "priceNote": "Planning allowance only; confirm current admission with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "dyckman house"
+    ],
+    "keywordTags": [
+      "colonial",
+      "history"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Dyckman House",
+    "address": "4881 Broadway, New York, NY 10034"
+  },
+  {
+    "id": "lefferts-historic-house",
+    "name": "Lefferts Historic House",
+    "neighborhood": "Prospect Park",
+    "latitude": 40.6612,
+    "longitude": -73.964,
+    "interests": [
+      "museum",
+      "park",
+      "history",
+      "family"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 30,
+    "sourceName": "Prospect Park Alliance",
+    "sourceUrl": "https://www.prospectpark.org/visit-the-park/places-to-go/lefferts-historic-house/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free 18th-century farmhouse inside Prospect Park; seasonal hours.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "lefferts house"
+    ],
+    "keywordTags": [
+      "kids",
+      "history"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Lefferts Historic House",
+    "address": "452 Flatbush Ave, Brooklyn, NY 11225"
+  },
+  {
+    "id": "king-manor-museum",
+    "name": "King Manor Museum",
+    "neighborhood": "Jamaica, Queens",
+    "latitude": 40.7029,
+    "longitude": -73.8044,
+    "interests": [
+      "museum",
+      "history"
+    ],
+    "planningAllowanceUsd": 5,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 45,
+    "sourceName": "King Manor Museum",
+    "sourceUrl": "https://www.kingmanor.org/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Home of Founding Father Rufus King in King Park; limited hours.",
+    "priceNote": "Planning allowance only; confirm current admission with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "king manor"
+    ],
+    "keywordTags": [
+      "founding father",
+      "history"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "King Manor",
+    "address": "150-03 Jamaica Ave, Queens, NY 11432"
+  },
+  {
+    "id": "old-stone-house-brooklyn",
+    "name": "The Old Stone House",
+    "neighborhood": "Park Slope",
+    "latitude": 40.6731,
+    "longitude": -73.9844,
+    "interests": [
+      "museum",
+      "park",
+      "history"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 30,
+    "sourceName": "The Old Stone House",
+    "sourceUrl": "https://theoldstonehouse.org/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Reconstructed 1699 house in Washington Park; Battle of Brooklyn exhibit.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "old stone house"
+    ],
+    "keywordTags": [
+      "revolutionary war",
+      "history"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Old Stone House (Brooklyn)",
+    "address": "336 3rd St, Brooklyn, NY 11215"
+  },
+  {
+    "id": "chrysler-building",
+    "name": "Chrysler Building",
+    "neighborhood": "Midtown East",
+    "latitude": 40.7516,
+    "longitude": -73.9755,
+    "interests": [
+      "architecture",
+      "landmark"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 20,
+    "sourceName": "Wikipedia",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Chrysler_Building",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Office building; view the exterior and, when open, the Art Deco lobby. No observation deck.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "chrysler"
+    ],
+    "keywordTags": [
+      "art deco",
+      "skyline"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Chrysler Building",
+    "address": "405 Lexington Ave, New York, NY 10174"
+  },
+  {
+    "id": "flatiron-building",
+    "name": "Flatiron Building",
+    "neighborhood": "Flatiron District",
+    "latitude": 40.7411,
+    "longitude": -73.9897,
+    "interests": [
+      "architecture",
+      "landmark"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 20,
+    "sourceName": "Wikipedia",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Flatiron_Building",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Best viewed from the Madison Square Park plaza; the interior is not a visitor attraction.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "flatiron"
+    ],
+    "keywordTags": [
+      "photo spot"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Flatiron Building",
+    "address": "175 Fifth Ave, New York, NY 10010"
+  },
+  {
+    "id": "woolworth-building",
+    "name": "Woolworth Building",
+    "neighborhood": "Tribeca / Civic Center",
+    "latitude": 40.7124,
+    "longitude": -74.0081,
+    "interests": [
+      "architecture",
+      "landmark",
+      "history"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 20,
+    "sourceName": "Wikipedia",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Woolworth_Building",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Exterior view is free; the lobby is only open on paid guided tours.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "woolworth"
+    ],
+    "keywordTags": [
+      "gothic",
+      "skyline"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Woolworth Building",
+    "address": "233 Broadway, New York, NY 10279"
+  },
+  {
+    "id": "oculus-wtc",
+    "name": "The Oculus (World Trade Center Transportation Hub)",
+    "neighborhood": "Financial District",
+    "latitude": 40.7115,
+    "longitude": -74.011,
+    "interests": [
+      "architecture",
+      "landmark"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 30,
+    "sourceName": "The Port Authority of NY & NJ",
+    "sourceUrl": "https://www.panynj.gov/path/en/stations/world-trade-center.html",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free to walk through; a transit hub and shopping hall next to the 9/11 Memorial.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "oculus",
+      "wtc hub"
+    ],
+    "keywordTags": [
+      "calatrava",
+      "photo spot"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "World Trade Center (PATH station)",
+    "address": "185 Greenwich St, New York, NY 10007"
+  },
+  {
+    "id": "vessel-hudson-yards",
+    "name": "Vessel",
+    "neighborhood": "Hudson Yards",
+    "latitude": 40.7538,
+    "longitude": -74.0022,
+    "interests": [
+      "architecture",
+      "landmark"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 20,
+    "sourceName": "Hudson Yards",
+    "sourceUrl": "https://www.hudsonyardsnewyork.com/discover/vessel",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free to view from the plaza; climbing requires a paid ticket and has restrictions.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "vessel",
+      "the shawarma"
+    ],
+    "keywordTags": [
+      "photo spot",
+      "high line"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Vessel (structure)",
+    "address": "20 Hudson Yards, New York, NY 10001"
+  },
+  {
+    "id": "the-shed",
+    "name": "The Shed",
+    "neighborhood": "Hudson Yards",
+    "latitude": 40.7535,
+    "longitude": -74.0035,
+    "interests": [
+      "architecture",
+      "art",
+      "performance"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 20,
+    "sourceName": "The Shed",
+    "sourceUrl": "https://www.theshed.org/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Arts center with a movable shell; the building is free to see, events are ticketed.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "the shed"
+    ],
+    "keywordTags": [
+      "performance",
+      "high line"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "The Shed (arts center)",
+    "address": "545 W 30th St, New York, NY 10001"
+  },
+  {
+    "id": "united-nations-headquarters",
+    "name": "United Nations Headquarters",
+    "neighborhood": "Turtle Bay",
+    "latitude": 40.7489,
+    "longitude": -73.968,
+    "interests": [
+      "landmark",
+      "architecture",
+      "history"
+    ],
+    "planningAllowanceUsd": 26,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 90,
+    "sourceName": "United Nations Visitor Centre",
+    "sourceUrl": "https://visit.un.org/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Guided tours only, weekdays; photo ID required and security screening.",
+    "priceNote": "Planning allowance only; confirm current admission with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "un",
+      "united nations"
+    ],
+    "keywordTags": [
+      "guided tour",
+      "international"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Headquarters of the United Nations",
+    "address": "405 E 42nd St, New York, NY 10017"
+  },
+  {
+    "id": "charging-bull",
+    "name": "Charging Bull",
+    "neighborhood": "Financial District",
+    "latitude": 40.7056,
+    "longitude": -74.0134,
+    "interests": [
+      "landmark"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 15,
+    "sourceName": "Wikipedia",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Charging_Bull",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free outdoor sculpture; expect a queue for photos.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "wall street bull",
+      "the bull"
+    ],
+    "keywordTags": [
+      "photo spot",
+      "wall street"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Charging Bull",
+    "address": "Bowling Green, New York, NY 10004"
+  },
+  {
+    "id": "new-york-stock-exchange",
+    "name": "New York Stock Exchange",
+    "neighborhood": "Financial District",
+    "latitude": 40.7069,
+    "longitude": -74.0113,
+    "interests": [
+      "landmark",
+      "architecture",
+      "history"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 15,
+    "sourceName": "New York Stock Exchange",
+    "sourceUrl": "https://www.nyse.com/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Exterior and Wall Street only; the trading floor is not open to the public.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "nyse",
+      "stock exchange",
+      "wall street"
+    ],
+    "keywordTags": [
+      "finance",
+      "wall street"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "New York Stock Exchange Building",
+    "address": "11 Wall St, New York, NY 10005"
+  },
+  {
+    "id": "st-pauls-chapel",
+    "name": "St. Paul's Chapel",
+    "neighborhood": "Financial District",
+    "latitude": 40.7113,
+    "longitude": -74.0093,
+    "interests": [
+      "landmark",
+      "architecture",
+      "history"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 30,
+    "sourceName": "Trinity Church Wall Street",
+    "sourceUrl": "https://trinitywallstreet.org/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free; Manhattan's oldest surviving church, used as a 9/11 relief center.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "st pauls"
+    ],
+    "keywordTags": [
+      "colonial",
+      "9/11"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "St. Paul's Chapel",
+    "address": "209 Broadway, New York, NY 10007"
+  },
+  {
+    "id": "jefferson-market-library",
+    "name": "Jefferson Market Library",
+    "neighborhood": "Greenwich Village",
+    "latitude": 40.7348,
+    "longitude": -73.9988,
+    "interests": [
+      "architecture",
+      "landmark"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 20,
+    "sourceName": "The New York Public Library",
+    "sourceUrl": "https://www.nypl.org/locations/jefferson-market",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free public library in a former 1870s courthouse.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "jefferson market"
+    ],
+    "keywordTags": [
+      "victorian gothic"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Jefferson Market Library",
+    "address": "425 Avenue of the Americas, New York, NY 10011"
+  },
+  {
+    "id": "strawberry-fields",
+    "name": "Strawberry Fields",
+    "neighborhood": "Central Park West",
+    "latitude": 40.7757,
+    "longitude": -73.975,
+    "interests": [
+      "park",
+      "landmark"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 20,
+    "sourceName": "Central Park Conservancy",
+    "sourceUrl": "https://www.centralparknyc.org/locations/strawberry-fields",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free memorial in Central Park, designated a quiet zone.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "imagine mosaic"
+    ],
+    "keywordTags": [
+      "john lennon",
+      "music"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Strawberry Fields (memorial)",
+    "address": "Central Park W & W 72nd St, New York, NY 10023"
+  },
+  {
+    "id": "the-plaza-hotel",
+    "name": "The Plaza Hotel",
+    "neighborhood": "Midtown",
+    "latitude": 40.7646,
+    "longitude": -73.9744,
+    "interests": [
+      "architecture",
+      "landmark"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 15,
+    "sourceName": "The Plaza",
+    "sourceUrl": "https://www.theplazany.com/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Exterior view free; dining or the food hall inside is priced separately.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "the plaza"
+    ],
+    "keywordTags": [
+      "grand army plaza",
+      "film location"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Plaza Hotel",
+    "address": "768 Fifth Ave, New York, NY 10019"
+  },
+  {
+    "id": "riverside-church",
+    "name": "The Riverside Church",
+    "neighborhood": "Morningside Heights",
+    "latitude": 40.8121,
+    "longitude": -73.963,
+    "interests": [
+      "architecture",
+      "landmark"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 30,
+    "sourceName": "The Riverside Church",
+    "sourceUrl": "https://www.trcnyc.org/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Active church; visitors welcome outside services.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [],
+    "keywordTags": [
+      "gothic",
+      "church"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Riverside Church",
+    "address": "490 Riverside Dr, New York, NY 10027"
+  },
+  {
+    "id": "abyssinian-baptist-church",
+    "name": "Abyssinian Baptist Church",
+    "neighborhood": "Harlem",
+    "latitude": 40.8164,
+    "longitude": -73.9407,
+    "interests": [
+      "landmark",
+      "history",
+      "performance"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 60,
+    "sourceName": "Abyssinian Baptist Church",
+    "sourceUrl": "https://abyssinian.org/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Active congregation; follow the church's visitor policy for services.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "abyssinian"
+    ],
+    "keywordTags": [
+      "gospel",
+      "harlem"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Abyssinian Baptist Church",
+    "address": "132 W 138th St, New York, NY 10030"
+  },
+  {
+    "id": "temple-emanu-el",
+    "name": "Temple Emanu-El",
+    "neighborhood": "Upper East Side",
+    "latitude": 40.7671,
+    "longitude": -73.9701,
+    "interests": [
+      "architecture",
+      "landmark"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 30,
+    "sourceName": "Congregation Emanu-El of New York",
+    "sourceUrl": "https://www.emanuelnyc.org/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Active synagogue; check visitor hours and security entry.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "emanu-el"
+    ],
+    "keywordTags": [
+      "synagogue"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Congregation Emanu-El of New York",
+    "address": "1 E 65th St, New York, NY 10065"
+  },
+  {
+    "id": "grand-army-plaza-brooklyn",
+    "name": "Grand Army Plaza (Brooklyn)",
+    "neighborhood": "Prospect Heights",
+    "latitude": 40.6743,
+    "longitude": -73.97,
+    "interests": [
+      "landmark",
+      "architecture"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 20,
+    "sourceName": "NYC Parks",
+    "sourceUrl": "https://www.nycgovparks.org/parks/grand-army-plaza",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free; Soldiers' and Sailors' Arch at the main entrance to Prospect Park.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "soldiers and sailors arch"
+    ],
+    "keywordTags": [
+      "arch",
+      "greenmarket"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Grand Army Plaza",
+    "address": "Grand Army Plaza, Brooklyn, NY 11238"
+  },
+  {
+    "id": "manhattan-bridge",
+    "name": "Manhattan Bridge",
+    "neighborhood": "Chinatown / DUMBO",
+    "latitude": 40.7075,
+    "longitude": -73.9908,
+    "interests": [
+      "landmark",
+      "waterfront",
+      "views",
+      "architecture"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 40,
+    "sourceName": "NYC DOT",
+    "sourceUrl": "https://www.nyc.gov/html/dot/html/infrastructure/manhattan-bridge.shtml",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free walkway on the south side; trains pass close by, so it's noisy.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [],
+    "keywordTags": [
+      "walk",
+      "bridges",
+      "skyline"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Manhattan Bridge",
+    "address": "Manhattan Bridge, New York, NY 10002"
+  },
+  {
+    "id": "williamsburg-bridge",
+    "name": "Williamsburg Bridge",
+    "neighborhood": "Lower East Side / Williamsburg",
+    "latitude": 40.7134,
+    "longitude": -73.9726,
+    "interests": [
+      "landmark",
+      "waterfront"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 40,
+    "sourceName": "NYC DOT",
+    "sourceUrl": "https://www.nyc.gov/html/dot/html/infrastructure/williamsburg-bridge.shtml",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free shared walkway between the Lower East Side and Williamsburg.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [],
+    "keywordTags": [
+      "walk",
+      "bridges"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Williamsburg Bridge",
+    "address": "Williamsburg Bridge, New York, NY 10002"
+  },
+  {
+    "id": "high-bridge",
+    "name": "The High Bridge",
+    "neighborhood": "Highbridge Park",
+    "latitude": 40.842,
+    "longitude": -73.9302,
+    "interests": [
+      "landmark",
+      "park",
+      "views",
+      "history"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 40,
+    "sourceName": "NYC Parks",
+    "sourceUrl": "https://www.nycgovparks.org/parks/highbridge-park/highlights/12898",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "NYC's oldest standing bridge (1848), now a free pedestrian path to the Bronx.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "highbridge"
+    ],
+    "keywordTags": [
+      "aqueduct",
+      "bridges",
+      "walk"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "High Bridge (New York City)",
+    "address": "W 172nd St & Amsterdam Ave, New York, NY 10032"
+  },
+  {
+    "id": "little-red-lighthouse",
+    "name": "Little Red Lighthouse",
+    "neighborhood": "Fort Washington Park",
+    "latitude": 40.8502,
+    "longitude": -73.9469,
+    "interests": [
+      "landmark",
+      "waterfront",
+      "park"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 30,
+    "sourceName": "NYC Parks",
+    "sourceUrl": "https://www.nycgovparks.org/parks/fort-washington-park",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free to see under the George Washington Bridge; the interior opens only on special days.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "jeffrey's hook light"
+    ],
+    "keywordTags": [
+      "lighthouse",
+      "george washington bridge"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Jeffrey's Hook Light",
+    "address": "Fort Washington Park, New York, NY 10033"
+  },
+  {
+    "id": "gracie-mansion",
+    "name": "Gracie Mansion",
+    "neighborhood": "Upper East Side",
+    "latitude": 40.7761,
+    "longitude": -73.943,
+    "interests": [
+      "architecture",
+      "history"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 60,
+    "sourceName": "Gracie Mansion Conservancy",
+    "sourceUrl": "https://www.graciemansion.org/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Official mayor's residence; free tours must be reserved in advance.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "mayor's residence"
+    ],
+    "keywordTags": [
+      "history"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Gracie Mansion",
+    "address": "Carl Schurz Park, New York, NY 10028"
+  },
+  {
+    "id": "belvedere-castle",
+    "name": "Belvedere Castle",
+    "neighborhood": "Central Park",
+    "latitude": 40.7794,
+    "longitude": -73.9691,
+    "interests": [
+      "landmark",
+      "park",
+      "views",
+      "architecture"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 30,
+    "sourceName": "Central Park Conservancy",
+    "sourceUrl": "https://www.centralparknyc.org/locations/belvedere-castle",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free lookout over Turtle Pond; confirm open hours for the castle interior.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "belvedere"
+    ],
+    "keywordTags": [
+      "viewpoint",
+      "photo spot"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Belvedere Castle",
+    "address": "Central Park (mid-park at 79th St), New York, NY 10024"
+  },
+  {
+    "id": "brooklyn-heights-promenade",
+    "name": "Brooklyn Heights Promenade",
+    "neighborhood": "Brooklyn Heights",
+    "latitude": 40.696,
+    "longitude": -73.9978,
+    "interests": [
+      "waterfront",
+      "park",
+      "views"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 30,
+    "sourceName": "NYC Parks",
+    "sourceUrl": "https://www.nycgovparks.org/parks/brooklyn-heights-promenade",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free elevated walkway with Lower Manhattan views.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "the promenade"
+    ],
+    "keywordTags": [
+      "skyline",
+      "sunset"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Brooklyn Heights Promenade",
+    "address": "Columbia Heights & Montague St, Brooklyn, NY 11201"
+  },
+  {
+    "id": "fort-greene-park",
+    "name": "Fort Greene Park",
+    "neighborhood": "Fort Greene",
+    "latitude": 40.6909,
+    "longitude": -73.9752,
+    "interests": [
+      "park",
+      "history"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 40,
+    "sourceName": "NYC Parks",
+    "sourceUrl": "https://www.nycgovparks.org/parks/fort-greene-park",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free; home to the Prison Ship Martyrs' Monument.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [],
+    "keywordTags": [
+      "monument",
+      "picnic"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Fort Greene Park",
+    "address": "Washington Park, Brooklyn, NY 11205"
+  },
+  {
+    "id": "marsha-p-johnson-state-park",
+    "name": "Marsha P. Johnson State Park",
+    "neighborhood": "Williamsburg",
+    "latitude": 40.7218,
+    "longitude": -73.9616,
+    "interests": [
+      "waterfront",
+      "park"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 30,
+    "sourceName": "New York State Parks",
+    "sourceUrl": "https://parks.ny.gov/parks/marshapjohnson/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free waterfront park; Smorgasburg has used this site on weekends.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "east river state park"
+    ],
+    "keywordTags": [
+      "skyline",
+      "smorgasburg"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Marsha P. Johnson State Park",
+    "address": "90 Kent Ave, Brooklyn, NY 11211"
+  },
+  {
+    "id": "hunters-point-south-park",
+    "name": "Hunters Point South Park",
+    "neighborhood": "Long Island City",
+    "latitude": 40.7414,
+    "longitude": -73.9605,
+    "interests": [
+      "waterfront",
+      "park",
+      "views"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 40,
+    "sourceName": "NYC Parks",
+    "sourceUrl": "https://www.nycgovparks.org/parks/hunters-point-south-park",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free; Midtown skyline views a short walk from Gantry Plaza.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "hunters point"
+    ],
+    "keywordTags": [
+      "skyline",
+      "sunset"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Hunter's Point South Park",
+    "address": "Center Blvd & 50th Ave, Queens, NY 11109"
+  },
+  {
+    "id": "astoria-park",
+    "name": "Astoria Park",
+    "neighborhood": "Astoria",
+    "latitude": 40.7795,
+    "longitude": -73.9228,
+    "interests": [
+      "park",
+      "waterfront"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 45,
+    "sourceName": "NYC Parks",
+    "sourceUrl": "https://www.nycgovparks.org/parks/astoria-park",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free riverside park under the RFK and Hell Gate bridges.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [],
+    "keywordTags": [
+      "hell gate bridge",
+      "pool"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Astoria Park",
+    "address": "19 19th St, Queens, NY 11105"
+  },
+  {
+    "id": "queens-botanical-garden",
+    "name": "Queens Botanical Garden",
+    "neighborhood": "Flushing",
+    "latitude": 40.7516,
+    "longitude": -73.8288,
+    "interests": [
+      "park"
+    ],
+    "planningAllowanceUsd": 6,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 60,
+    "sourceName": "Queens Botanical Garden",
+    "sourceUrl": "https://queensbotanical.org/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Small admission in peak season, free at other times—confirm on the source.",
+    "priceNote": "Planning allowance only; confirm current admission with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [],
+    "keywordTags": [
+      "garden",
+      "flowers"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Queens Botanical Garden",
+    "address": "43-50 Main St, Queens, NY 11355"
+  },
+  {
+    "id": "jamaica-bay-wildlife-refuge",
+    "name": "Jamaica Bay Wildlife Refuge",
+    "neighborhood": "Broad Channel, Queens",
+    "latitude": 40.617,
+    "longitude": -73.8255,
+    "interests": [
+      "park",
+      "waterfront"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 90,
+    "sourceName": "National Park Service",
+    "sourceUrl": "https://www.nps.gov/gate/learn/historyculture/jamaica-bay-wildlife-refuge.htm",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free trails in Gateway National Recreation Area; far from Midtown, allow transit time.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "jamaica bay"
+    ],
+    "keywordTags": [
+      "birdwatching",
+      "nature"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Jamaica Bay Wildlife Refuge",
+    "address": "175-10 Cross Bay Blvd, Queens, NY 11693"
+  },
+  {
+    "id": "orchard-beach",
+    "name": "Orchard Beach (Pelham Bay Park)",
+    "neighborhood": "Pelham Bay Park, Bronx",
+    "latitude": 40.8673,
+    "longitude": -73.793,
+    "interests": [
+      "waterfront",
+      "park"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 120,
+    "sourceName": "NYC Parks",
+    "sourceUrl": "https://www.nycgovparks.org/parks/pelham-bay-park/facilities/beaches",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free public beach; swimming only in season with lifeguards.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "pelham bay"
+    ],
+    "keywordTags": [
+      "beach",
+      "summer"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Orchard Beach, Bronx",
+    "address": "Orchard Beach Rd, Bronx, NY 10464"
+  },
+  {
+    "id": "van-cortlandt-park",
+    "name": "Van Cortlandt Park",
+    "neighborhood": "Riverdale / Kingsbridge, Bronx",
+    "latitude": 40.8977,
+    "longitude": -73.886,
+    "interests": [
+      "park"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 90,
+    "sourceName": "NYC Parks",
+    "sourceUrl": "https://www.nycgovparks.org/parks/van-cortlandt-park",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free; large park with trails, at the end of the 1 train.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "vanny"
+    ],
+    "keywordTags": [
+      "hiking",
+      "nature"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Van Cortlandt Park",
+    "address": "Broadway & Van Cortlandt Park S, Bronx, NY 10471"
+  },
+  {
+    "id": "tompkins-square-park",
+    "name": "Tompkins Square Park",
+    "neighborhood": "East Village",
+    "latitude": 40.7265,
+    "longitude": -73.9817,
+    "interests": [
+      "park"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 30,
+    "sourceName": "NYC Parks",
+    "sourceUrl": "https://www.nycgovparks.org/parks/tompkins-square-park",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free neighborhood park; near Veselka.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [],
+    "keywordTags": [
+      "local life",
+      "dog run"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Tompkins Square Park",
+    "address": "Avenue A & E 7th St, New York, NY 10009"
+  },
+  {
+    "id": "inwood-hill-park",
+    "name": "Inwood Hill Park",
+    "neighborhood": "Inwood",
+    "latitude": 40.8721,
+    "longitude": -73.9259,
+    "interests": [
+      "park",
+      "history"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 60,
+    "sourceName": "NYC Parks",
+    "sourceUrl": "https://www.nycgovparks.org/parks/inwood-hill-park",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free; Manhattan's last natural forest and salt marsh.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [],
+    "keywordTags": [
+      "forest",
+      "hiking"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Inwood Hill Park",
+    "address": "Dyckman St & Payson Ave, New York, NY 10034"
+  },
+  {
+    "id": "carl-schurz-park",
+    "name": "Carl Schurz Park",
+    "neighborhood": "Yorkville",
+    "latitude": 40.7752,
+    "longitude": -73.9437,
+    "interests": [
+      "park",
+      "waterfront"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 30,
+    "sourceName": "NYC Parks",
+    "sourceUrl": "https://www.nycgovparks.org/parks/carl-schurz-park",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free riverside promenade next to Gracie Mansion.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [],
+    "keywordTags": [
+      "east river",
+      "gracie mansion"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Carl Schurz Park",
+    "address": "East End Ave & E 86th St, New York, NY 10028"
+  },
+  {
+    "id": "morningside-park",
+    "name": "Morningside Park",
+    "neighborhood": "Morningside Heights / Harlem",
+    "latitude": 40.8058,
+    "longitude": -73.958,
+    "interests": [
+      "park"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 30,
+    "sourceName": "NYC Parks",
+    "sourceUrl": "https://www.nycgovparks.org/parks/morningside-park",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free; steep stairs connect Harlem to Columbia University.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [],
+    "keywordTags": [
+      "cliffs",
+      "local life"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Morningside Park",
+    "address": "Morningside Ave & W 116th St, New York, NY 10027"
+  },
+  {
+    "id": "four-freedoms-park",
+    "name": "Franklin D. Roosevelt Four Freedoms State Park",
+    "neighborhood": "Roosevelt Island",
+    "latitude": 40.7503,
+    "longitude": -73.9614,
+    "interests": [
+      "park",
+      "waterfront",
+      "views",
+      "architecture"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 45,
+    "sourceName": "FDR Four Freedoms State Park",
+    "sourceUrl": "https://www.fdrfourfreedomspark.org/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free; Louis Kahn memorial at the island's south tip. It has a weekly closing day—confirm on the source.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "four freedoms park"
+    ],
+    "keywordTags": [
+      "louis kahn",
+      "un view"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Franklin D. Roosevelt Four Freedoms Park",
+    "address": "1 FDR Four Freedoms Park, New York, NY 10044"
+  },
+  {
+    "id": "rockaway-beach",
+    "name": "Rockaway Beach and Boardwalk",
+    "neighborhood": "Rockaway, Queens",
+    "latitude": 40.5833,
+    "longitude": -73.816,
+    "interests": [
+      "waterfront",
+      "park"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 150,
+    "sourceName": "NYC Parks",
+    "sourceUrl": "https://www.nycgovparks.org/parks/rockaway-beach-and-boardwalk",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free beach; reachable by the A train or NYC Ferry, about an hour from Midtown.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "rockaways",
+      "rockaway"
+    ],
+    "keywordTags": [
+      "beach",
+      "surfing",
+      "ferry"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Rockaway Beach, Queens",
+    "address": "Beach 9th St to Beach 149th St, Queens, NY 11693"
+  },
+  {
+    "id": "brighton-beach",
+    "name": "Brighton Beach",
+    "neighborhood": "Brighton Beach, Brooklyn",
+    "latitude": 40.5759,
+    "longitude": -73.96,
+    "interests": [
+      "waterfront",
+      "food"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 90,
+    "sourceName": "NYC Parks",
+    "sourceUrl": "https://www.nycgovparks.org/parks/coney-island-beach-boardwalk",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free beach and boardwalk east of Coney Island; Russian-language shops nearby.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "little odessa"
+    ],
+    "keywordTags": [
+      "beach",
+      "russian food"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Brighton Beach",
+    "address": "Riegelmann Boardwalk & Brighton 6th St, Brooklyn, NY 11235"
+  },
+  {
+    "id": "valentino-pier",
+    "name": "Louis Valentino Jr. Park and Pier",
+    "neighborhood": "Red Hook",
+    "latitude": 40.6788,
+    "longitude": -74.0189,
+    "interests": [
+      "waterfront",
+      "park",
+      "views"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 30,
+    "sourceName": "NYC Parks",
+    "sourceUrl": "https://www.nycgovparks.org/parks/louis-valentino-jr-park-and-pier",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free pier facing the Statue of Liberty; limited subway access.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "valentino pier"
+    ],
+    "keywordTags": [
+      "statue of liberty view",
+      "sunset"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Louis Valentino Jr. Park and Pier",
+    "address": "Coffey St & Ferris St, Brooklyn, NY 11231"
+  },
+  {
+    "id": "sunset-park",
+    "name": "Sunset Park",
+    "neighborhood": "Sunset Park, Brooklyn",
+    "latitude": 40.6476,
+    "longitude": -74.0042,
+    "interests": [
+      "park",
+      "views"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 30,
+    "sourceName": "NYC Parks",
+    "sourceUrl": "https://www.nycgovparks.org/parks/sunset-park",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free hilltop park with harbor and skyline views; near Brooklyn's Chinatown on 8th Ave.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [],
+    "keywordTags": [
+      "skyline",
+      "sunset"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Sunset Park (park)",
+    "address": "41st St to 44th St & 5th Ave, Brooklyn, NY 11232"
+  },
+  {
+    "id": "wagner-park",
+    "name": "Robert F. Wagner Jr. Park",
+    "neighborhood": "Battery Park City",
+    "latitude": 40.7046,
+    "longitude": -74.018,
+    "interests": [
+      "waterfront",
+      "park",
+      "views"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 20,
+    "sourceName": "Battery Park City Authority",
+    "sourceUrl": "https://bpca.ny.gov/places/wagner-park/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free waterfront lawn with harbor views; reopened after resiliency rebuild.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "wagner park"
+    ],
+    "keywordTags": [
+      "statue of liberty view"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Robert F. Wagner Jr. Park",
+    "address": "20 Battery Pl, New York, NY 10280"
+  },
+  {
+    "id": "pier-57-rooftop",
+    "name": "Pier 57 Rooftop Park",
+    "neighborhood": "Chelsea",
+    "latitude": 40.7429,
+    "longitude": -74.0094,
+    "interests": [
+      "waterfront",
+      "park",
+      "views"
+    ],
+    "planningAllowanceUsd": 0,
+    "expectedSpendSemantics": "free",
+    "suggestedMinutes": 30,
+    "sourceName": "Hudson River Park",
+    "sourceUrl": "https://hudsonriverpark.org/locations/pier-57/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Free public rooftop on the Hudson; food hall downstairs is priced separately.",
+    "priceNote": "No admission allowance is included; confirm any tours or events with the source.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "pier 57"
+    ],
+    "keywordTags": [
+      "sunset",
+      "high line"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Pier 57",
+    "address": "25 11th Ave, New York, NY 10011"
+  },
+  {
+    "id": "nom-wah-tea-parlor",
+    "name": "Nom Wah Tea Parlor",
+    "neighborhood": "Chinatown",
+    "latitude": 40.7144,
+    "longitude": -73.9982,
+    "interests": [
+      "food"
+    ],
+    "planningAllowanceUsd": 25,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 60,
+    "sourceName": "Nom Wah Tea Parlor",
+    "sourceUrl": "https://nomwah.com/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Dim sum since 1920 on curved Doyers Street; waits at weekend brunch.",
+    "priceNote": "Planning allowance only; it is not a menu quote.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "nom wah"
+    ],
+    "keywordTags": [
+      "dim sum",
+      "chinatown",
+      "historic restaurant"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Nom Wah Tea Parlor",
+    "address": "13 Doyers St, New York, NY 10013"
+  },
+  {
+    "id": "joes-shanghai",
+    "name": "Joe's Shanghai",
+    "neighborhood": "Chinatown",
+    "latitude": 40.7157,
+    "longitude": -73.9971,
+    "interests": [
+      "food"
+    ],
+    "planningAllowanceUsd": 25,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 60,
+    "sourceName": "Joe's Shanghai",
+    "sourceUrl": "https://www.joeshanghairestaurants.com/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Known for soup dumplings; tables may be shared.",
+    "priceNote": "Planning allowance only; it is not a menu quote.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "joes shanghai"
+    ],
+    "keywordTags": [
+      "soup dumplings",
+      "chinese food"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Joe's Shanghai",
+    "address": "46 Bowery, New York, NY 10013"
+  },
+  {
+    "id": "levain-bakery",
+    "name": "Levain Bakery (Upper West Side)",
+    "neighborhood": "Upper West Side",
+    "latitude": 40.7799,
+    "longitude": -73.9805,
+    "interests": [
+      "food"
+    ],
+    "planningAllowanceUsd": 8,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 20,
+    "sourceName": "Levain Bakery",
+    "sourceUrl": "https://levainbakery.com/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Takeaway bakery known for thick cookies; there is usually a line.",
+    "priceNote": "Planning allowance only; it is not a menu quote.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "levain"
+    ],
+    "keywordTags": [
+      "cookies",
+      "quick bite"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Levain Bakery",
+    "address": "167 W 74th St, New York, NY 10023"
+  },
+  {
+    "id": "magnolia-bakery",
+    "name": "Magnolia Bakery (Bleecker Street)",
+    "neighborhood": "West Village",
+    "latitude": 40.7359,
+    "longitude": -74.005,
+    "interests": [
+      "food"
+    ],
+    "planningAllowanceUsd": 8,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 20,
+    "sourceName": "Magnolia Bakery",
+    "sourceUrl": "https://www.magnoliabakery.com/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Original location; takeaway desserts.",
+    "priceNote": "Planning allowance only; it is not a menu quote.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "magnolia"
+    ],
+    "keywordTags": [
+      "cupcakes",
+      "banana pudding",
+      "quick bite"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Magnolia Bakery",
+    "address": "401 Bleecker St, New York, NY 10014"
+  },
+  {
+    "id": "eataly-flatiron",
+    "name": "Eataly NYC Flatiron",
+    "neighborhood": "Flatiron District",
+    "latitude": 40.742,
+    "longitude": -73.9897,
+    "interests": [
+      "food"
+    ],
+    "planningAllowanceUsd": 30,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 60,
+    "sourceName": "Eataly",
+    "sourceUrl": "https://www.eataly.com/us_en/stores/nyc-flatiron",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Italian food hall across from the Flatiron Building; counters and sit-down restaurants.",
+    "priceNote": "Planning allowance only; it is not a menu quote.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "eataly"
+    ],
+    "keywordTags": [
+      "italian food",
+      "food hall"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Eataly",
+    "address": "200 Fifth Ave, New York, NY 10010"
+  },
+  {
+    "id": "mamouns-falafel",
+    "name": "Mamoun's Falafel",
+    "neighborhood": "Greenwich Village",
+    "latitude": 40.7302,
+    "longitude": -74.0006,
+    "interests": [
+      "food"
+    ],
+    "planningAllowanceUsd": 10,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 20,
+    "sourceName": "Mamoun's Falafel",
+    "sourceUrl": "https://mamouns.com/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Tiny counter near Washington Square Park; takeaway.",
+    "priceNote": "Planning allowance only; it is not a menu quote.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "mamouns"
+    ],
+    "keywordTags": [
+      "falafel",
+      "cheap eats",
+      "vegetarian"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Mamoun's",
+    "address": "119 MacDougal St, New York, NY 10012"
+  },
+  {
+    "id": "prince-street-pizza",
+    "name": "Prince Street Pizza",
+    "neighborhood": "Nolita",
+    "latitude": 40.7231,
+    "longitude": -73.9945,
+    "interests": [
+      "food"
+    ],
+    "planningAllowanceUsd": 10,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 20,
+    "sourceName": "Prince Street Pizza",
+    "sourceUrl": "https://princestreetpizza.com/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Square pepperoni slices; long lines are common.",
+    "priceNote": "Planning allowance only; it is not a menu quote.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [],
+    "keywordTags": [
+      "pizza",
+      "cheap eats"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Prince Street Pizza",
+    "address": "27 Prince St, New York, NY 10012"
+  },
+  {
+    "id": "ess-a-bagel",
+    "name": "Ess-a-Bagel",
+    "neighborhood": "Midtown East",
+    "latitude": 40.7553,
+    "longitude": -73.9696,
+    "interests": [
+      "food"
+    ],
+    "planningAllowanceUsd": 12,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 25,
+    "sourceName": "Ess-a-Bagel",
+    "sourceUrl": "https://www.essabagel.com/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Classic hand-rolled bagels; busy in the morning.",
+    "priceNote": "Planning allowance only; it is not a menu quote.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "ess a bagel"
+    ],
+    "keywordTags": [
+      "bagels",
+      "breakfast"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Ess-a-Bagel",
+    "address": "831 Third Ave, New York, NY 10022"
+  },
+  {
+    "id": "barney-greengrass",
+    "name": "Barney Greengrass",
+    "neighborhood": "Upper West Side",
+    "latitude": 40.7881,
+    "longitude": -73.9741,
+    "interests": [
+      "food"
+    ],
+    "planningAllowanceUsd": 35,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 60,
+    "sourceName": "Barney Greengrass",
+    "sourceUrl": "https://www.barneygreengrass.com/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Appetizing shop and restaurant since 1908; often cash-friendly—confirm payment.",
+    "priceNote": "Planning allowance only; it is not a menu quote.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "the sturgeon king"
+    ],
+    "keywordTags": [
+      "jewish deli",
+      "breakfast",
+      "historic restaurant"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Barney Greengrass",
+    "address": "541 Amsterdam Ave, New York, NY 10024"
+  },
+  {
+    "id": "lucali",
+    "name": "Lucali",
+    "neighborhood": "Carroll Gardens",
+    "latitude": 40.6818,
+    "longitude": -73.9998,
+    "interests": [
+      "food"
+    ],
+    "planningAllowanceUsd": 40,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 90,
+    "sourceName": "Lucali",
+    "sourceUrl": "https://www.lucali.com/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Dinner-only pizza; reservations open in advance and walk-ins wait.",
+    "priceNote": "Planning allowance only; it is not a menu quote.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [],
+    "keywordTags": [
+      "pizza",
+      "dinner"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Lucali",
+    "address": "575 Henry St, Brooklyn, NY 11231"
+  },
+  {
+    "id": "lb-spumoni-gardens",
+    "name": "L&B Spumoni Gardens",
+    "neighborhood": "Gravesend, Brooklyn",
+    "latitude": 40.5947,
+    "longitude": -73.9814,
+    "interests": [
+      "food"
+    ],
+    "planningAllowanceUsd": 18,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 45,
+    "sourceName": "L&B Spumoni Gardens",
+    "sourceUrl": "https://www.spumonigardens.com/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Sicilian squares and spumoni; pairs with a Coney Island day.",
+    "priceNote": "Planning allowance only; it is not a menu quote.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "l and b",
+      "spumoni gardens"
+    ],
+    "keywordTags": [
+      "pizza",
+      "sicilian slice",
+      "historic restaurant"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "L&B Spumoni Gardens",
+    "address": "2725 86th St, Brooklyn, NY 11223"
+  },
+  {
+    "id": "totonnos-pizzeria",
+    "name": "Totonno's Pizzeria Napolitano",
+    "neighborhood": "Coney Island",
+    "latitude": 40.5788,
+    "longitude": -73.9836,
+    "interests": [
+      "food"
+    ],
+    "planningAllowanceUsd": 25,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 60,
+    "sourceName": "Totonno's",
+    "sourceUrl": "https://www.totonnosconeyisland.com/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Coal-oven pizza since 1924; hours can be limited—confirm before going.",
+    "priceNote": "Planning allowance only; it is not a menu quote.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "totonnos"
+    ],
+    "keywordTags": [
+      "pizza",
+      "coney island",
+      "historic restaurant"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Totonno's",
+    "address": "1524 Neptune Ave, Brooklyn, NY 11224"
+  },
+  {
+    "id": "grimaldis-pizzeria",
+    "name": "Grimaldi's Pizzeria (DUMBO)",
+    "neighborhood": "DUMBO",
+    "latitude": 40.7026,
+    "longitude": -73.9934,
+    "interests": [
+      "food"
+    ],
+    "planningAllowanceUsd": 25,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 60,
+    "sourceName": "Grimaldi's Pizzeria",
+    "sourceUrl": "https://www.grimaldis-pizza.com/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Coal-oven pizza under the Brooklyn Bridge; whole pies only.",
+    "priceNote": "Planning allowance only; it is not a menu quote.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "grimaldis"
+    ],
+    "keywordTags": [
+      "pizza",
+      "brooklyn bridge"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Grimaldi's Pizzeria",
+    "address": "1 Front St, Brooklyn, NY 11201"
+  },
+  {
+    "id": "amy-ruths",
+    "name": "Amy Ruth's",
+    "neighborhood": "Harlem",
+    "latitude": 40.8022,
+    "longitude": -73.95,
+    "interests": [
+      "food"
+    ],
+    "planningAllowanceUsd": 30,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 60,
+    "sourceName": "Amy Ruth's",
+    "sourceUrl": "https://www.amyruths.com/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Harlem soul food; busy on weekend mornings.",
+    "priceNote": "Planning allowance only; it is not a menu quote.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [],
+    "keywordTags": [
+      "soul food",
+      "chicken and waffles"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Amy Ruth's",
+    "address": "113 W 116th St, New York, NY 10026"
+  },
+  {
+    "id": "red-rooster-harlem",
+    "name": "Red Rooster Harlem",
+    "neighborhood": "Harlem",
+    "latitude": 40.8081,
+    "longitude": -73.9446,
+    "interests": [
+      "food"
+    ],
+    "planningAllowanceUsd": 45,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 75,
+    "sourceName": "Red Rooster",
+    "sourceUrl": "https://www.redroosterharlem.com/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Marcus Samuelsson's restaurant; book ahead for brunch.",
+    "priceNote": "Planning allowance only; it is not a menu quote.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "red rooster"
+    ],
+    "keywordTags": [
+      "comfort food",
+      "brunch"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Red Rooster (restaurant)",
+    "address": "310 Lenox Ave, New York, NY 10027"
+  },
+  {
+    "id": "2nd-ave-deli",
+    "name": "2nd Ave Deli (Murray Hill)",
+    "neighborhood": "Murray Hill",
+    "latitude": 40.7451,
+    "longitude": -73.9787,
+    "interests": [
+      "food"
+    ],
+    "planningAllowanceUsd": 35,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 60,
+    "sourceName": "2nd Ave Deli",
+    "sourceUrl": "https://www.2ndavedeli.com/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Kosher deli; large portions are easy to share.",
+    "priceNote": "Planning allowance only; it is not a menu quote.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "second avenue deli"
+    ],
+    "keywordTags": [
+      "jewish deli",
+      "pastrami",
+      "kosher"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "2nd Avenue Deli",
+    "address": "162 E 33rd St, New York, NY 10016"
+  },
+  {
+    "id": "mcsorleys-old-ale-house",
+    "name": "McSorley's Old Ale House",
+    "neighborhood": "East Village",
+    "latitude": 40.7286,
+    "longitude": -73.9897,
+    "interests": [
+      "food"
+    ],
+    "planningAllowanceUsd": 15,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 45,
+    "sourceName": "McSorley's Old Ale House",
+    "sourceUrl": "https://mcsorleysoldalehouse.nyc/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Historic bar (1854) serving its own ales; 21+ with ID.",
+    "priceNote": "Planning allowance only; it is not a menu quote.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "mcsorleys"
+    ],
+    "keywordTags": [
+      "bar",
+      "history",
+      "historic restaurant"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "McSorley's Old Ale House",
+    "address": "15 E 7th St, New York, NY 10003"
+  },
+  {
+    "id": "delmonicos",
+    "name": "Delmonico's",
+    "neighborhood": "Financial District",
+    "latitude": 40.705,
+    "longitude": -74.0102,
+    "interests": [
+      "food"
+    ],
+    "planningAllowanceUsd": 90,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 90,
+    "sourceName": "Delmonico's",
+    "sourceUrl": "https://www.delmonicosrestaurant.com/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Historic steakhouse; reservations recommended and smart-casual dress.",
+    "priceNote": "Planning allowance only; it is not a menu quote.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "delmonicos"
+    ],
+    "keywordTags": [
+      "steakhouse",
+      "fine dining",
+      "historic restaurant"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Delmonico's",
+    "address": "56 Beaver St, New York, NY 10004"
+  },
+  {
+    "id": "yonah-schimmel-knish",
+    "name": "Yonah Schimmel Knish Bakery",
+    "neighborhood": "Lower East Side",
+    "latitude": 40.7225,
+    "longitude": -73.9902,
+    "interests": [
+      "food"
+    ],
+    "planningAllowanceUsd": 10,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 20,
+    "sourceName": "Yonah Schimmel Knish Bakery",
+    "sourceUrl": "https://www.knishery.com/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Knish bakery since 1910; a quick stop near Katz's.",
+    "priceNote": "Planning allowance only; it is not a menu quote.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "yonah schimmel"
+    ],
+    "keywordTags": [
+      "knish",
+      "quick bite",
+      "historic restaurant"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Yonah Schimmel's Knish Bakery",
+    "address": "137 E Houston St, New York, NY 10002"
+  },
+  {
+    "id": "serendipity-3",
+    "name": "Serendipity 3",
+    "neighborhood": "Upper East Side",
+    "latitude": 40.7618,
+    "longitude": -73.9649,
+    "interests": [
+      "food"
+    ],
+    "planningAllowanceUsd": 30,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 60,
+    "sourceName": "Serendipity 3",
+    "sourceUrl": "https://serendipity3.com/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Known for frozen hot chocolate; reservations help at peak times.",
+    "priceNote": "Planning allowance only; it is not a menu quote.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "serendipity"
+    ],
+    "keywordTags": [
+      "dessert",
+      "frozen hot chocolate"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Serendipity 3",
+    "address": "225 E 60th St, New York, NY 10022"
+  },
+  {
+    "id": "tavern-on-the-green",
+    "name": "Tavern on the Green",
+    "neighborhood": "Central Park",
+    "latitude": 40.772,
+    "longitude": -73.9777,
+    "interests": [
+      "food",
+      "park"
+    ],
+    "planningAllowanceUsd": 60,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 75,
+    "sourceName": "Tavern on the Green",
+    "sourceUrl": "https://www.tavernonthegreen.com/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Restaurant inside Central Park; reservations recommended.",
+    "priceNote": "Planning allowance only; it is not a menu quote.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "tavern on the green"
+    ],
+    "keywordTags": [
+      "central park",
+      "dinner"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Tavern on the Green",
+    "address": "Central Park W & W 67th St, New York, NY 10023"
+  },
+  {
+    "id": "new-world-mall-food-court",
+    "name": "New World Mall Food Court",
+    "neighborhood": "Flushing",
+    "latitude": 40.759,
+    "longitude": -73.8303,
+    "interests": [
+      "food"
+    ],
+    "planningAllowanceUsd": 15,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 45,
+    "sourceName": "New World Mall",
+    "sourceUrl": "https://www.newworldmallny.com/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Basement food court with regional Asian stalls; many are cash-friendly.",
+    "priceNote": "Planning allowance only; it is not a menu quote.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "flushing food court"
+    ],
+    "keywordTags": [
+      "chinese food",
+      "cheap eats",
+      "food hall"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "New World Mall",
+    "address": "136-20 Roosevelt Ave, Queens, NY 11354"
+  },
+  {
+    "id": "peter-pan-donut",
+    "name": "Peter Pan Donut & Pastry Shop",
+    "neighborhood": "Greenpoint",
+    "latitude": 40.73,
+    "longitude": -73.9541,
+    "interests": [
+      "food"
+    ],
+    "planningAllowanceUsd": 8,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 20,
+    "sourceName": "Peter Pan Donut & Pastry Shop",
+    "sourceUrl": "https://www.peterpandonuts.com/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Old-school counter donut shop; often cash-preferred.",
+    "priceNote": "Planning allowance only; it is not a menu quote.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "peter pan donuts"
+    ],
+    "keywordTags": [
+      "donuts",
+      "quick bite"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Peter Pan Donut & Pastry Shop",
+    "address": "727 Manhattan Ave, Brooklyn, NY 11222"
+  },
+  {
+    "id": "time-out-market-new-york",
+    "name": "Time Out Market New York",
+    "neighborhood": "DUMBO",
+    "latitude": 40.7034,
+    "longitude": -73.9915,
+    "interests": [
+      "food",
+      "waterfront",
+      "views"
+    ],
+    "planningAllowanceUsd": 25,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 60,
+    "sourceName": "Time Out Market",
+    "sourceUrl": "https://www.timeoutmarket.com/newyork/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Food hall with a rooftop view of the Brooklyn and Manhattan bridges.",
+    "priceNote": "Planning allowance only; it is not a menu quote.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "time out market"
+    ],
+    "keywordTags": [
+      "food hall",
+      "rooftop",
+      "skyline"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Time Out Market",
+    "address": "55 Water St, Brooklyn, NY 11201"
+  },
+  {
+    "id": "dominique-ansel-bakery",
+    "name": "Dominique Ansel Bakery",
+    "neighborhood": "SoHo",
+    "latitude": 40.7253,
+    "longitude": -74.0029,
+    "interests": [
+      "food"
+    ],
+    "planningAllowanceUsd": 12,
+    "expectedSpendSemantics": "per_person_reference",
+    "suggestedMinutes": 25,
+    "sourceName": "Dominique Ansel Bakery",
+    "sourceUrl": "https://www.dominiqueansel.com/",
+    "reviewedOn": "2026-11-02",
+    "accessNote": "Birthplace of the Cronut; limited quantities sell out early.",
+    "priceNote": "Planning allowance only; it is not a menu quote.",
+    "imageUrl": "",
+    "imageCreditUrl": "",
+    "published": true,
+    "aliases": [
+      "cronut"
+    ],
+    "keywordTags": [
+      "pastry",
+      "quick bite"
+    ],
+    "closedWeekdays": [],
+    "wikipediaTitle": "Dominique Ansel",
+    "address": "189 Spring St, New York, NY 10012"
+  }
+]

@@ -4,16 +4,20 @@
  * from it; code validates everything and falls back to the controlled planner.
  */
 
-export type PlaceCategory =
-  | "landmark"
-  | "museum"
-  | "architecture"
-  | "park"
-  | "waterfront"
-  | "food";
+/**
+ * Interest tags — the one list shared by the planner UI, request validation,
+ * candidate filtering and the catalog. Two kinds, chosen not to overlap:
+ * - place type: landmark, museum, park, waterfront, food
+ * - theme: views, architecture, history, art, science, performance, family
+ * A record carries 1–4 tags; the first is its primary type (labels, durations).
+ */
+export const PLACE_CATEGORIES = [
+  "landmark", "museum", "park", "waterfront", "food",
+  "views", "architecture", "history", "art", "science", "performance", "family",
+] as const;
+export type PlaceCategory = (typeof PLACE_CATEGORIES)[number];
 
-/** Catalog records may carry extra descriptive tags (e.g. "history"). */
-export type PlaceInterest = PlaceCategory | "history";
+export type PlaceInterest = PlaceCategory;
 
 export type TransportPreference = "smart" | "public_transit" | "taxi" | "walk";
 

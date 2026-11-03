@@ -23,6 +23,8 @@ import {
 } from 'lucide-react';
 import { OpsChart } from '@/components/ops-chart';
 import { nycPlaces } from '@/lib/nyc-places';
+import { RequireAuth } from '@/components/auth/require-auth';
+import { authFetch } from '@/lib/supabase-browser';
 
 type SectionId =
   | 'overview'
@@ -95,7 +97,11 @@ function runCatalogCheck(): CatalogCheck[] {
   });
 }
 
-export default function OperationsConsole() {
+export default function OperationsConsolePage() {
+  return <RequireAuth roles={['admin', 'super_admin']}><OperationsConsole /></RequireAuth>;
+}
+
+function OperationsConsole() {
   const [activeSection, setActiveSection] = useState<SectionId>('overview');
   const [feedback, setFeedback] = useState<Feedback[]>([]);
   const [results, setResults] = useState<CatalogCheck[]>([]);
@@ -104,7 +110,7 @@ export default function OperationsConsole() {
   const activeNavigation = navigation.find((item) => item.id === activeSection) ?? navigation[0];
 
   useEffect(() => {
-    void fetch('/api/feedback')
+    void authFetch('/api/feedback')
       .then((response) => (response.ok ? response.json() : { feedback: [] }))
       .then((payload) => {
         const value = payload as { feedback?: Feedback[] };

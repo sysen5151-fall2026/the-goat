@@ -4,7 +4,7 @@ import { errorResponse, newRequestId } from "@/lib/api-helpers";
 import { requireAuthenticatedUser } from "@/lib/auth";
 import { getProfile, saveProfile } from "@/lib/nyc-account";
 
-const profileSchema = z.object({ displayName: z.string().trim().min(1).max(24) });
+const profileSchema = z.object({ displayName: z.string().trim().min(1).max(24), avatarEmoji: z.enum(["🧭", "🗽", "🌆", "🎨", "🌿", "🍽️"]).nullable() });
 
 export async function GET(request: Request) {
   const requestId = newRequestId();
@@ -20,7 +20,8 @@ export async function PUT(request: Request) {
   const requestId = newRequestId();
   try {
     const user = await requireAuthenticatedUser(request);
-    await saveProfile(user.id, profileSchema.parse(await request.json()).displayName);
+    const profile = profileSchema.parse(await request.json());
+    await saveProfile(user.id, profile.displayName, profile.avatarEmoji);
     return NextResponse.json({ requestId, ok: true });
   } catch (error) {
     return errorResponse(error, requestId, "Your profile couldn't be saved.");

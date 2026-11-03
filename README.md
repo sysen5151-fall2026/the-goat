@@ -4,8 +4,15 @@ Wayly is a mobile-first trip-planning preview for short New York City visits. It
 
 ## Current scope
 
-- Build a short NYC itinerary from a published catalog of 20 places.
-- Collect date, available hours, party size, total USD budget, interests, free-text intent, transportation preference, walking pace, dining preference, and an accessibility request.
+- Browse 300 published NYC places with search, category filters, source-linked details, and favorites saved in this browser for the signed-in account.
+- On first entry, swipe through three illustrated introduction pages. Completion is remembered in this browser.
+- Edit the profile name and preset avatar, plus default trip budget, group size, interests, and travel preferences. The profile and defaults are saved separately to the signed-in account.
+- When an itinerary, budget, or sources page has no plan yet, show a short animated prompt linking back to planning.
+- Build a short NYC itinerary from the published catalog, including a place chosen as planning inspiration.
+- **Ask Wayly** tab (`/api/ask`, `lib/nyc-ask.ts`): chat about the current route — swap a stop, shorten the day, change the budget or re-plan. Code builds the allowed options (stops, affordable catalog replacements); DeepSeek may only pick among them and is validated; without a model a rule parser answers. Every change is a proposal card and runs through `/api/plan` only when the user taps Apply. 20 turns per account per 10 minutes; shares the daily model-call cap.
+- **Costs** tab: budget breakdown and source links for the route on one page (the former Budget and Sources tabs).
+- **Adjust route**: the itinerary header button, a quick-action row (Swap a stop · Shorter day · Change budget) and the tappable stop/hours/budget cards all open the adjust screen with that option preselected.
+- Collect date, available hours, party size, total USD budget, interests, free-text intent with #tags (the interest filter — recognised tags turn blue, typing `#` suggests tags), transportation preference, walking pace, dining preference, and an accessibility request.
 - Show place details, a reference image with a credit link, a primary place source, static route estimates, and explicit planning limitations.
 - Allow a local preview of itinerary adjustment, feedback, profile, and map handoff flows.
 
@@ -26,6 +33,7 @@ npm run dev
 Code finds the eligible set; DeepSeek picks the one best route; code re-checks everything.
 
 1. **Hard eligibility** (`lib/nyc-candidate-filtering.ts`): published, complete source, affordable for the whole party, not on a verified fixed closing day.
+1b. **#tag filter** (`lib/nyc-hashtags.ts`): `#history #food …` in the request keeps only places carrying one of those tags (named places, and food when a dining preference is set, stay eligible). 12 tags: landmarks, museums, parks, waterfront, food, views, architecture, history, art, science, shows, family. With no #tags the saved default interests are used as a soft preference.
 2. **Explicit refusals**: requests to skip source review, a must-include place that isn't in the catalog, places too far apart for the time, activities outside NYC → a clear explanation instead of a route.
 3. **Scoring**: interest match +50, a place the user named +200 (aliases such as "the Met", "MoMA"), theme words (skyline, art, history, bridges…) +60 each, budget wording favours cheaper places.
 4. **Spatial coherence** around the top anchor (4.5–12 km by pace/duration), then a **shortlist of ≤ 8** that keeps one candidate per selected interest.
@@ -57,6 +65,6 @@ The build validates that the application routes compile. It does not establish l
 
 ## Data
 
-[`data/nyc-poi-v1.json`](./data/nyc-poi-v1.json) is the single catalog used by the current planner. All 20 records have an official or venue source URL, a reviewed-on date, a USD planning allowance, coordinates, access notes, and a detail-image field.
+[`data/nyc-poi-v1.json`](./data/nyc-poi-v1.json) is the single catalog used by the current planner. All 300 published records have a source URL (a few building exteriors cite Wikipedia), a reviewed-on date, a USD planning allowance, coordinates, access notes, and a detail-image field.
 
 See [`docs/README.md`](./docs/README.md) for the NYC MVP documentation index.

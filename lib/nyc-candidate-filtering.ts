@@ -1,5 +1,6 @@
 import { isIndividuallyAffordable } from "@/lib/nyc-budget";
 import { distanceKm } from "@/lib/nyc-geo";
+import { parseHashtags } from "@/lib/nyc-hashtags";
 import type { InsufficiencyKind, IntentParse, NycPlace, PlaceCategory, PlanRequest, WeekdayCode } from "@/lib/nyc-types";
 
 /**
@@ -32,12 +33,18 @@ const specificitySignals: SpecificitySignal[] = [
 
 /** Everyday words that point at a catalog category even when that interest chip isn't selected. */
 const CATEGORY_KEYWORDS: Record<PlaceCategory, string[]> = {
-  landmark: ["landmark", "landmarks", "iconic", "famous", "skyline", "observatory", "observation", "monument"],
-  museum: ["museum", "museums", "art", "arts", "gallery", "galleries", "exhibit", "exhibits", "exhibition", "science"],
-  architecture: ["architecture", "building", "buildings", "skyscraper", "skyscrapers", "cathedral", "church"],
-  park: ["park", "parks", "garden", "gardens", "green", "nature", "outdoor", "outdoors", "picnic", "stroll", "zoo"],
-  waterfront: ["water", "waterfront", "river", "harbor", "beach", "ferry", "pier", "boardwalk", "island"],
-  food: ["food", "eat", "eating", "lunch", "dinner", "brunch", "pizza", "bagel", "bagels", "deli", "market", "snack", "dessert", "steak", "foodie"],
+  landmark: ["landmark", "landmarks", "iconic", "famous", "monument", "sightseeing", "sights", "touristy"],
+  museum: ["museum", "museums", "exhibit", "exhibits", "exhibition", "exhibitions", "indoor", "indoors", "rainy"],
+  park: ["park", "parks", "garden", "gardens", "green", "nature", "outdoor", "outdoors", "picnic", "stroll", "hike", "hiking", "trees"],
+  waterfront: ["water", "waterfront", "river", "harbor", "beach", "beaches", "ferry", "pier", "boardwalk", "island", "seaside"],
+  food: ["food", "eat", "eating", "lunch", "dinner", "brunch", "breakfast", "pizza", "bagel", "bagels", "deli", "market", "snack", "dessert", "steak", "foodie", "restaurant", "restaurants", "dumplings", "tacos"],
+  views: ["view", "views", "skyline", "observatory", "observation", "rooftop", "lookout", "panorama", "sunset", "viewpoint"],
+  architecture: ["architecture", "architectural", "building", "buildings", "skyscraper", "skyscrapers", "cathedral", "church", "synagogue", "deco"],
+  history: ["history", "historic", "historical", "heritage", "memorial", "colonial", "revolutionary", "immigration", "founding"],
+  art: ["art", "arts", "artist", "gallery", "galleries", "painting", "paintings", "sculpture", "photography", "design"],
+  science: ["science", "scientific", "dinosaur", "dinosaurs", "space", "planetarium", "math", "technology", "animals", "zoo", "aquarium"],
+  performance: ["music", "jazz", "concert", "concerts", "theater", "theatre", "broadway", "show", "shows", "opera", "ballet", "gospel"],
+  family: ["kids", "kid", "children", "child", "family", "toddler", "toddlers", "stroller", "playground"],
 };
 
 /** Words too common to count as a place or neighborhood hit ("near", "walk", "york" …). */
@@ -48,6 +55,7 @@ const STOPWORDS = new Set([
   "view", "views", "visit", "walk", "walking", "want", "what", "when", "where", "which", "with", "would", "york", "center", "garden",
   "gardens", "food", "market", "first", "only", "need", "best", "really", "lots", "people", "spend", "stop", "stops",
   "history", "historic", "historical", "music", "design", "science", "modern", "national", "natural", "american", "street", "square",
+  "east", "west", "north", "south", "upper", "lower", "side", "kids", "shows", "tonight", "today", "tomorrow",
 ]);
 
 function intentTokens(text: string) {
@@ -56,6 +64,13 @@ function intentTokens(text: string) {
 
 function intentCategories(tokens: string[]) {
   return new Set((Object.entries(CATEGORY_KEYWORDS) as Array<[PlaceCategory, string[]]>).filter(([, keywords]) => tokens.some((token) => keywords.includes(token))).map(([category]) => category));
+}
+
+/** Full neighborhood names written in the request, e.g. "lower east side", "harlem", "long island city". */
+function neighborhoodHits(place: NycPlace, text: string) {
+  return place.neighborhood.toLowerCase().split(/\s*(?:\/|,|–|—|\(|\))\s*/)
+    .map((part) => part.trim()).filter((part) => part.length >= 4)
+    .filter((part) => new RegExp(`(^|[^a-z0-9])${escapeRegex(part)}($|[^a-z0-9])`).test(text));
 }
 
 /** Request words (≥4 letters, not stopwords) that appear in a place's name or neighborhood, e.g. "harlem", "williamsburg". */
@@ -247,6 +262,13 @@ export function filterAndRankCandidates(request: PlanRequest, allPlaces: NycPlac
   const closedTodayExcludedCount = resourceEligible.length - eligible.length;
 
   const text = request.intentText.toLowerCase();
+  // Typed #tags filter the pool: a place must carry one of them. Places the user
+  // named, and food when a dining preference is set, always stay eligible.
+  const hashtagFilter = parseHashtags(request.intentText);
+  const keepsFood = request.dining !== "no_preference";
+  const tagEligible = hashtagFilter.length
+    ? eligible.filter((place) => place.interests.some((tag) => hashtagFilter.includes(tag)) || (keepsFood && place.interests.includes("food")) || placeMentionedInText(place, text))
+    : eligible;
   const unavailablePlaceReason = requestedUnavailablePlaceReason(text, allPlaces);
   const ungroundedReason = ungroundedRequirementReason(text);
   const namedPlaceReason = requiredNamedPlaceReason(request, allPlaces, text);
@@ -259,7 +281,7 @@ export function filterAndRankCandidates(request: PlanRequest, allPlaces: NycPlac
   const wantedCategories = intentCategories(tokens);
   const terms = [...new Set(tokens.filter((token) => token.length >= 4 && !STOPWORDS.has(token)))];
 
-  const scoredRaw = eligible
+  const scoredRaw = tagEligible
     .map((place): ScoredCandidate => {
       const reasons: string[] = [];
       let score = 0;
@@ -287,7 +309,12 @@ export function filterAndRankCandidates(request: PlanRequest, allPlaces: NycPlac
         score += 30 * Math.min(2, textCategories.length);
         reasons.push(`Fits the ${textCategories.slice(0, 2).join(" & ")} you described`);
       }
-      const termHits = namedMention ? [] : placeTermHits(place, terms);
+      const areaHits = namedMention ? [] : neighborhoodHits(place, text);
+      if (areaHits.length) {
+        score += 90;
+        reasons.push(`In ${areaHits[0]}, as requested`);
+      }
+      const termHits = namedMention ? [] : placeTermHits(place, terms).filter((term) => !areaHits.some((area) => area.includes(term)));
       if (termHits.length) {
         // A neighborhood or place word the user typed ("harlem", "williamsburg") outweighs a ticked interest chip.
         score += 70 * Math.min(2, termHits.length);
@@ -301,7 +328,7 @@ export function filterAndRankCandidates(request: PlanRequest, allPlaces: NycPlac
         score += 20;
         reasons.push("Local food preference");
       }
-      const signals = [...termHits.map((term) => `term:${term}`), ...textCategories.map((category) => `cat:${category}`), ...specificMatches.map((label) => `theme:${label}`)];
+      const signals = [...areaHits.map((area) => `term:${area}`), ...termHits.map((term) => `term:${term}`), ...textCategories.map((category) => `cat:${category}`), ...specificMatches.map((label) => `theme:${label}`)];
       return { place, score, reasons, specificMatches, namedMention, signals };
     })
     .filter((item) => item.score > 0);
@@ -339,7 +366,7 @@ export function filterAndRankCandidates(request: PlanRequest, allPlaces: NycPlac
 
   // Spatial coherence around the top theme anchor (named places are always kept).
   const hasSpecificTheme = activeSpecificSignals.length > 0;
-  const themed = scored.filter((item) => item.specificMatches.length > 0 || item.namedMention);
+  const themed = scored.filter((item) => item.specificMatches.length > 0 || item.namedMention || (item.signals ?? []).some((signal) => signal.startsWith("term:")));
   const semanticPool = hasSpecificTheme && themed.length ? themed : scored;
   const remoteAnchor = activeSpecificSignals.some((signal) => signal.remoteAnchor);
   const namedAnchors = semanticPool.filter((item) => item.namedMention);
@@ -392,6 +419,7 @@ export function filterAndRankCandidates(request: PlanRequest, allPlaces: NycPlac
       exclusionSummary: [
         `Hard eligibility excluded ${initialCount - resourceEligible.length} places`,
         ...(closedTodayExcludedCount ? [`Fixed closing day excluded ${closedTodayExcludedCount} places`] : []),
+        ...(hashtagFilter.length ? [`#tag filter (${hashtagFilter.map((tag) => `#${tag}`).join(" ")}) excluded ${eligible.length - tagEligible.length} places`] : []),
         `Relevance stage excluded ${Math.max(0, eligible.length - semanticPool.length)} places`,
         `Spatial coherence excluded ${Math.max(0, semanticPool.length - spatialPool.length)} places`,
         ...(spatialPool.length > MAX_CANDIDATE_COUNT ? [`Shortlist cap of ${MAX_CANDIDATE_COUNT} excluded ${spatialPool.length - MAX_CANDIDATE_COUNT} lower-ranked places`] : []),

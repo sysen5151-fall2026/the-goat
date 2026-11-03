@@ -70,6 +70,19 @@ body {
   background: #ece6d9;
 }
 
+.wayly-onboarding-rail { scrollbar-width: none; }
+.wayly-onboarding-rail::-webkit-scrollbar { display: none; }
+
+@keyframes wayly-nudge-in {
+  from { opacity: 0; transform: translate(-50%, 12px) scale(0.94); }
+  to { opacity: 1; transform: translate(-50%, 0) scale(1); }
+}
+.wayly-nudge { transform: translateX(-50%); animation: wayly-nudge-in 220ms ease-out both; }
+@media (prefers-reduced-motion: reduce) {
+  .wayly-nudge { animation: none; }
+  .wayly-onboarding-rail { scroll-behavior: auto; }
+}
+
 /* Budget slider (Figma: Total budget) */
 .wayly-range {
   appearance: none;

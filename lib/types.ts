@@ -1,11 +1,7 @@
-export type Interest =
-  | 'landmark'
-  | 'museum'
-  | 'park'
-  | 'architecture'
-  | 'waterfront'
-  | 'food'
-  | 'history';
+import type { PlaceCategory } from '@/lib/nyc-types';
+
+/** Legacy preview types; interests follow the shared NYC tag list. */
+export type Interest = PlaceCategory;
 
 export type Place = {
   id: string;

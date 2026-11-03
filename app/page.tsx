@@ -3,18 +3,23 @@
 import { useCallback, useEffect, useEffectEvent, useMemo, useRef, useState, type Dispatch, type ReactNode, type SetStateAction } from "react";
 import Link from "next/link";
 import {
-  AlertTriangle, ArrowLeft, Bookmark, Building2, CalendarDays, Car, ChartPie, Check, ChevronDown, ChevronLeft, ChevronRight,
-  CircleAlert, CircleCheck, Clock3, Compass, Copy, LogOut, Trash2, ExternalLink, FileText, Footprints, Info, Landmark, Leaf, Loader2, Map as MapIcon, MapPin,
-  Minus, Navigation, Palette, Pencil, Plus, RefreshCw, Route, Send, Share, ShieldCheck, Sparkles, Star, Tag,
-  Train, UserRound, Users, Utensils, WalletCards, Waves,
+  AlertTriangle, ArrowLeft, Binoculars, Bookmark, Building2, CalendarDays, Car, ChartPie, Check, ChevronDown, ChevronLeft, ChevronRight, CircleAlert, CircleCheck, Clock3, Compass, Copy, Drama, ExternalLink, FileText, FlaskConical, Footprints, Hourglass, Info, Landmark, Leaf, Library, Loader2, LogOut, MapPin, MessageCircle, Minus, Navigation, Palette, Pencil, Plus, RefreshCw, Route, Search, Send, Share, ShieldCheck, SlidersHorizontal, Smile, Sparkles, Star, Tag, Train, Trash2, UserRound, Users, Utensils, WalletCards, Waves,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { RouteMapClient } from "@/components/route-map-client";
 import { PlaceImage, PlaceImageView, usePlaceImage } from "@/components/place-image";
+import { NycExplore } from "@/components/nyc-explore";
 import { suggestReplacements } from "@/lib/nyc-replacements";
+import { publishedPlaces } from "@/lib/nyc-places";
 import { authFetch } from "@/lib/supabase-browser";
 import { useSession, type SessionState } from "@/lib/use-session";
+import { RequireAuth } from "@/components/auth/require-auth";
+import { HashtagInput } from "@/components/hashtag-input";
+import { AskWaylyScreen, type AskMessage } from "@/components/ask-wayly";
+import type { AskAction } from "@/lib/nyc-ask";
+import { effectiveInterests } from "@/lib/nyc-hashtags";
+import { OnboardingGate, replayOnboarding } from "@/components/onboarding-gate";
 import type { IntentParse, Itinerary, ItineraryStop, NycPlace, PlaceCategory, PlanMode, PlanRequest, TransportSegment } from "@/lib/nyc-types";
 
 const initialRequest: PlanRequest = {
@@ -24,21 +29,24 @@ const initialRequest: PlanRequest = {
   dining: "no_preference", accessibility: false,
 };
 
-// Figma "Interests" chips — one icon per catalog category.
+// Default-interest choices on the profile screen (the planner uses #tags in the request box instead).
 const shortcuts: Array<{ label: string; category: PlaceCategory; icon: typeof MapPin }> = [
-  { label: "Landmarks", category: "landmark", icon: Landmark }, { label: "Museums", category: "museum", icon: Palette },
-  { label: "Architecture", category: "architecture", icon: Building2 }, { label: "Parks", category: "park", icon: Leaf },
-  { label: "Waterfront", category: "waterfront", icon: Waves }, { label: "Food", category: "food", icon: Utensils },
+  { label: "Landmarks", category: "landmark", icon: Landmark }, { label: "Museums", category: "museum", icon: Library },
+  { label: "Parks", category: "park", icon: Leaf }, { label: "Waterfront", category: "waterfront", icon: Waves },
+  { label: "Food", category: "food", icon: Utensils }, { label: "Views", category: "views", icon: Binoculars },
+  { label: "Architecture", category: "architecture", icon: Building2 }, { label: "History", category: "history", icon: Hourglass },
+  { label: "Art", category: "art", icon: Palette }, { label: "Science", category: "science", icon: FlaskConical },
+  { label: "Shows & music", category: "performance", icon: Drama }, { label: "Family", category: "family", icon: Smile },
 ];
 
-const categoryLabel: Record<string, string> = { landmark: "Landmark", museum: "Museum", architecture: "Architecture", park: "Park", waterfront: "Waterfront", food: "Food", history: "History" };
+const categoryLabel: Record<string, string> = { landmark: "Landmark", museum: "Museum", park: "Park", waterfront: "Waterfront", food: "Food", views: "Views", architecture: "Architecture", history: "History", art: "Art", science: "Science", performance: "Shows & music", family: "Family" };
 const HERO_IMAGE = "/images/nyc-hero.jpg";
 const BUDGET_SLIDER_MAX = 1000;
 // Donut palette from the Figma budget card.
 const chartColors = ["#185e56", "#c66230", "#8fc1a9", "#e2be8c", "#5e7c8a", "#0d2940"];
 
-type Screen = "planner" | "loading" | "itinerary" | "adjust" | "changed" | "conflict" | "error" | "profile" | "detail" | "budget" | "sources";
-type Tab = "plan" | "itinerary" | "budget" | "sources";
+type Screen = "planner" | "explore" | "favorites" | "loading" | "itinerary" | "adjust" | "changed" | "conflict" | "error" | "profile" | "detail" | "costs" | "ask";
+type Tab = "plan" | "itinerary" | "explore" | "ask" | "costs";
 type SheetName = "city" | "preferences" | "transport" | "handoff" | "feedback" | "auth" | null;
 type PreferenceKey = "transport" | "walking" | "dining" | "accessibility";
 type AdjustmentAction = "replace" | "shorten" | "budget";
@@ -51,6 +59,7 @@ type PendingAction = { action: AuthReason; request: PlanRequest; itinerary?: Iti
 const PENDING_KEY = "wayly-nyc-pending";
 function readPending(): PendingAction | null { try { const raw = window.sessionStorage.getItem(PENDING_KEY); window.sessionStorage.removeItem(PENDING_KEY); return raw ? JSON.parse(raw) as PendingAction : null; } catch { return null; } }
 function writePending(value: PendingAction) { try { window.sessionStorage.setItem(PENDING_KEY, JSON.stringify(value)); } catch { /* storage unavailable: the user just re-enters inputs */ } }
+function readFavorites(key: string): string[] { if (typeof window === "undefined") return []; try { const saved = JSON.parse(window.localStorage.getItem(key) ?? "[]") as unknown; return Array.isArray(saved) ? saved.filter((id): id is string => typeof id === "string" && publishedPlaces.some((place) => place.id === id)) : []; } catch { return []; } }
 function initialOf(session: SessionState) { if (session.status !== "authed") return null; return (session.user.displayName || session.user.email || "?").trim().charAt(0).toUpperCase(); }
 type PlanResponse = { itinerary?: Itinerary | null; mode?: PlanMode; insufficiencyReason?: string; warning?: string; intentParse?: IntentParse; error?: { message?: string } };
 
@@ -112,15 +121,16 @@ function FloatingButton({ label, onClick, children }: { label: string; onClick: 
 const tabs: Array<{ key: Tab; label: string; icon: typeof MapPin }> = [
   { key: "plan", label: "Plan", icon: MapPin },
   { key: "itinerary", label: "Itinerary", icon: CalendarDays },
-  { key: "budget", label: "Budget", icon: ChartPie },
-  { key: "sources", label: "Sources", icon: MapIcon },
+  { key: "explore", label: "Explore", icon: Search },
+  { key: "ask", label: "Ask Wayly", icon: MessageCircle },
+  { key: "costs", label: "Costs", icon: ChartPie },
 ];
 
 function BottomNav({ active, onNavigate }: { active: Tab | null; onNavigate: (tab: Tab) => void }) {
-  return <nav aria-label="Primary navigation" className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-white/95 pb-[max(10px,env(safe-area-inset-bottom))] pt-2 backdrop-blur">
-    <div className="mx-auto grid max-w-[390px] grid-cols-4 px-2">
-      {tabs.map(({ key, label, icon: Icon }) => { const on = key === active; return <button key={key} type="button" onClick={() => onNavigate(key)} aria-current={on ? "page" : undefined} className={`flex min-h-12 flex-col items-center justify-center gap-1 text-[11px] ${on ? "font-bold text-pine" : "font-medium text-muted-ink"}`}>
-        <span className={`rounded-full px-3.5 py-[3px] ${on ? "bg-sel" : ""}`}><Icon className="size-[22px]" strokeWidth={2} /></span>{label}
+  return <nav aria-label="Primary navigation" className="fixed bottom-0 left-1/2 z-30 w-full max-w-[390px] -translate-x-1/2 border-t border-line bg-white/95 pb-[max(10px,env(safe-area-inset-bottom))] pt-2 backdrop-blur">
+    <div className="mx-auto grid max-w-[390px] grid-cols-5 px-1">
+      {tabs.map(({ key, label, icon: Icon }) => { const on = key === active; const featured = key === "explore"; return <button key={key} type="button" onClick={() => onNavigate(key)} aria-current={on ? "page" : undefined} className={`flex min-h-12 flex-col items-center justify-center gap-1 text-[10px] ${on ? "font-bold text-pine" : "font-medium text-muted-ink"}`}>
+        <span className={featured ? "-mt-5 grid size-11 place-items-center rounded-full bg-pine text-white shadow-cta" : `rounded-full px-2.5 py-[3px] ${on ? "bg-sel" : ""}`}><Icon className="size-[21px]" strokeWidth={2} /></span>{label}
       </button>; })}
     </div>
   </nav>;
@@ -130,7 +140,12 @@ function SectionCard({ children, className = "" }: { children: ReactNode; classN
   return <div className={`rounded-2xl border border-line bg-white ${className}`}>{children}</div>;
 }
 
+// Signed-in users only: guests (and anyone opening a shared link) go to /login first.
 export default function Home() {
+  return <OnboardingGate><RequireAuth><WaylyApp /></RequireAuth></OnboardingGate>;
+}
+
+function WaylyApp() {
   const [screen, setScreen] = useState<Screen>("planner");
   const [request, setRequest] = useState<PlanRequest>(initialRequest);
   const [itinerary, setItinerary] = useState<Itinerary | null>(null);
@@ -156,8 +171,15 @@ export default function Home() {
   const [savedPlans, setSavedPlans] = useState<SavedPlan[] | null>(null);
   const [savingPlan, setSavingPlan] = useState(false);
   const [savedItineraryId, setSavedItineraryId] = useState<string | null>(null);
+  const [favoriteCache, setFavoriteCache] = useState<Record<string, string[]>>({});
+  const [explorePlaceId, setExplorePlaceId] = useState<string | null>(null);
+  const [avatarEmoji, setAvatarEmoji] = useState<string | null>(null);
+  const [planNudge, setPlanNudge] = useState<Tab | null>(null);
+  const [askMessages, setAskMessages] = useState<AskMessage[]>([]);
   const { session, refresh: refreshSession, signOut } = useSession();
-  const avatar = initialOf(session);
+  const favoriteStorageKey = session.status === "authed" ? `wayly-nyc-favorites:${session.user.email ?? "unknown"}` : null;
+  const favoriteIds = favoriteStorageKey ? favoriteCache[favoriteStorageKey] ?? readFavorites(favoriteStorageKey) : [];
+  const avatar = avatarEmoji ?? initialOf(session);
   const resumedRef = useRef(false);
   const controllerRef = useRef<AbortController | null>(null);
   const plannedPlaces = useMemo(() => itinerary?.stops.map((stop) => stop.place) ?? [], [itinerary]);
@@ -204,19 +226,21 @@ export default function Home() {
     if (response?.ok) { setSavedPlans((current) => current?.filter((plan) => plan.id !== id) ?? null); showToast("Plan removed."); } else showToast("That plan couldn't be removed. Try again.");
   };
   const openSavedPlan = (plan: SavedPlan) => { setItinerary(plan.itinerary); setSavedItineraryId(plan.itinerary.id); setMode(plan.planMode); setIntentParse(null); setPreviousItinerary(null); setScreen("itinerary"); };
-  const saveDefaults = async () => {
-    const body: SavedPreferences = { totalBudgetUsd: request.totalBudgetUsd, partySize: request.partySize, interests: request.interests, transportPreference: request.transportPreference, walkingPreference: request.walkingPreference, dining: request.dining };
+  const saveDefaults = async (body: SavedPreferences) => {
     const response = await authFetch("/api/preferences", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }).catch(() => null);
-    showToast(response?.ok ? "Saved as your default trip settings." : "Defaults couldn't be saved. Try again.");
+    if (response?.ok) { setRequest((current) => ({ ...current, ...body })); showToast("Default trip settings saved."); return true; }
+    showToast("Defaults couldn't be saved. Try again."); return false;
   };
-  const renameProfile = async (displayName: string) => {
-    const response = await authFetch("/api/profile", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ displayName }) }).catch(() => null);
-    if (response?.ok) { await refreshSession(); showToast("Name updated."); } else showToast("Name couldn't be updated.");
+  const saveProfile = async (displayName: string, avatarEmoji: string | null) => {
+    const response = await authFetch("/api/profile", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ displayName, avatarEmoji }) }).catch(() => null);
+    if (response?.ok) { setAvatarEmoji(avatarEmoji); await refreshSession(); showToast("Profile updated."); return true; }
+    showToast("Profile couldn't be updated. Try again."); return false;
   };
-  const handleSignOut = async () => { await signOut(); setSavedPlans(null); setSavedItineraryId(null); setScreen("planner"); showToast("Signed out."); };
+  const handleSignOut = async () => { await signOut(); setSavedPlans(null); setSavedItineraryId(null); setAvatarEmoji(null); setPlanNudge(null); setScreen("planner"); showToast("Signed out."); };
 
   // After sign-in: resume what the guest was doing, otherwise prefill saved default trip settings.
   const onSignedIn = useEffectEvent(() => {
+    void authFetch("/api/profile").then((response) => response.ok ? response.json() as Promise<{ profile?: { avatarEmoji?: string | null } }> : null).then((payload) => setAvatarEmoji(payload?.profile?.avatarEmoji ?? null)).catch(() => undefined);
     const pending = readPending();
     if (pending?.action === "plan") { setRequest(pending.request); void generate(pending.request); return; }
     if (pending?.action === "save" && pending.itinerary) {
@@ -235,14 +259,33 @@ export default function Home() {
     resumedRef.current = true;
     onSignedIn();
   }, [session.status]);
-  const openProfile = () => setScreen("profile");
+  const openProfile = () => { setPlanNudge(null); setScreen("profile"); };
+  const toggleFavorite = (id: string) => {
+    if (!favoriteStorageKey) return;
+    const next = favoriteIds.includes(id) ? favoriteIds.filter((item) => item !== id) : [...favoriteIds, id];
+    setFavoriteCache((current) => ({ ...current, [favoriteStorageKey]: next }));
+    try { window.localStorage.setItem(favoriteStorageKey, JSON.stringify(next)); } catch { showToast("Favorites couldn't be saved on this device."); }
+  };
+  const planAroundPlace = (place: NycPlace) => {
+    const category: PlaceCategory = place.interests[0] ?? "landmark";
+    setRequest((current) => ({ ...current, adjustment: undefined, interests: current.interests.includes(category) ? current.interests : [...current.interests, category], intentText: current.intentText.toLowerCase().includes(place.name.toLowerCase()) ? current.intentText : `I'd like to visit ${place.name}. ${current.intentText}`.trim().slice(0, 300) }));
+    setScreen("planner");
+    showToast(`${place.name} added to your trip request. Review it before planning.`);
+  };
 
-  const openAdjustment = () => { if (itinerary) { setTargetStopId(itinerary.stops[0]?.id ?? null); setCandidateId(null); setAdjustmentBudget(request.totalBudgetUsd); setScreen("adjust"); } };
-  const applyAdjustment = () => {
+  const openAdjustment = (action: AdjustmentAction = "replace") => { if (itinerary) { setAdjustmentAction(action); setTargetStopId(itinerary.stops[0]?.id ?? null); setCandidateId(null); setAdjustmentBudget(request.totalBudgetUsd); setScreen("adjust"); } };
+  const runAdjustment = (kind: AdjustmentAction, options: { targetStopId?: string | null; candidateId?: string | null; budget?: number } = {}) => {
     if (!itinerary) return;
-    const durationHours = adjustmentAction === "shorten" ? Math.max(1, hoursFor(request) - 2) : request.durationHours;
-    const next: PlanRequest = { ...request, durationHours, duration: (durationHours ?? hoursFor(request)) > 7 ? "full_day" : "half_day", totalBudgetUsd: adjustmentAction === "budget" ? adjustmentBudget : request.totalBudgetUsd, adjustment: { action: adjustmentAction, itineraryId: itinerary.id, previousPlaceIds: itinerary.stops.map((stop) => stop.placeId), ...(adjustmentAction === "replace" && targetStopId ? { targetStopId } : {}), ...(adjustmentAction === "replace" && candidateId ? { addPlaceIds: [candidateId] } : {}) } };
+    const durationHours = kind === "shorten" ? Math.max(1, hoursFor(request) - 2) : request.durationHours;
+    const next: PlanRequest = { ...request, durationHours, duration: (durationHours ?? hoursFor(request)) > 7 ? "full_day" : "half_day", totalBudgetUsd: kind === "budget" && options.budget !== undefined ? options.budget : request.totalBudgetUsd, adjustment: { action: kind, itineraryId: itinerary.id, previousPlaceIds: itinerary.stops.map((stop) => stop.placeId), ...(kind === "replace" && options.targetStopId ? { targetStopId: options.targetStopId } : {}), ...(kind === "replace" && options.candidateId ? { addPlaceIds: [options.candidateId] } : {}) } };
     setPreviousItinerary(itinerary); setRequest(next); void generate(next, "changed");
+  };
+  const applyAdjustment = () => runAdjustment(adjustmentAction, { targetStopId, candidateId, budget: adjustmentBudget });
+  const applyAskAction = (action: AskAction) => {
+    if (action.type === "replan") { const next: PlanRequest = { ...request, intentText: action.intentText, adjustment: undefined }; setPreviousItinerary(null); setRequest(next); void generate(next); return; }
+    if (action.type === "replace") runAdjustment("replace", { targetStopId: action.targetStopId, candidateId: action.placeId });
+    else if (action.type === "shorten") runAdjustment("shorten");
+    else if (action.type === "budget") runAdjustment("budget", { budget: action.totalBudgetUsd });
   };
   const submitFeedback = async () => {
     if (!itinerary || !feedbackDraft.satisfaction || !feedbackDraft.trust) { showToast("Complete both ratings before submitting."); return; }
@@ -260,26 +303,32 @@ export default function Home() {
     try { await navigator.clipboard.writeText(text); showToast("Route endpoints copied."); } catch { showToast(text); }
   };
   const navigate = (tab: Tab) => {
-    if (tab === "plan") { setScreen("planner"); return; }
-    if (!itinerary) { showToast("Create a plan first — then your route, budget, and sources appear here."); return; }
-    setScreen(tab === "itinerary" ? "itinerary" : tab);
+    if (tab === "plan") { setPlanNudge(null); setScreen("planner"); return; }
+    if (tab === "explore") { setPlanNudge(null); setExplorePlaceId(null); setScreen("explore"); return; }
+    if (tab === "ask") { setPlanNudge(null); setScreen("ask"); return; }
+    if (!itinerary) { setPlanNudge(tab); return; }
+    setPlanNudge(null);
+    setScreen(tab === "itinerary" ? "itinerary" : "costs");
   };
   const openDetail = (index: number, from: Screen) => { setDetailIndex(index); setDetailReturn(from); setScreen("detail"); };
   const openTransport = (segment: TransportSegment) => { setSelectedSegment(segment); setSheet("transport"); };
-  const activeTab: Tab | null = screen === "planner" ? "plan" : screen === "itinerary" || screen === "changed" ? "itinerary" : screen === "budget" ? "budget" : screen === "sources" ? "sources" : null;
-  const showNav = ["planner", "itinerary", "changed", "budget", "sources", "profile"].includes(screen);
+  const activeTab: Tab | null = screen === "planner" ? "plan" : screen === "explore" || screen === "favorites" ? "explore" : screen === "itinerary" || screen === "changed" ? "itinerary" : screen === "costs" ? "costs" : screen === "ask" ? "ask" : null;
+  const showNav = ["planner", "explore", "favorites", "itinerary", "changed", "costs", "ask", "profile"].includes(screen) && !(explorePlaceId && (screen === "explore" || screen === "favorites"));
 
   return <main className="min-h-dvh bg-[#ece6d9] text-ink"><div className="relative mx-auto min-h-dvh max-w-[390px] overflow-x-clip bg-soft shadow-[0_0_40px_rgba(13,41,64,0.08)]">
-    {screen === "planner" && <PlannerScreen request={request} setRequest={setRequest} setDurationHours={setDurationHours} openCity={() => setSheet("city")} openPreference={(key) => { setPreferenceKey(key); setSheet("preferences"); }} onGenerate={() => void generate()} onProfile={openProfile} avatar={avatar} />}
+    {screen === "planner" && <PlannerScreen request={request} setRequest={setRequest} setDurationHours={setDurationHours} openCity={() => setSheet("city")} openPreference={(key) => { setPreferenceKey(key); setSheet("preferences"); }} onGenerate={() => void generate()} onExplore={() => { setExplorePlaceId(null); setScreen("explore"); }} onExplorePlace={(id) => { setExplorePlaceId(id); setScreen("explore"); }} onProfile={openProfile} avatar={avatar} />}
+    {(screen === "explore" || screen === "favorites") && <NycExplore key={screen} favoriteIds={favoriteIds} favoritesOnly={screen === "favorites"} selectedPlaceId={explorePlaceId} avatar={avatar} onSelectPlace={setExplorePlaceId} onToggleFavorite={toggleFavorite} onOpenFavorites={() => { setExplorePlaceId(null); setScreen("favorites"); }} onShowAll={() => { setExplorePlaceId(null); setScreen("explore"); }} onProfile={openProfile} onPlanAround={planAroundPlace} />}
     {screen === "loading" && <LoadingScreen request={request} onCancel={() => { controllerRef.current?.abort(); setScreen("planner"); showToast("Planning cancelled. Your inputs were kept."); }} />}
     {(screen === "itinerary" || screen === "changed") && itinerary && <ItineraryScreen itinerary={itinerary} previousItinerary={screen === "changed" ? previousItinerary : null} plannedPlaces={plannedPlaces} mode={mode} intentParse={intentParse} request={request} selectedTransport={selectedTransport} onBack={() => setScreen("planner")} onOpenDetail={(index) => openDetail(index, screen)} onOpenTransport={openTransport} onAdjust={openAdjustment} onSave={() => void savePlan()} saved={savedItineraryId === itinerary.id} saving={savingPlan} onFeedback={() => setSheet("feedback")} onClearChange={() => { setPreviousItinerary(null); setScreen("itinerary"); }} showToast={showToast} />}
     {screen === "detail" && itinerary && itinerary.stops[detailIndex] && <StopDetailScreen itinerary={itinerary} index={detailIndex} selectedTransport={selectedTransport} onBack={() => setScreen(detailReturn)} onSave={() => void savePlan()} onOpenTransport={openTransport} showToast={showToast} />}
-    {(screen === "budget" || screen === "sources") && <BudgetSourcesScreen itinerary={itinerary} request={request} focus={screen} avatar={avatar} onProfile={openProfile} onPlan={() => setScreen("planner")} onOpenDetail={(index) => openDetail(index, screen)} />}
+    {screen === "costs" && <BudgetSourcesScreen itinerary={itinerary} request={request} focus="budget" avatar={avatar} onProfile={openProfile} onPlan={() => setScreen("planner")} onOpenDetail={(index) => openDetail(index, screen)} />}
+    {screen === "ask" && <AskWaylyScreen itinerary={itinerary} request={request} messages={askMessages} setMessages={setAskMessages} onApply={applyAskAction} onPlan={() => setScreen("planner")} />}
     {screen === "adjust" && itinerary && <AdjustmentScreen itinerary={itinerary} request={request} action={adjustmentAction} targetStopId={targetStopId} candidateId={candidateId} budget={adjustmentBudget} onBack={() => setScreen("itinerary")} onAction={setAdjustmentAction} onTarget={(value) => { setTargetStopId(value); setCandidateId(null); }} onCandidate={setCandidateId} onBudget={setAdjustmentBudget} onSubmit={applyAdjustment} />}
     {screen === "conflict" && <ConstraintScreen message={message ?? "These constraints cannot produce a reliable route."} request={request} onEdit={() => setScreen("planner")} onRelax={() => { setRequest((current) => ({ ...current, totalBudgetUsd: Math.min(10_000, current.totalBudgetUsd + 25), accessibility: false, dining: current.dining === "vegetarian" ? "no_preference" : current.dining })); setScreen("planner"); }} />}
     {screen === "error" && <ErrorScreen message={message ?? "The service is temporarily unavailable."} onRetry={() => void generate()} onEdit={() => setScreen("planner")} />}
-    {screen === "profile" && <ProfileScreen session={session} request={request} savedPlans={savedPlans} onLoadPlans={loadSavedPlans} onBack={() => setScreen("planner")} onOpenPlan={openSavedPlan} onDeletePlan={(id) => void deleteSavedPlan(id)} onSaveDefaults={() => void saveDefaults()} onRename={(name) => void renameProfile(name)} onSignOut={() => void handleSignOut()} />}
+    {screen === "profile" && <ProfileScreen session={session} avatar={avatar} request={request} savedPlans={savedPlans} favoriteCount={favoriteIds.length} onOpenFavorites={() => { setExplorePlaceId(null); setScreen("favorites"); }} onLoadPlans={loadSavedPlans} onBack={() => setScreen("planner")} onOpenPlan={openSavedPlan} onDeletePlan={(id) => void deleteSavedPlan(id)} onSaveDefaults={saveDefaults} onSaveProfile={saveProfile} onSignOut={() => void handleSignOut()} />}
     {showNav && <BottomNav active={activeTab} onNavigate={navigate} />}
+    {planNudge && <aside key={planNudge} aria-live="polite" className="wayly-nudge fixed bottom-[86px] left-1/2 z-40 w-[calc(100%-32px)] max-w-[358px] rounded-[22px] border border-line bg-white p-4 shadow-sheet"><div className="flex items-start gap-3"><span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-sel text-pine"><Sparkles className="size-5" /></span><div className="flex-1"><strong className="block text-sm font-extrabold">Start with a plan ✨</strong><p className="mt-1 text-xs leading-5 text-muted-ink">Create a plan first, then your {planNudge === "itinerary" ? "itinerary" : "costs and sources"} will appear here.</p></div><button type="button" onClick={() => setPlanNudge(null)} aria-label="Dismiss prompt" className="text-lg leading-5 text-muted-ink">×</button></div><button type="button" onClick={() => { setPlanNudge(null); setScreen("planner"); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="mt-3 h-10 w-full rounded-xl bg-pine text-sm font-bold text-white">Create a plan</button></aside>}
   </div>
   <OverlaySheets sheet={sheet} setSheet={setSheet} request={request} setRequest={setRequest} preferenceKey={preferenceKey} selectedSegment={selectedSegment} itinerary={itinerary} selectedTransport={selectedTransport} setSelectedTransport={setSelectedTransport} handoffProvider={handoffProvider} setHandoffProvider={setHandoffProvider} feedbackDraft={feedbackDraft} setFeedbackDraft={setFeedbackDraft} feedbackSubmitting={feedbackSubmitting} submitFeedback={submitFeedback} copyHandoff={copyHandoff} authReason={authReason} authDisabled={session.status === "disabled"} />
   {toast && <output aria-live="polite" className="fixed inset-x-5 bottom-28 z-[60] mx-auto max-w-[350px] rounded-2xl bg-ink px-4 py-3 text-center text-sm text-white shadow-xl">{toast}</output>}
@@ -299,8 +348,7 @@ function AvatarBubble({ avatar, onClick, className }: { avatar: string | null; o
   return <button type="button" onClick={onClick} aria-label="Open profile" className={`grid place-items-center rounded-full ${avatar ? "bg-pine text-[15px] font-extrabold text-white" : "bg-white/90 text-pine"} ${className}`}>{avatar ?? <UserRound className="size-[18px]" />}</button>;
 }
 
-function PlannerScreen({ request, setRequest, setDurationHours, openCity, openPreference, onGenerate, onProfile, avatar }: { request: PlanRequest; setRequest: Dispatch<SetStateAction<PlanRequest>>; setDurationHours: (value: number) => void; openCity: () => void; openPreference: (key: PreferenceKey) => void; onGenerate: () => void; onProfile: () => void; avatar: string | null }) {
-  const toggleShortcut = (category: PlaceCategory) => setRequest((current) => ({ ...current, interests: current.interests.includes(category) ? current.interests.length > 1 ? current.interests.filter((item) => item !== category) : current.interests : [...current.interests, category] }));
+function PlannerScreen({ request, setRequest, setDurationHours, openCity, openPreference, onGenerate, onExplore, onExplorePlace, onProfile, avatar }: { request: PlanRequest; setRequest: Dispatch<SetStateAction<PlanRequest>>; setDurationHours: (value: number) => void; openCity: () => void; openPreference: (key: PreferenceKey) => void; onGenerate: () => void; onExplore: () => void; onExplorePlace: (id: string) => void; onProfile: () => void; avatar: string | null }) {
   const fill = `${Math.min(100, (request.totalBudgetUsd / BUDGET_SLIDER_MAX) * 100)}%`;
   return <div className="pb-28">
     {/* Hero — city photo comes from city config; swap per city */}
@@ -344,14 +392,9 @@ function PlannerScreen({ request, setRequest, setDurationHours, openCity, openPr
         <div className="flex justify-between text-[11px] font-medium text-muted-ink"><span>$0</span><span>$250</span><span>$500</span><span>$750</span><span>$1,000+</span></div>
       </SectionCard>
 
-      <div>
-        <div className="flex items-center justify-between"><h2 className="text-sm font-bold text-ink">Interests</h2><span className="text-xs font-medium text-muted-ink">Pick one or more</span></div>
-        <div className="mt-2.5 flex flex-wrap gap-2">{shortcuts.map(({ label, category, icon: Icon }) => { const active = request.interests.includes(category); return <button key={label} type="button" onClick={() => toggleShortcut(category)} aria-pressed={active} className={`inline-flex min-h-9 items-center gap-1.5 rounded-full px-3 text-[13px] font-semibold ${active ? "bg-pine text-white" : "border border-line bg-white text-ink"}`}><Icon className="size-[15px]" />{label}</button>; })}</div>
-      </div>
-
       <SectionCard className="p-3.5">
         <label className="flex items-center gap-1.5 text-[13px] font-bold text-ink" htmlFor="trip-intent"><Sparkles className="size-4 text-pine" />Anything specific?</label>
-        <textarea id="trip-intent" aria-label="Trip request" value={request.intentText} onChange={(event) => setRequest((current) => ({ ...current, intentText: event.target.value.slice(0, 300) }))} maxLength={300} placeholder="e.g. classic architecture, a relaxed museum, views by the water" className="mt-2 h-14 w-full resize-none bg-transparent text-[13px] leading-5 text-ink outline-none placeholder:text-[#a7b3b9]" />
+        <HashtagInput id="trip-intent" value={request.intentText} onChange={(intentText) => setRequest((current) => ({ ...current, intentText }))} maxLength={300} placeholder="e.g. #history #food — a relaxed afternoon near the water" />
         <p className="text-right text-[10px] text-muted-ink">{request.intentText.length} / 300</p>
       </SectionCard>
 
@@ -359,13 +402,15 @@ function PlannerScreen({ request, setRequest, setDurationHours, openCity, openPr
 
       <Button size="lg" onClick={onGenerate} className="h-14 w-full rounded-[18px] bg-pine text-base font-bold shadow-cta hover:bg-pine-dark"><Sparkles className="size-[18px]" />Create my plan</Button>
       <p className="flex items-center justify-center gap-1.5 text-xs font-medium text-muted-ink"><ShieldCheck className="size-3.5 text-pine" />Every stop is curated and source-linked</p>
+
+      <div className="pt-5"><div className="mb-3 flex items-end justify-between"><div><p className="text-[11px] font-bold uppercase tracking-[0.1em] text-rust">Looking for ideas?</p><h2 className="mt-0.5 text-[19px] font-extrabold text-ink">Explore NYC places</h2></div><button type="button" onClick={onExplore} className="flex items-center gap-1 text-xs font-bold text-pine">View all<ChevronRight className="size-4" /></button></div><div className="flex gap-3 overflow-x-auto pb-2">{publishedPlaces.slice(0, 4).map((place) => <button key={place.id} type="button" onClick={() => onExplorePlace(place.id)} className="w-[156px] shrink-0 overflow-hidden rounded-[20px] border border-line bg-white text-left shadow-card"><PlaceImage place={place} width={320} className="relative h-[112px] w-full" /><span className="block px-3 py-2.5"><strong className="line-clamp-2 min-h-10 text-[13px] font-bold leading-5 text-ink">{place.name}</strong><span className="mt-1 flex items-center gap-1 truncate text-[11px] text-muted-ink"><MapPin className="size-3 shrink-0" />{place.neighborhood}</span></span></button>)}</div></div>
     </section>
   </div>;
 }
 
 /* ---------- 02 — Itinerary (Figma: 02 — Itinerary) ---------- */
 
-function ItineraryScreen({ itinerary, previousItinerary, plannedPlaces, mode, intentParse, request, selectedTransport, onBack, onOpenDetail, onOpenTransport, onAdjust, onSave, saved, saving, onFeedback, onClearChange, showToast }: { itinerary: Itinerary; previousItinerary: Itinerary | null; plannedPlaces: NycPlace[]; mode: PlanMode | null; intentParse: IntentParse | null; request: PlanRequest; selectedTransport: Record<string, TransportMode>; onBack: () => void; onOpenDetail: (index: number) => void; onOpenTransport: (segment: TransportSegment) => void; onAdjust: () => void; onSave: () => void; saved: boolean; saving: boolean; onFeedback: () => void; onClearChange: () => void; showToast: (value: string) => void }) {
+function ItineraryScreen({ itinerary, previousItinerary, plannedPlaces, mode, intentParse, request, selectedTransport, onBack, onOpenDetail, onOpenTransport, onAdjust, onSave, saved, saving, onFeedback, onClearChange, showToast }: { itinerary: Itinerary; previousItinerary: Itinerary | null; plannedPlaces: NycPlace[]; mode: PlanMode | null; intentParse: IntentParse | null; request: PlanRequest; selectedTransport: Record<string, TransportMode>; onBack: () => void; onOpenDetail: (index: number) => void; onOpenTransport: (segment: TransportSegment) => void; onAdjust: (action?: AdjustmentAction) => void; onSave: () => void; saved: boolean; saving: boolean; onFeedback: () => void; onClearChange: () => void; showToast: (value: string) => void }) {
   const previousIds = new Set(previousItinerary?.stops.map((stop) => stop.placeId) ?? []);
   return <div className="pb-28">
     {/* Live map (Leaflet) sits behind the sheet */}
@@ -383,7 +428,7 @@ function ItineraryScreen({ itinerary, previousItinerary, plannedPlaces, mode, in
       {previousItinerary && <div className="mt-4 rounded-2xl border border-pine/25 bg-sel p-3.5"><p className="flex items-center gap-1.5 text-sm font-bold text-pine"><Check className="size-4" />Your itinerary was updated</p><p className="mt-1 text-xs leading-5 text-[#4a6b63]">Highlighted stops changed; unaffected stops are kept when possible.</p><button type="button" onClick={onClearChange} className="mt-2 text-xs font-bold text-pine">Dismiss</button></div>}
       <div className="mt-4 flex items-start justify-between gap-3">
         <div><p className="text-[11px] font-bold tracking-[0.08em] text-rust">YOUR ROUTE · {formatShortDate(request.date).toUpperCase()}</p><h1 className="mt-0.5 text-2xl font-extrabold tracking-[-0.02em] text-ink">Your day in NYC</h1></div>
-        <button type="button" onClick={onAdjust} className="inline-flex min-h-9 items-center gap-1.5 rounded-full bg-sel px-3 text-[13px] font-bold text-pine"><Pencil className="size-3.5" />Edit</button>
+        <button type="button" onClick={() => onAdjust("replace")} className="inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-full bg-pine px-3.5 text-[13px] font-bold text-white shadow-cta"><SlidersHorizontal className="size-4" />Adjust route</button>
       </div>
       <div className="mt-2.5 flex flex-wrap gap-1.5">
         {mode === "ai_structured"
@@ -394,9 +439,12 @@ function ItineraryScreen({ itinerary, previousItinerary, plannedPlaces, mode, in
       </div>
       {intentParse && intentParse.detectedSignals.length > 0 && <p className="mt-2 text-xs leading-5 text-muted-ink">{intentParse.note}</p>}
       <div className="mt-3.5 grid grid-cols-3 gap-2">
-        <Stat icon={MapPin} value={`${itinerary.stops.length} stops`} />
-        <Stat icon={Clock3} value={`${hoursFor(request)} hours`} />
-        <Stat icon={WalletCards} value={`$${itinerary.estimatedTotalSpendUsd.max} / $${request.totalBudgetUsd}`} />
+        <Stat icon={MapPin} value={`${itinerary.stops.length} stops`} onClick={() => onAdjust("replace")} label="Swap a stop" />
+        <Stat icon={Clock3} value={`${hoursFor(request)} hours`} onClick={() => onAdjust("shorten")} label="Shorten the day" />
+        <Stat icon={WalletCards} value={`$${itinerary.estimatedTotalSpendUsd.max} / $${request.totalBudgetUsd}`} onClick={() => onAdjust("budget")} label="Change the budget" />
+      </div>
+      <div className="mt-2 grid grid-cols-3 gap-2" aria-label="Adjust this route">
+        {([{ action: "replace", label: "Swap a stop", icon: RefreshCw }, { action: "shorten", label: "Shorter day", icon: Clock3 }, { action: "budget", label: "Change budget", icon: WalletCards }] as const).map(({ action, label, icon: Icon }) => <button key={action} type="button" onClick={() => onAdjust(action)} className="inline-flex min-h-9 items-center justify-center gap-1 rounded-full bg-sel px-2 text-[12px] font-bold text-pine"><Icon className="size-3.5 shrink-0" />{label}</button>)}
       </div>
 
       <div className="mt-3.5">{itinerary.stops.map((stop, index) => { const place = stop.place; const changed = Boolean(previousItinerary && !previousIds.has(stop.placeId)); const segment = itinerary.transportSegments[index]; return <div key={stop.id}>
@@ -410,8 +458,10 @@ function ItineraryScreen({ itinerary, previousItinerary, plannedPlaces, mode, in
   </div>;
 }
 
-function Stat({ icon: Icon, value }: { icon: typeof MapPin; value: string }) {
-  return <span className="flex min-h-9 items-center justify-center gap-1.5 rounded-xl border border-line bg-white px-2 text-xs font-bold text-ink"><Icon className="size-3.5 shrink-0 text-pine" /><span className="truncate">{value}</span></span>;
+function Stat({ icon: Icon, value, onClick, label }: { icon: typeof MapPin; value: string; onClick?: () => void; label?: string }) {
+  const body = <><Icon className="size-3.5 shrink-0 text-pine" /><span className="truncate">{value}</span></>;
+  const style = "flex min-h-9 items-center justify-center gap-1.5 rounded-xl border border-line bg-white px-2 text-xs font-bold text-ink";
+  return onClick ? <button type="button" onClick={onClick} aria-label={label ? `${value} — ${label}` : value} className={`${style} transition hover:border-pine active:bg-sel`}>{body}</button> : <span className={style}>{body}</span>;
 }
 
 function StopRow({ stop, place, index, highlighted, changed, onClick }: { stop: ItineraryStop; place: NycPlace; index: number; highlighted: boolean; changed: boolean; onClick: () => void }) {
@@ -495,7 +545,7 @@ function Fact({ icon: Icon, value, label }: { icon: typeof MapPin; value: string
 function BudgetSourcesScreen({ itinerary, request, focus, avatar, onProfile, onPlan, onOpenDetail }: { itinerary: Itinerary | null; request: PlanRequest; focus: "budget" | "sources"; avatar: string | null; onProfile: () => void; onPlan: () => void; onOpenDetail: (index: number) => void }) {
   const sourcesRef = useRef<HTMLDivElement>(null);
   useEffect(() => { if (focus === "sources") sourcesRef.current?.scrollIntoView({ block: "start" }); }, [focus]);
-  const header = <div className="flex items-end justify-between px-5 pt-[max(18px,env(safe-area-inset-top))]"><div><p className="text-[13px] font-semibold text-muted-ink">{formatShortDate(request.date)} · {request.partySize} {request.partySize === 1 ? "adult" : "adults"}</p><h1 className="text-[30px] font-extrabold tracking-[-0.02em] text-ink">Budget & sources</h1></div><AvatarBubble avatar={avatar} onClick={onProfile} className={`mb-1 size-[38px] ${avatar ? "" : "!bg-sel"}`} /></div>;
+  const header = <div className="flex items-end justify-between px-5 pt-[max(18px,env(safe-area-inset-top))]"><div><p className="text-[13px] font-semibold text-muted-ink">{formatShortDate(request.date)} · {request.partySize} {request.partySize === 1 ? "adult" : "adults"}</p><h1 className="text-[30px] font-extrabold tracking-[-0.02em] text-ink">Costs & sources</h1></div><AvatarBubble avatar={avatar} onClick={onProfile} className={`mb-1 size-[38px] ${avatar ? "" : "!bg-sel"}`} /></div>;
   if (!itinerary) return <div className="pb-28">{header}<div className="mx-5 mt-6 rounded-3xl bg-white p-6 text-center shadow-card"><div className="mx-auto grid size-14 place-items-center rounded-2xl bg-sel text-pine"><ChartPie className="size-7" /></div><p className="mt-4 text-base font-bold text-ink">No plan yet</p><p className="mt-1 text-sm leading-6 text-muted-ink">Create a plan to see its budget breakdown and every linked source.</p><Button onClick={onPlan} className="mt-4 h-11 rounded-2xl bg-pine px-5 hover:bg-pine-dark"><Sparkles />Create my plan</Button></div></div>;
 
   const transportCost = itinerary.transportSegments.reduce((total, segment) => total + (segment.estimatedCostUsd ? (segment.estimatedCostUsd.min + segment.estimatedCostUsd.max) / 2 : 0), 0);
@@ -556,9 +606,8 @@ function AdjustmentScreen({ itinerary, request, action, targetStopId, candidateI
 
 function ConstraintScreen({ message, request, onEdit, onRelax }: { message: string; request: PlanRequest; onEdit: () => void; onRelax: () => void }) { return <div className="flex min-h-dvh flex-col bg-[#fffdf8]"><AppHeader onBack={onEdit} title="Adjust constraints" /><div className="flex flex-1 flex-col justify-center px-6 pb-20"><div className="grid size-14 place-items-center rounded-2xl bg-[#fff0d9] text-[#b45309]"><AlertTriangle className="size-7" /></div><h1 className="mt-5 text-xl font-bold text-[#0d2940]">These constraints conflict</h1><p className="mt-2 text-sm leading-6 text-[#58707c]">{message}</p><div className="mt-6 rounded-2xl bg-white p-4"><p className="text-xs font-semibold text-[#3e5563]">Practical next steps</p><ul className="mt-3 space-y-3 text-xs leading-5 text-[#58707c]"><li>· Increase the total budget or reduce the party size</li><li>· Reduce the number of places within the available time</li><li>· Relax preferences where current source evidence is limited</li></ul><p className="mt-3 text-[10px] text-[#8a9aa3]">Current: {hoursFor(request)} hours · ${request.totalBudgetUsd} total budget</p></div></div><div className="space-y-2 px-5 pb-[max(24px,env(safe-area-inset-bottom))]"><Button size="lg" onClick={onRelax} className="h-12 w-full rounded-2xl bg-[#185e56] hover:bg-[#124a45]">Apply a relaxed suggestion</Button><Button variant="ghost" onClick={onEdit} className="h-11 w-full rounded-xl text-[#58707c]">Edit inputs</Button></div></div>; }
 function ErrorScreen({ message, onRetry, onEdit }: { message: string; onRetry: () => void; onEdit: () => void }) { return <div className="flex min-h-dvh flex-col bg-[#fffdfd]"><AppHeader onBack={onEdit} title="Something went wrong" /><div className="flex flex-1 flex-col justify-center px-6 pb-20"><div className="grid size-14 place-items-center rounded-2xl bg-[#fff0f0] text-[#b42318]"><CircleAlert className="size-7" /></div><h1 className="mt-5 text-xl font-bold text-[#0d2940]">Planning is unavailable</h1><p className="mt-2 text-sm leading-6 text-[#58707c]">{message}</p></div><div className="space-y-2 px-5 pb-[max(24px,env(safe-area-inset-bottom))]"><Button size="lg" onClick={onRetry} className="h-12 w-full rounded-2xl bg-[#185e56] hover:bg-[#124a45]">Try again</Button><Button variant="ghost" onClick={onEdit} className="h-11 w-full rounded-xl text-[#58707c]">Edit inputs</Button></div></div>; }
-function ProfileScreen({ session, request, savedPlans, onLoadPlans, onBack, onOpenPlan, onDeletePlan, onSaveDefaults, onRename, onSignOut }: { session: SessionState; request: PlanRequest; savedPlans: SavedPlan[] | null; onLoadPlans: () => void; onBack: () => void; onOpenPlan: (plan: SavedPlan) => void; onDeletePlan: (id: string) => void; onSaveDefaults: () => void; onRename: (name: string) => void; onSignOut: () => void }) {
-  const [editing, setEditing] = useState(false);
-  const [name, setName] = useState("");
+function ProfileScreen({ session, avatar, request, savedPlans, favoriteCount, onOpenFavorites, onLoadPlans, onBack, onOpenPlan, onDeletePlan, onSaveDefaults, onSaveProfile, onSignOut }: { session: SessionState; avatar: string | null; request: PlanRequest; savedPlans: SavedPlan[] | null; favoriteCount: number; onOpenFavorites: () => void; onLoadPlans: () => void; onBack: () => void; onOpenPlan: (plan: SavedPlan) => void; onDeletePlan: (id: string) => void; onSaveDefaults: (value: SavedPreferences) => Promise<boolean>; onSaveProfile: (name: string, emoji: string | null) => Promise<boolean>; onSignOut: () => void }) {
+  const [editorOpen, setEditorOpen] = useState(false);
   const authed = session.status === "authed";
   const needPlans = authed && savedPlans === null;
   useEffect(() => { if (needPlans) onLoadPlans(); }, [needPlans, onLoadPlans]);
@@ -582,19 +631,20 @@ function ProfileScreen({ session, request, savedPlans, onLoadPlans, onBack, onOp
   const display = user.displayName || user.email?.split("@")[0] || "Traveler";
   return <><AppHeader onBack={onBack} title="Profile" /><section className="space-y-4 px-5 pb-32 pt-3">
     <div className="flex items-center gap-3.5 rounded-3xl bg-white p-4 shadow-card">
-      <span className="grid size-14 shrink-0 place-items-center rounded-full bg-pine text-xl font-extrabold text-white">{display.charAt(0).toUpperCase()}</span>
+      <span className="grid size-14 shrink-0 place-items-center rounded-full bg-pine text-xl font-extrabold text-white">{avatar ?? display.charAt(0).toUpperCase()}</span>
       <div className="min-w-0 flex-1">
-        {editing
-          ? <form onSubmit={(event) => { event.preventDefault(); const value = name.trim(); if (value) { onRename(value); setEditing(false); } }} className="flex items-center gap-1.5"><input value={name} maxLength={24} onChange={(event) => setName(event.target.value)} aria-label="Display name" className="h-9 min-w-0 flex-1 rounded-xl border border-line px-2.5 text-sm font-bold outline-none focus:border-pine" /><button type="submit" aria-label="Save name" className="grid size-9 place-items-center rounded-xl bg-pine text-white"><Check className="size-4" /></button></form>
-          : <p className="flex items-center gap-1.5"><strong className="truncate text-[17px] font-extrabold text-ink">{display}</strong><button type="button" aria-label="Edit name" onClick={() => { setName(user.displayName ?? ""); setEditing(true); }} className="grid size-7 place-items-center rounded-full text-muted-ink hover:bg-sel"><Pencil className="size-3.5" /></button></p>}
+        <p className="truncate text-[17px] font-extrabold text-ink">{display}</p>
         <p className="mt-0.5 truncate text-xs font-medium text-muted-ink">{user.email}</p>
       </div>
+      <button type="button" onClick={() => setEditorOpen(true)} aria-label="Edit profile" className="grid size-9 place-items-center rounded-full bg-sel text-pine"><Pencil className="size-4" /></button>
     </div>
+
+    <button type="button" onClick={onOpenFavorites} className="flex w-full items-center gap-3 rounded-2xl border border-line bg-white p-3.5 text-left shadow-card"><span className="grid size-10 place-items-center rounded-xl bg-sel text-pine"><Bookmark className="size-5" /></span><span className="min-w-0 flex-1"><strong className="block text-sm font-bold text-ink">Favorite places</strong><span className="mt-0.5 block text-xs text-muted-ink">{favoriteCount} saved on this device</span></span><ChevronRight className="size-4 text-muted-ink" /></button>
 
     <SectionCard className="p-3.5">
       <p className="flex items-center gap-1.5 text-[13px] font-bold text-ink"><WalletCards className="size-4 text-pine" />Default trip settings</p>
-      <p className="mt-1.5 text-xs leading-5 text-muted-ink">${request.totalBudgetUsd} total · {request.partySize} {request.partySize === 1 ? "traveler" : "travelers"} · {request.interests.map((item) => categoryLabel[item] ?? item).join(", ")} · {preferenceText(request, "walking")} pace</p>
-      <Button variant="outline" onClick={onSaveDefaults} className="mt-2.5 h-10 w-full rounded-xl border-line bg-sel text-pine">Save current settings as default</Button>
+      <p className="mt-1.5 text-xs leading-5 text-muted-ink">${request.totalBudgetUsd} total · {request.partySize} {request.partySize === 1 ? "traveler" : "travelers"} · {effectiveInterests(request.intentText, request.interests).map((item) => categoryLabel[item] ?? item).join(", ")} · {preferenceText(request, "walking")} pace</p>
+      <Button variant="outline" onClick={() => setEditorOpen(true)} className="mt-2.5 h-10 w-full rounded-xl border-line bg-sel text-pine">Edit profile and defaults</Button>
     </SectionCard>
 
     <div>
@@ -610,8 +660,21 @@ function ProfileScreen({ session, request, savedPlans, onLoadPlans, onBack, onOp
         </div>; })}</div>}
     </div>
 
+    <button type="button" onClick={replayOnboarding} className="w-full py-2 text-center text-xs font-semibold text-pine">View app introduction</button>
     <Button variant="outline" onClick={onSignOut} className="h-12 w-full rounded-2xl border-line bg-white text-rust"><LogOut />Sign out</Button>
-  </section></>;
+  </section>{editorOpen && <ProfileEditor session={session} avatar={avatar} request={request} onClose={() => setEditorOpen(false)} onSaveDefaults={onSaveDefaults} onSaveProfile={onSaveProfile} />}</>;
+}
+
+const avatarChoices = ["🧭", "🗽", "🌆", "🎨", "🌿", "🍽️"] as const;
+function ProfileEditor({ session, avatar, request, onClose, onSaveDefaults, onSaveProfile }: { session: Extract<SessionState, { status: "authed" }>; avatar: string | null; request: PlanRequest; onClose: () => void; onSaveDefaults: (value: SavedPreferences) => Promise<boolean>; onSaveProfile: (name: string, emoji: string | null) => Promise<boolean> }) {
+  const [name, setName] = useState(session.user.displayName || session.user.email?.split("@")[0] || "");
+  const [emoji, setEmoji] = useState<string | null>(avatarChoices.includes(avatar as typeof avatarChoices[number]) ? avatar : null);
+  const [draft, setDraft] = useState<SavedPreferences>({ totalBudgetUsd: request.totalBudgetUsd, partySize: request.partySize, interests: request.interests, transportPreference: request.transportPreference, walkingPreference: request.walkingPreference, dining: request.dining });
+  const [saving, setSaving] = useState<"profile" | "defaults" | null>(null);
+  return <Sheet open onOpenChange={(open) => !open && onClose()}><SheetContent side="bottom" className="mx-auto max-h-[92dvh] max-w-[390px] overflow-y-auto rounded-t-[28px] bg-soft"><SheetHeader className="px-5 pt-6"><SheetTitle>Edit profile</SheetTitle><SheetDescription>Choose how you appear and save your usual trip settings.</SheetDescription></SheetHeader><div className="space-y-5 px-5 pb-8">
+    <div className="rounded-2xl border border-line bg-white p-4"><label className="block text-xs font-bold text-ink">Display name<input value={name} maxLength={24} onChange={(event) => setName(event.target.value)} className="mt-2 h-11 w-full rounded-xl border border-line px-3 text-sm font-medium outline-none focus:border-pine" /></label><p className="mt-3 text-xs font-bold text-ink">Choose an avatar</p><div className="mt-2 flex flex-wrap gap-2">{avatarChoices.map((choice) => <button key={choice} type="button" onClick={() => setEmoji(choice)} aria-label={`Avatar ${choice}`} aria-pressed={emoji === choice} className={`grid size-11 place-items-center rounded-full border text-xl ${emoji === choice ? "border-pine bg-sel" : "border-line bg-white"}`}>{choice}</button>)}<button type="button" onClick={() => setEmoji(null)} aria-label="Use name initial" aria-pressed={emoji === null} className={`grid size-11 place-items-center rounded-full border text-xs font-bold ${emoji === null ? "border-pine bg-sel text-pine" : "border-line text-muted-ink"}`}>A</button></div><p className="mt-3 text-[11px] text-muted-ink">Sign-in email: {session.user.email}</p><Button disabled={saving !== null || !name.trim()} onClick={async () => { setSaving("profile"); try { await onSaveProfile(name.trim(), emoji); } finally { setSaving(null); } }} className="mt-4 h-10 w-full rounded-xl bg-pine text-white">{saving === "profile" ? "Saving…" : "Save profile"}</Button></div>
+    <div className="rounded-2xl border border-line bg-white p-4"><h3 className="text-sm font-extrabold text-ink">Default trip settings</h3><div className="mt-4 grid grid-cols-2 gap-3"><label className="text-xs font-bold text-ink">Budget (USD)<input type="number" min={0} max={10000} value={draft.totalBudgetUsd} onChange={(event) => setDraft((current) => ({ ...current, totalBudgetUsd: clampNumber(event.target.value, 0, 10000, current.totalBudgetUsd) }))} className="mt-2 h-11 w-full rounded-xl border border-line px-3 text-sm outline-none focus:border-pine" /></label><label className="text-xs font-bold text-ink">Travelers<input type="number" min={1} max={8} value={draft.partySize} onChange={(event) => setDraft((current) => ({ ...current, partySize: clampNumber(event.target.value, 1, 8, current.partySize) }))} className="mt-2 h-11 w-full rounded-xl border border-line px-3 text-sm outline-none focus:border-pine" /></label></div><p className="mt-4 text-xs font-bold text-ink">Interests</p><div className="mt-2 flex flex-wrap gap-2">{shortcuts.map(({ category, label }) => { const selected = draft.interests.includes(category); return <button key={category} type="button" aria-pressed={selected} onClick={() => setDraft((current) => ({ ...current, interests: selected ? current.interests.filter((item) => item !== category) : [...current.interests, category] }))} className={`rounded-full border px-3 py-2 text-xs font-semibold ${selected ? "border-pine bg-sel text-pine" : "border-line text-muted-ink"}`}>{label}</button>; })}</div>{([{ key: "transportPreference", label: "Getting around", options: preferences.transport.options }, { key: "walkingPreference", label: "Walking pace", options: preferences.walking.options }, { key: "dining", label: "Dining", options: preferences.dining.options }] as const).map(({ key, label, options }) => <label key={key} className="mt-4 block text-xs font-bold text-ink">{label}<select value={draft[key]} onChange={(event) => setDraft((current) => ({ ...current, [key]: event.target.value }))} className="mt-2 h-11 w-full rounded-xl border border-line bg-white px-3 text-sm font-medium outline-none focus:border-pine">{options.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label>)}<Button disabled={saving !== null || draft.interests.length === 0} onClick={async () => { setSaving("defaults"); try { await onSaveDefaults(draft); } finally { setSaving(null); } }} className="mt-5 h-10 w-full rounded-xl bg-pine text-white">{saving === "defaults" ? "Saving…" : "Save trip defaults"}</Button>{draft.interests.length === 0 && <p className="mt-2 text-xs text-rust">Choose at least one interest.</p>}</div>
+  </div></SheetContent></Sheet>;
 }
 function ScoreGroup({ label, value, onChange }: { label: string; value: number; onChange: (value: number) => void }) { return <div><p className="text-xs font-semibold text-[#3e5563]">{label}</p><div className="mt-2 flex gap-1">{[1, 2, 3, 4, 5].map((score) => <button key={score} type="button" onClick={() => onChange(score)} aria-label={`${label}: ${score} out of 5`} className={`grid size-9 place-items-center rounded-lg ${score <= value ? "text-[#e4a72d]" : "text-[#d9dde3]"}`}><Star className="size-6" fill="currentColor" /></button>)}</div></div>; }
 

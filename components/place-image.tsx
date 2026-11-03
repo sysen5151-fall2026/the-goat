@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Building2, Landmark, Leaf, MapPin, Palette, Utensils, Waves } from "lucide-react";
+import { Binoculars, Building2, Drama, FlaskConical, Hourglass, Landmark, Leaf, Library, MapPin, Palette, Smile, Utensils, Waves } from "lucide-react";
 import type { NycPlace } from "@/lib/nyc-types";
 
 /**
@@ -36,7 +36,13 @@ function wikiImage(title: string, width: number): Promise<Resolved> {
 
 const categoryArt: Record<string, { icon: typeof MapPin; from: string; to: string }> = {
   landmark: { icon: Landmark, from: "#185e56", to: "#8fc1a9" },
-  museum: { icon: Palette, from: "#0d2940", to: "#5e7c8a" },
+  museum: { icon: Library, from: "#0d2940", to: "#5e7c8a" },
+  views: { icon: Binoculars, from: "#24476b", to: "#a9c4dc" },
+  history: { icon: Hourglass, from: "#7a5230", to: "#d9c19a" },
+  art: { icon: Palette, from: "#6b2f5c", to: "#d6a9c4" },
+  science: { icon: FlaskConical, from: "#1d4f63", to: "#8fd0c9" },
+  performance: { icon: Drama, from: "#5a2a2a", to: "#d99a8c" },
+  family: { icon: Smile, from: "#b5802a", to: "#f0d38f" },
   architecture: { icon: Building2, from: "#5e7c8a", to: "#c9d7cc" },
   park: { icon: Leaf, from: "#3f7d4f", to: "#b9d8b0" },
   waterfront: { icon: Waves, from: "#1f5f7a", to: "#9fd0dc" },

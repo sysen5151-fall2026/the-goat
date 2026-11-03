@@ -35,11 +35,17 @@ const MIDTOWN = { latitude: 40.758, longitude: -73.9855 };
 /** Geoapify category queries per Wayly interest. */
 const CATEGORY_QUERY: Record<PlaceCategory, string> = {
   landmark: "tourism.sights,tourism.attraction",
-  museum: "entertainment.museum,entertainment.culture.gallery",
-  architecture: "tourism.sights",
+  museum: "entertainment.museum",
   park: "leisure.park",
-  waterfront: "tourism.attraction.viewpoint,leisure.park",
+  waterfront: "beach,leisure.park",
   food: "catering.restaurant,commercial.marketplace",
+  views: "tourism.attraction.viewpoint",
+  architecture: "tourism.sights",
+  history: "heritage,tourism.sights.memorial",
+  art: "entertainment.culture.gallery,entertainment.culture.arts_centre",
+  science: "entertainment.planetarium,entertainment.zoo,entertainment.aquarium",
+  performance: "entertainment.culture.theatre",
+  family: "entertainment.zoo,entertainment.aquarium,entertainment.theme_park",
 };
 const COFFEE_QUERY = "catering.cafe";
 
@@ -50,9 +56,15 @@ const CATEGORY_ESTIMATE_USD: Array<{ prefix: string; usd: number; label: string 
   { prefix: "commercial.marketplace", usd: 15, label: "market" },
   { prefix: "entertainment.museum", usd: 25, label: "museum" },
   { prefix: "entertainment.culture.gallery", usd: 0, label: "gallery" },
+  { prefix: "entertainment.culture.arts_centre", usd: 15, label: "arts center" },
+  { prefix: "entertainment.culture.theatre", usd: 60, label: "show" },
+  { prefix: "entertainment.zoo", usd: 30, label: "zoo" },
+  { prefix: "entertainment.aquarium", usd: 35, label: "aquarium" },
+  { prefix: "entertainment.planetarium", usd: 25, label: "planetarium" },
+  { prefix: "entertainment.theme_park", usd: 40, label: "amusement park" },
   { prefix: "tourism.attraction", usd: 20, label: "attraction" },
 ];
-const FREE_PREFIXES = ["leisure.park", "tourism.attraction.viewpoint", "tourism.sights.memorial", "tourism.sights", "leisure.square"];
+const FREE_PREFIXES = ["leisure.park", "beach", "heritage", "tourism.attraction.viewpoint", "tourism.sights.memorial", "tourism.sights", "leisure.square"];
 
 type GeoapifyFeature = {
   properties?: {

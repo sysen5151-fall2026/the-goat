@@ -1,4 +1,5 @@
 import { ConsumerAuthPage } from "@/components/auth/consumer-auth-page";
+import { OnboardingGate } from "@/components/onboarding-gate";
 
 export const metadata = {
   title: "Create account | Wayly",
@@ -6,5 +7,5 @@ export const metadata = {
 };
 
 export default function RegisterPage() {
-  return <ConsumerAuthPage mode="register" />;
+  return <OnboardingGate><ConsumerAuthPage mode="register" /></OnboardingGate>;
 }

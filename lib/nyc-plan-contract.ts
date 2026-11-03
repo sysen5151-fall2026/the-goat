@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { PLACE_CATEGORIES } from "@/lib/nyc-types";
 
 const dateSchema = z
   .string()
@@ -14,7 +15,7 @@ export const nycPlanRequestSchema = z.object({
   durationHours: z.number().int().min(1).max(24).optional(),
   partySize: z.number().int().min(1).max(8),
   totalBudgetUsd: z.number().int().min(0).max(10_000),
-  interests: z.array(z.enum(["landmark", "museum", "architecture", "park", "waterfront", "food"])).min(1),
+  interests: z.array(z.enum(PLACE_CATEGORIES)).max(PLACE_CATEGORIES.length).default([]),
   intentText: z.string().max(300),
   transportPreference: z.enum(["smart", "public_transit", "taxi", "walk"]),
   walkingPreference: z.enum(["easy", "balanced", "active"]),

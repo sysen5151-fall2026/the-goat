@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { PLACE_CATEGORIES } from "@/lib/nyc-types";
 import { errorResponse, newRequestId } from "@/lib/api-helpers";
 import { requireAuthenticatedUser } from "@/lib/auth";
 import { getPreferences, savePreferences } from "@/lib/nyc-account";
@@ -7,7 +8,7 @@ import { getPreferences, savePreferences } from "@/lib/nyc-account";
 const preferencesSchema = z.object({
   totalBudgetUsd: z.number().int().min(0).max(10_000),
   partySize: z.number().int().min(1).max(8),
-  interests: z.array(z.enum(["landmark", "museum", "architecture", "park", "waterfront", "food"])).min(1),
+  interests: z.array(z.enum(PLACE_CATEGORIES)).min(1).max(PLACE_CATEGORIES.length),
   transportPreference: z.enum(["smart", "public_transit", "taxi", "walk"]),
   walkingPreference: z.enum(["easy", "balanced", "active"]),
   dining: z.enum(["no_preference", "vegetarian", "coffee", "local"]),

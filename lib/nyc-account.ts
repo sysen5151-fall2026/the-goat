@@ -69,8 +69,8 @@ export async function getProfile(userId: string, email: string | null): Promise<
   return { displayName: data?.display_name ?? null, avatarEmoji: data?.avatar_emoji ?? null, email };
 }
 
-export async function saveProfile(userId: string, displayName: string) {
-  const { error } = await db().from("profiles").update({ display_name: displayName, updated_at: new Date().toISOString() }).eq("user_id", userId);
+export async function saveProfile(userId: string, displayName: string, avatarEmoji: string | null) {
+  const { error } = await db().from("profiles").update({ display_name: displayName, avatar_emoji: avatarEmoji, updated_at: new Date().toISOString() }).eq("user_id", userId);
   if (error) throw error;
 }
 

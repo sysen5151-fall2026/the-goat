@@ -11,6 +11,9 @@
 -- and every query is scoped by user_id in server code.
 -- ============================================================
 
+-- Profile avatars use the shared profile row; keep this additive for existing Wayly accounts.
+alter table public.profiles add column if not exists avatar_emoji text;
+
 create table if not exists public.nyc_itineraries (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references auth.users(id) on delete cascade,

@@ -1,11 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
-import { ArrowRight, Check, ChevronLeft, CircleAlert, Eye, EyeOff, KeyRound, Loader2, Lock, Mail, ShieldCheck, Sparkles, UserRound } from "lucide-react";
+import { ArrowRight, Check, CircleAlert, Eye, EyeOff, KeyRound, Loader2, Lock, Mail, ShieldCheck, Sparkles, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getSupabaseBrowserClient } from "@/lib/supabase-browser";
+import { replayOnboarding } from "@/components/onboarding-gate";
 
 type AuthMode = "login" | "register" | "reset";
 type Notice = { tone: "error" | "info"; text: string } | null;
@@ -32,7 +32,10 @@ function friendlyError(error: unknown) {
 function nextPath() {
   if (typeof window === "undefined") return "/";
   const next = new URLSearchParams(window.location.search).get("next");
-  return next && next.startsWith("/") && !next.startsWith("//") ? next : "/";
+  // Same-origin paths only (blocks //evil.com, /\\evil.com and auth-page loops).
+  if (!next || !next.startsWith("/") || next.startsWith("//") || next.includes("\\")) return "/";
+  if (/^\/(login|register)(\/|\?|#|$)/.test(next)) return "/";
+  return next;
 }
 
 function Field({ icon: Icon, label, children, trailing }: { icon: typeof Mail; label: string; children: ReactNode; trailing?: ReactNode }) {
@@ -58,6 +61,13 @@ export function ConsumerAuthPage({ mode: initialMode }: { mode: "login" | "regis
   const [submitting, setSubmitting] = useState(false);
   const configured = Boolean(getSupabaseBrowserClient("consumer"));
   const isRegister = mode === "register";
+
+  // Already signed in (and not resetting a password) → go straight to the requested page.
+  useEffect(() => {
+    const client = getSupabaseBrowserClient("consumer");
+    if (!client || window.location.hash.includes("type=recovery")) return;
+    void client.auth.getSession().then(({ data }) => { if (data.session) router.replace(nextPath()); });
+  }, [router]);
 
   // A password-reset email link lands here with a recovery session.
   useEffect(() => {
@@ -137,7 +147,7 @@ export function ConsumerAuthPage({ mode: initialMode }: { mode: "login" | "regis
       <div className="absolute inset-x-0 top-0 h-[140px] bg-gradient-to-b from-ink/60 to-transparent" />
       <div className="absolute inset-x-0 bottom-0 h-[180px] bg-gradient-to-t from-ink/85 to-transparent" />
       <header className="absolute inset-x-0 top-0 flex items-center justify-between px-5 pt-[max(16px,env(safe-area-inset-top))]">
-        <Link href="/" aria-label="Back to Wayly" className="grid size-[38px] place-items-center rounded-full bg-white/90 text-ink"><ChevronLeft className="size-5" /></Link>
+        <span className="size-[38px]" />
         <span className="text-[19px] font-extrabold tracking-[0.04em] text-white">WAYLY</span>
         <span className="size-[38px]" />
       </header>
@@ -177,8 +187,8 @@ export function ConsumerAuthPage({ mode: initialMode }: { mode: "login" | "regis
         </Button>
       </form>
 
-      <Link href="/" className="mt-3 flex min-h-11 items-center justify-center text-[13px] font-semibold text-muted-ink">Continue browsing without an account</Link>
       <p className="mt-2 flex items-center justify-center gap-1.5 text-xs font-medium text-muted-ink"><ShieldCheck className="size-3.5 text-pine" />Your password never touches Wayly&apos;s servers</p>
+      {mode !== "reset" && <button type="button" onClick={replayOnboarding} className="mt-3 w-full py-2 text-center text-xs font-semibold text-pine">View app introduction</button>}
     </section>
   </div></main>;
 }
