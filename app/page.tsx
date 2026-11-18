@@ -18,12 +18,18 @@ import { RequireAuth } from "@/components/auth/require-auth";
 import { HashtagInput } from "@/components/hashtag-input";
 import { AskWaylyScreen, type AskMessage } from "@/components/ask-wayly";
 import type { AskAction } from "@/lib/nyc-ask";
-import { effectiveInterests } from "@/lib/nyc-hashtags";
+import { effectiveInterests, parseHashtags } from "@/lib/nyc-hashtags";
 import { OnboardingGate, replayOnboarding } from "@/components/onboarding-gate";
 import type { IntentParse, Itinerary, ItineraryStop, NycPlace, PlaceCategory, PlanMode, PlanRequest, TransportSegment } from "@/lib/nyc-types";
 
+/** Today's date in New York (YYYY-MM-DD), so the planner never defaults to a past day. */
+function todayInNewYork() {
+  try { return new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date()); }
+  catch { return new Date().toISOString().slice(0, 10); }
+}
+
 const initialRequest: PlanRequest = {
-  cityCode: "nyc", date: "2026-10-10", duration: "half_day", durationHours: 6,
+  cityCode: "nyc", date: todayInNewYork(), duration: "half_day", durationHours: 6,
   partySize: 2, totalBudgetUsd: 220, interests: ["landmark", "architecture", "museum"],
   intentText: "", transportPreference: "smart", walkingPreference: "balanced",
   dining: "no_preference", accessibility: false,
@@ -95,6 +101,22 @@ function addMinutes(time: string, minutes: number) {
 function hostname(url: string) { try { return new URL(url).hostname.replace(/^www\./, ""); } catch { return url; } }
 
 function hoursFor(request: PlanRequest) { return request.durationHours ?? (request.duration === "full_day" ? 10 : 6); }
+/** Per-mode line for the travel-mode sheet. Only the routed (recommended) mode has a measured time; the others never borrow it. */
+const TRANSIT_FARE_USD = 2.9; // same per-person fare the router adds when it switches a leg to transit
+function transportEstimate(mode: TransportMode, segment: TransportSegment, partySize: number) {
+  const routed = segment.recommendedMode === mode;
+  const time = `Estimated ${segment.estimatedMinutes.min}–${segment.estimatedMinutes.max} min`;
+  const people = partySize === 1 ? "1 traveler" : `${partySize} travelers`;
+  if (mode === "walk") return routed ? `${time} · $0` : "$0 · usually a longer walk — check in maps";
+  if (mode === "public_transit") {
+    const fare = routed && segment.estimatedCostUsd && segment.estimatedCostUsd.max > 0
+      ? `$${segment.estimatedCostUsd.min.toFixed(2)}–$${segment.estimatedCostUsd.max.toFixed(2)}`
+      : `~$${(TRANSIT_FARE_USD * partySize).toFixed(2)}`;
+    return `${routed ? `${time} · ` : ""}${fare} for ${people}${routed ? "" : " · time depends on the line"}`;
+  }
+  return `${routed ? `${time} · ` : ""}Fare varies · confirm in your taxi app`;
+}
+
 function transportLabel(mode: TransportMode) { return mode === "walk" ? "Walk" : mode === "public_transit" ? "Public transit" : "Taxi"; }
 function TransportIcon({ mode, className }: { mode: TransportMode; className?: string }) { const Icon = mode === "walk" ? Footprints : mode === "public_transit" ? Train : Car; return <Icon className={className} />; }
 function preferenceText(request: PlanRequest, key: PreferenceKey) {
@@ -444,7 +466,7 @@ function ItineraryScreen({ itinerary, previousItinerary, plannedPlaces, mode, in
         <Stat icon={WalletCards} value={`$${itinerary.estimatedTotalSpendUsd.max} / $${request.totalBudgetUsd}`} onClick={() => onAdjust("budget")} label="Change the budget" />
       </div>
       <div className="mt-2 grid grid-cols-3 gap-2" aria-label="Adjust this route">
-        {([{ action: "replace", label: "Swap a stop", icon: RefreshCw }, { action: "shorten", label: "Shorter day", icon: Clock3 }, { action: "budget", label: "Change budget", icon: WalletCards }] as const).map(({ action, label, icon: Icon }) => <button key={action} type="button" onClick={() => onAdjust(action)} className="inline-flex min-h-9 items-center justify-center gap-1 rounded-full bg-sel px-2 text-[12px] font-bold text-pine"><Icon className="size-3.5 shrink-0" />{label}</button>)}
+        {([{ action: "replace", label: "Swap a stop", icon: RefreshCw }, { action: "shorten", label: "Shorter day", icon: Clock3 }, { action: "budget", label: "Set budget", icon: WalletCards }] as const).map(({ action, label, icon: Icon }) => <button key={action} type="button" onClick={() => onAdjust(action)} className="inline-flex min-h-9 items-center justify-center gap-1 rounded-full bg-sel px-2 text-[12px] font-bold text-pine"><Icon className="size-3.5 shrink-0" />{label}</button>)}
       </div>
 
       <div className="mt-3.5">{itinerary.stops.map((stop, index) => { const place = stop.place; const changed = Boolean(previousItinerary && !previousIds.has(stop.placeId)); const segment = itinerary.transportSegments[index]; return <div key={stop.id}>
@@ -550,7 +572,7 @@ function BudgetSourcesScreen({ itinerary, request, focus, avatar, onProfile, onP
 
   const transportCost = itinerary.transportSegments.reduce((total, segment) => total + (segment.estimatedCostUsd ? (segment.estimatedCostUsd.min + segment.estimatedCostUsd.max) / 2 : 0), 0);
   const slices = [
-    ...itinerary.stops.map((stop, index) => ({ label: stop.name, value: stop.expectedSpendUsd, estimated: stop.spendEstimated, color: chartColors[index % chartColors.length] })),
+    ...itinerary.stops.map((stop, index) => ({ label: `${index + 1}. ${stop.name.replace(/\s*\([^)]*\)\s*$/, "")}`, value: stop.expectedSpendUsd, estimated: stop.spendEstimated, color: chartColors[index % chartColors.length] })),
     { label: "Transit & taxis", value: Math.round(transportCost), estimated: true, color: chartColors[5] },
   ];
   const total = itinerary.estimatedTotalSpendUsd.max;
@@ -567,7 +589,7 @@ function BudgetSourcesScreen({ itinerary, request, focus, avatar, onProfile, onP
         </svg>
         <div className="absolute inset-0 grid place-content-center text-center"><strong className="text-[22px] font-extrabold leading-none text-ink">${total}</strong><small className="mt-1 text-[11px] font-medium text-muted-ink">of ${request.totalBudgetUsd}</small></div>
       </div>
-      <ul className="min-w-0 flex-1 space-y-2">{slices.map((slice) => <li key={slice.label} className="flex items-center gap-2 text-[13px]"><span className="size-2.5 shrink-0 rounded-full" style={{ background: slice.color }} /><span className="min-w-0 flex-1 truncate font-medium text-ink">{slice.label}</span><span className="font-bold text-ink">{slice.value ? `${slice.estimated ? "~" : ""}$${slice.value}` : "Free"}</span></li>)}</ul>
+      <ul className="min-w-0 flex-1 space-y-2">{slices.map((slice) => <li key={slice.label} className="flex items-center gap-2 text-[13px]"><span className="size-2.5 shrink-0 rounded-full" style={{ background: slice.color }} /><span className="line-clamp-2 min-w-0 flex-1 font-medium leading-4 text-ink" title={slice.label}>{slice.label}</span><span className="font-bold text-ink">{slice.value ? `${slice.estimated ? "~" : ""}$${slice.value}` : "Free"}</span></li>)}</ul>
     </div>
     <div className="mt-4 h-2 overflow-hidden rounded-full bg-line"><div className={`h-full rounded-full ${remaining >= 0 ? "bg-pine" : "bg-rust"}`} style={{ width: `${Math.min(100, request.totalBudgetUsd ? (total / request.totalBudgetUsd) * 100 : 100)}%` }} /></div>
     <p className={`mt-2 flex items-center gap-1.5 text-[13px] font-semibold ${remaining >= 0 ? "text-pine" : "text-rust"}`}>{remaining >= 0 ? <CircleCheck className="size-4" /> : <CircleAlert className="size-4" />}{remaining >= 0 ? `$${remaining} left — you're under budget` : `$${-remaining} over the trip budget`}</p>
@@ -592,7 +614,44 @@ function BudgetSourcesScreen({ itinerary, request, focus, avatar, onProfile, onP
   </div>;
 }
 
-function LoadingScreen({ request, onCancel }: { request: PlanRequest; onCancel: () => void }) { return <div className="flex min-h-dvh flex-col bg-[#fcfaf5]"><AppHeader onBack={onCancel} title="Planning" /><div className="flex flex-1 flex-col justify-center px-8 pb-24"><div className="mx-auto grid size-16 place-items-center rounded-3xl bg-[#e3f0ea] text-[#185e56]"><Compass className="size-8" /></div><h1 className="mt-6 text-center text-xl font-bold text-[#0d2940]">Building your NYC itinerary</h1><p className="mt-2 text-center text-sm leading-6 text-[#58707c]">Code shortlists published places that fit your constraints; AI then picks the best route, and every pick is re-checked.</p><div className="mt-8 space-y-3">{["Checking your constraints", "Shortlisting eligible places", "Choosing and validating the route"].map((step, index) => <div key={step} className="flex items-center gap-3 rounded-2xl border border-[#dde3dc] bg-white px-4 py-3"><span className="grid size-6 place-items-center rounded-full bg-[#e3f0ea] text-[#185e56]">{index === 2 ? <Loader2 className="size-3.5 animate-spin" /> : <Check className="size-3.5" />}</span><span className="text-sm text-[#3e5563]">{step}</span></div>)}</div><div className="mt-8 rounded-2xl bg-white p-4 text-xs text-[#58707c]"><p className="font-semibold text-[#3e5563]">This trip</p><p className="mt-2">{formatDate(request.date)} · {hoursFor(request)} hours · {request.partySize} travelers · ${request.totalBudgetUsd} total budget</p></div></div><div className="px-5 pb-[max(24px,env(safe-area-inset-bottom))]"><button type="button" onClick={onCancel} className="min-h-11 w-full text-sm text-[#58707c] underline-offset-4 hover:underline">Cancel and keep inputs</button></div></div>; }
+const LOADING_STEPS = [
+  { label: "Reading your request", detail: "Places, areas and #tags you wrote" },
+  { label: "Checking date, budget and pace", detail: "Only places your group can afford" },
+  { label: "Shortlisting places that fit", detail: "Up to 8 source-linked candidates" },
+  { label: "AI picks the best route", detail: "Then code re-checks every stop" },
+  { label: "Routing the streets", detail: "Walking, transit and timing between stops" },
+] as const;
+/** When each step ticks (ms). The last step keeps spinning until the plan arrives. */
+const LOADING_TICKS = [700, 1600, 2700, 5200];
+
+function LoadingScreen({ request, onCancel }: { request: PlanRequest; onCancel: () => void }) {
+  const [done, setDone] = useState(0);
+  useEffect(() => {
+    const timers = LOADING_TICKS.map((ms, index) => window.setTimeout(() => setDone(index + 1), ms));
+    return () => timers.forEach((timer) => window.clearTimeout(timer));
+  }, []);
+  const tags = parseHashtags(request.intentText); // only tags the user typed, not saved defaults
+  const progress = Math.min(96, 8 + done * 22);
+  return <div className="flex min-h-dvh flex-col bg-[#fcfaf5]"><AppHeader onBack={onCancel} title="Planning" />
+    <div className="flex flex-1 flex-col px-6 pb-8 pt-4">
+      <div className="mx-auto grid size-16 place-items-center rounded-3xl bg-sel text-pine"><Compass className="size-8 animate-[spin_6s_linear_infinite]" /></div>
+      <h1 className="mt-5 text-center text-xl font-extrabold text-ink">Building your NYC day</h1>
+      <div className="mx-auto mt-3 h-1.5 w-40 overflow-hidden rounded-full bg-line" role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100}><div className="h-full rounded-full bg-pine transition-[width] duration-700 ease-out" style={{ width: `${progress}%` }} /></div>
+      <ol className="mt-6 space-y-2.5" aria-live="polite">
+        {LOADING_STEPS.map((step, index) => {
+          if (index > done) return null;
+          const complete = index < done;
+          return <li key={step.label} className={`wayly-step-in flex items-center gap-3 rounded-2xl border bg-white px-4 py-3 ${complete ? "border-line" : "border-pine/40 shadow-card"}`}>
+            <span className={`grid size-7 shrink-0 place-items-center rounded-full ${complete ? "bg-pine text-white" : "bg-sel text-pine"}`}>{complete ? <Check key="done" className="wayly-check-pop size-4" strokeWidth={3} /> : <Loader2 className="size-4 animate-spin" />}</span>
+            <span className="min-w-0 flex-1"><span className={`block text-sm font-bold ${complete ? "text-ink" : "text-pine"}`}>{step.label}</span><span className="block text-[11px] text-muted-ink">{index === 0 && tags.length ? tags.map((tag) => `#${categoryLabel[tag]?.toLowerCase() ?? tag}`).join("  ") : step.detail}</span></span>
+          </li>;
+        })}
+      </ol>
+      <div className="mt-6 rounded-2xl bg-white p-4 text-xs text-muted-ink shadow-card"><p className="font-semibold text-ink">This trip</p><p className="mt-1.5">{formatDate(request.date)} · {hoursFor(request)} hours · {request.partySize} {request.partySize === 1 ? "traveler" : "travelers"} · ${request.totalBudgetUsd} total budget</p>{request.intentText.trim() && <p className="mt-1.5 line-clamp-2 text-ink">“{request.intentText.trim()}”</p>}</div>
+    </div>
+    <div className="px-5 pb-[max(24px,env(safe-area-inset-bottom))]"><button type="button" onClick={onCancel} className="min-h-11 w-full text-sm text-muted-ink underline-offset-4 hover:underline">Cancel and keep inputs</button></div>
+  </div>;
+}
 
 function AdjustmentScreen({ itinerary, request, action, targetStopId, candidateId, budget, onBack, onAction, onTarget, onCandidate, onBudget, onSubmit }: { itinerary: Itinerary; request: PlanRequest; action: AdjustmentAction; targetStopId: string | null; candidateId: string | null; budget: number; onBack: () => void; onAction: (value: AdjustmentAction) => void; onTarget: (value: string) => void; onCandidate: (value: string) => void; onBudget: (value: number) => void; onSubmit: () => void }) {
   const target = itinerary.stops.find((stop) => stop.id === targetStopId); const candidates = suggestReplacements(itinerary, target?.id ?? null, request);
@@ -685,7 +744,7 @@ function OverlaySheets({ sheet, setSheet, request, setRequest, preferenceKey, se
   return <>
     <Sheet open={sheet === "city"} onOpenChange={(open) => !open && setSheet(null)}><SheetContent side="bottom" className="max-h-[80dvh] rounded-t-[28px] bg-soft"><SheetHeader className="px-5 pt-7"><SheetTitle>Choose city</SheetTitle><SheetDescription>Only New York City has a published catalog in this preview.</SheetDescription></SheetHeader><div className="px-5 pb-5"><button type="button" onClick={() => setSheet(null)} className="flex min-h-14 w-full items-center justify-between rounded-2xl border border-[#185e56] bg-[#e3f0ea] px-4 text-left"><span><strong className="block text-sm text-[#185e56]">New York City</strong><small className="mt-1 block text-[11px] text-[#4a6b63]">Supported · published source catalog</small></span><Check className="size-5 text-[#185e56]" /></button>{["Boston", "Philadelphia", "Chicago"].map((city) => <div key={city} className="mt-2 flex min-h-14 items-center justify-between rounded-2xl bg-[#f5f0e6] px-4 text-sm text-[#8a9aa3]"><span>{city}</span><small>Coming later</small></div>)}</div></SheetContent></Sheet>
     <Sheet open={sheet === "preferences"} onOpenChange={(open) => !open && setSheet(null)}><SheetContent side="bottom" className="rounded-t-[28px] bg-soft"><SheetHeader className="px-5 pt-7"><SheetTitle>{preference.title}</SheetTitle><SheetDescription>Your choice is used as a planning constraint.</SheetDescription></SheetHeader><div className="space-y-2 px-5 pb-5">{preference.options.map((option) => <button key={option.value} type="button" onClick={() => { setRequest((current) => preferenceKey === "accessibility" ? { ...current, accessibility: option.value === "true" } : preferenceKey === "transport" ? { ...current, transportPreference: option.value as PlanRequest["transportPreference"] } : preferenceKey === "walking" ? { ...current, walkingPreference: option.value as PlanRequest["walkingPreference"] } : { ...current, dining: option.value as PlanRequest["dining"] }); setSheet(null); }} className={`flex min-h-12 w-full items-center justify-between rounded-xl border px-3.5 text-left ${currentValue === option.value ? "border-[#185e56] bg-[#e3f0ea] text-[#185e56]" : "border-[#dde3dc] text-[#3e5563]"}`}><span><strong className="block text-sm font-medium">{option.label}</strong>{option.note && <small className="mt-1 block max-w-[260px] text-[10px] leading-4 text-[#8a9aa3]">{option.note}</small>}</span>{currentValue === option.value && <Check className="size-4" />}</button>)}</div></SheetContent></Sheet>
-    <Sheet open={sheet === "transport"} onOpenChange={(open) => !open && setSheet(null)}><SheetContent side="bottom" className="max-h-[86dvh] rounded-t-[28px] bg-soft"><SheetHeader className="px-5 pt-7"><SheetTitle>Choose a travel mode</SheetTitle><SheetDescription>{from} → {to} · planning estimates only</SheetDescription></SheetHeader>{selectedSegment && <div className="space-y-2 px-5 pb-6">{(["walk", "public_transit", "taxi"] as const).map((item) => { const chosen = activeTransport === item; const amount = item === "walk" ? "$0" : item === "public_transit" ? `$${selectedSegment.estimatedCostUsd?.min ?? 3}–$${selectedSegment.estimatedCostUsd?.max ?? 6}` : "Confirm in your taxi app"; return <button key={item} type="button" onClick={() => setSelectedTransport((current) => ({ ...current, [selectedSegment.toStopId]: item }))} className={`flex w-full items-center gap-3 rounded-2xl border p-3.5 text-left ${chosen ? "border-[#185e56] bg-[#e3f0ea]" : "border-[#dde3dc]"}`}><span className="grid size-10 place-items-center rounded-xl bg-white text-[#185e56]"><TransportIcon mode={item} className="size-5" /></span><span className="flex-1"><strong className="block text-sm text-[#0d2940]">{transportLabel(item)}</strong><small className="mt-1 block text-[11px] text-[#58707c]">Estimated {selectedSegment.estimatedMinutes.min}–{selectedSegment.estimatedMinutes.max} min · {amount}</small></span>{chosen && <Check className="size-4 text-[#185e56]" />}</button>; })}<Button size="lg" onClick={() => { setHandoffProvider(null); setSheet("handoff"); }} className="mt-3 h-12 w-full rounded-2xl bg-[#185e56] hover:bg-[#124a45]"><Navigation />Continue in maps</Button><p className="text-center text-[10px] leading-4 text-[#8a9aa3]">A map provider owns live routes, fares, and execution; Wayly does not initiate navigation, rides, or payment.</p></div>}</SheetContent></Sheet>
+    <Sheet open={sheet === "transport"} onOpenChange={(open) => !open && setSheet(null)}><SheetContent side="bottom" className="max-h-[86dvh] rounded-t-[28px] bg-soft"><SheetHeader className="px-5 pt-7"><SheetTitle>Choose a travel mode</SheetTitle><SheetDescription>{from} → {to} · planning estimates only</SheetDescription></SheetHeader>{selectedSegment && <div className="space-y-2 px-5 pb-6">{(["walk", "public_transit", "taxi"] as const).map((item) => { const chosen = activeTransport === item; const amount = transportEstimate(item, selectedSegment, request.partySize); return <button key={item} type="button" onClick={() => setSelectedTransport((current) => ({ ...current, [selectedSegment.toStopId]: item }))} className={`flex w-full items-center gap-3 rounded-2xl border p-3.5 text-left ${chosen ? "border-[#185e56] bg-[#e3f0ea]" : "border-[#dde3dc]"}`}><span className="grid size-10 place-items-center rounded-xl bg-white text-[#185e56]"><TransportIcon mode={item} className="size-5" /></span><span className="flex-1"><strong className="block text-sm text-[#0d2940]">{transportLabel(item)}</strong><small className="mt-1 block text-[11px] text-[#58707c]">{amount}</small></span>{chosen && <Check className="size-4 text-[#185e56]" />}</button>; })}<Button size="lg" onClick={() => { setHandoffProvider(null); setSheet("handoff"); }} className="mt-3 h-12 w-full rounded-2xl bg-[#185e56] hover:bg-[#124a45]"><Navigation />Continue in maps</Button><p className="text-center text-[10px] leading-4 text-[#8a9aa3]">A map provider owns live routes, fares, and execution; Wayly does not initiate navigation, rides, or payment.</p></div>}</SheetContent></Sheet>
     <Sheet open={sheet === "handoff"} onOpenChange={(open) => !open && setSheet(null)}><SheetContent side="bottom" className="rounded-t-[28px] bg-soft"><SheetHeader className="px-5 pt-7"><SheetTitle>Continue in maps</SheetTitle><SheetDescription>{from} → {to}</SheetDescription></SheetHeader><div className="px-5 pb-6">{handoffProvider ? <div><div className="rounded-2xl bg-[#edf3ed] p-4"><p className="text-sm font-semibold text-[#185e56]">{handoffProvider}</p><p className="mt-2 text-xs leading-5 text-[#4a6b63]">Wayly would hand off the endpoints and travel mode. The map provider owns live routing, price, and execution.</p></div><p className="mt-4 text-xs leading-5 text-[#58707c]">This local preview does not open a deep link. Copy the endpoints and search in your preferred map.</p><Button size="lg" onClick={() => void copyHandoff()} className="mt-4 h-12 w-full rounded-2xl bg-[#185e56] hover:bg-[#124a45]"><Copy />Copy route endpoints</Button></div> : <div className="space-y-2">{["Google Maps", "Apple Maps", "Citymapper"].map((provider) => <button key={provider} type="button" onClick={() => setHandoffProvider(provider)} className="flex min-h-13 w-full items-center justify-between rounded-2xl border border-[#dde3dc] px-4 text-left"><span><strong className="block text-sm text-[#0d2940]">{provider}</strong><small className="mt-1 block text-[11px] text-[#8a9aa3]">Preview only · no external launch</small></span><ChevronRight className="size-4 text-[#8a9aa3]" /></button>)}</div>}</div></SheetContent></Sheet>
     <Sheet open={sheet === "feedback"} onOpenChange={(open) => !open && setSheet(null)}><SheetContent side="bottom" className="max-h-[92dvh] rounded-t-[28px] bg-soft"><SheetHeader className="px-5 pt-7"><SheetTitle>Was this itinerary helpful?</SheetTitle><SheetDescription>Feedback is associated with this preview and its data version.</SheetDescription></SheetHeader><div className="space-y-5 px-5 pb-6"><ScoreGroup label="Overall satisfaction" value={feedbackDraft.satisfaction} onChange={(value) => setFeedbackDraft((current) => ({ ...current, satisfaction: value }))} /><ScoreGroup label="How much do you trust this recommendation?" value={feedbackDraft.trust} onChange={(value) => setFeedbackDraft((current) => ({ ...current, trust: value }))} /><div className="border-t border-[#edf3ed] pt-4"><p className="text-xs font-semibold text-[#3e5563]">If something was wrong, what was it?</p><div className="mt-2 flex flex-wrap gap-2">{[{ value: "fit", label: "Not my interests" }, { value: "route", label: "Route does not fit" }, { value: "budget", label: "Budget estimate" }, { value: "walking", label: "Too much walking" }, { value: "data", label: "Place information" }, { value: "other", label: "Other" }].map((item) => <button key={item.value} type="button" onClick={() => setFeedbackDraft((current) => ({ ...current, issueType: current.issueType === item.value ? "" : item.value }))} className={`min-h-8 rounded-full border px-3 text-[11px] ${feedbackDraft.issueType === item.value ? "border-[#185e56] bg-[#e3f0ea] text-[#185e56]" : "border-[#dde3dc] text-[#3e5563]"}`}>{item.label}</button>)}</div></div><label className="block border-t border-[#edf3ed] pt-4"><span className="text-xs font-semibold text-[#3e5563]">Anything else to share?</span><textarea aria-label="Feedback details" value={feedbackDraft.note} maxLength={500} onChange={(event) => setFeedbackDraft((current) => ({ ...current, note: event.target.value }))} placeholder="For example: I would like a shorter walk or more local food options." className="mt-2 h-20 w-full resize-none rounded-xl border border-[#dde3dc] p-3 text-xs leading-5 outline-none placeholder:text-[#a7b3b9] focus:border-[#185e56]" /></label><Button size="lg" disabled={feedbackSubmitting} onClick={submitFeedback} className="h-12 w-full rounded-2xl bg-[#185e56] hover:bg-[#124a45]">{feedbackSubmitting ? <Loader2 className="animate-spin" /> : <Send />}{feedbackSubmitting ? "Submitting…" : "Submit feedback"}</Button><SheetClose render={<button type="button" className="min-h-9 w-full text-xs text-[#8a9aa3]">Skip for now</button>} /></div></SheetContent></Sheet>
     <Sheet open={sheet === "auth"} onOpenChange={(open) => !open && setSheet(null)}><SheetContent side="bottom" className="rounded-t-[28px] bg-soft"><SheetHeader className="px-5 pt-7"><SheetTitle>{authDisabled ? "Accounts are off in this preview" : authReason === "plan" ? "Sign in to create your plan" : "Sign in to save this plan"}</SheetTitle><SheetDescription>{authDisabled ? "Add the Supabase URL and publishable key to .env.local to turn on accounts." : authReason === "plan" ? "Your inputs are kept — we'll build the route right after you sign in." : "We'll keep this route and save it to your profile right after you sign in."}</SheetDescription></SheetHeader><div className="px-5 pb-6">{authDisabled

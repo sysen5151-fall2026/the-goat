@@ -69,7 +69,8 @@ const FREE_PREFIXES = ["leisure.park", "beach", "heritage", "tourism.attraction.
 type GeoapifyFeature = {
   properties?: {
     place_id?: string;
-    name?: string;
+    /** OSM names can arrive as numbers (e.g. a restaurant called "886"). */
+    name?: string | number;
     lat?: number;
     lon?: number;
     categories?: string[];
@@ -155,7 +156,8 @@ function osmImage(raw: Record<string, unknown>): Pick<NycPlace, "imageUrl" | "im
 
 function toPlace(feature: GeoapifyFeature, interest: PlaceCategory, retrievedAt: string): NycPlace | null {
   const properties = feature.properties;
-  if (!properties?.name || typeof properties.lat !== "number" || typeof properties.lon !== "number" || !properties.place_id) return null;
+  const name = typeof properties?.name === "string" || typeof properties?.name === "number" ? String(properties.name).trim() : "";
+  if (!properties || !name || typeof properties.lat !== "number" || typeof properties.lon !== "number" || !properties.place_id) return null;
   const raw = properties.datasource?.raw ?? {};
   const categories = properties.categories ?? [];
   const sourceUrl = sourceUrlFor(properties, raw);
@@ -166,7 +168,7 @@ function toPlace(feature: GeoapifyFeature, interest: PlaceCategory, retrievedAt:
   const interests: NycPlace["interests"] = isFood ? ["food"] : [interest];
   return {
     id: `geo-${properties.place_id.toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 20)}`,
-    name: properties.name,
+    name,
     neighborhood: properties.suburb ?? properties.district ?? properties.city ?? "New York",
     latitude: properties.lat,
     longitude: properties.lon,

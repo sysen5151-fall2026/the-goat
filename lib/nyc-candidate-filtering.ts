@@ -20,7 +20,7 @@ const specificitySignals: SpecificitySignal[] = [
   { label: "Art", intentTerms: ["art", "painting", "gallery", "modern art", "impressionist", "sculpture"], placeTerms: ["art", "moma", "guggenheim", "metropolitan", "brooklyn museum", "whitney", "frick", "neue galerie", "cloisters", "noguchi", "sculpture", "ps1", "galerie", "design"] },
   { label: "Science & natural history", intentTerms: ["science", "dinosaur", "natural history", "space", "aircraft", "planetarium", "animals", "zoo", "aquarium"], placeTerms: ["natural history", "intrepid", "space", "zoo", "aquarium", "botanical"] },
   { label: "History & memorials", intentTerms: ["history", "historic", "memorial", "9/11", "revolution", "colonial"], placeTerms: ["memorial", "ellis", "history", "historical", "liberty", "tenement", "federal hall", "fraunces", "castle clinton", "grant", "hamilton", "stonewall", "trinity"] },
-  { label: "Skyline views", intentTerms: ["skyline", "view", "views", "observation", "observatory", "rooftop", "lookout"], placeTerms: ["observatory", "observation", "empire state", "edge", "one world", "rockefeller", "brooklyn bridge", "summit", "gantry", "domino", "tramway", "brooklyn bridge park"] },
+  { label: "Skyline views", intentTerms: ["skyline", "view", "views", "observation", "observatory", "rooftop", "lookout"], placeTerms: ["observatory", "observation", "empire state", "edge", "one world", "rockefeller", "brooklyn bridge", "summit", "gantry", "domino", "tramway", "brooklyn bridge park", "photo spot", "promenade", "rooftop", "lookout", "viewpoint", "tudor city"] },
   { label: "Bridges & waterfront", intentTerms: ["bridge", "waterfront", "by the water", "river", "harbor", "ferry", "pier", "beach", "boardwalk"], placeTerms: ["bridge", "harbor", "intrepid", "liberty", "ellis", "ferry", "pier", "island", "seaport", "battery", "boardwalk", "beach", "riis", "hudson river", "river park", "gantry", "domino"] },
   { label: "Green space", intentTerms: ["green space", "garden", "gardens", "picnic", "nature", "trees", "stroll"], placeTerms: ["park", "high line", "garden", "botanic", "botanical", "wave hill", "green-wood", "governors island", "little island"] },
   { label: "Food markets", intentTerms: ["food hall", "market", "street food", "foodie"], placeTerms: ["market", "smorgasburg", "arthur avenue", "zabar"] },
@@ -252,7 +252,7 @@ function emptyTrace(initialCount: number) {
   return { version: CANDIDATE_FILTERING_VERSION as typeof CANDIDATE_FILTERING_VERSION, initialCount, usedRealtimeFallback: false, realtimeQuery: [] as string[], realtimeCandidateCount: 0, realtimeCandidatesAccepted: 0, realtimeFetchErrors: [] as string[] };
 }
 
-export function filterAndRankCandidates(request: PlanRequest, allPlaces: NycPlace[]): CandidateFilteringResult {
+export function filterAndRankCandidates(request: PlanRequest, allPlaces: NycPlace[], scoredPlaceIds?: ReadonlySet<string>): CandidateFilteringResult {
   const intentParse = parseIntent(request.intentText, allPlaces);
   const initialCount = allPlaces.length;
 
@@ -279,9 +279,14 @@ export function filterAndRankCandidates(request: PlanRequest, allPlaces: NycPlac
   const localFood = request.dining === "local";
   const tokens = intentTokens(text);
   const wantedCategories = intentCategories(tokens);
-  const terms = [...new Set(tokens.filter((token) => token.length >= 4 && !STOPWORDS.has(token)))];
+  // Names of places the user named ("Brooklyn Bridge") are not area or keyword requests ("brooklyn", "bridge").
+  const areaText = allPlaces.filter((place) => placeMentionedInText(place, text))
+    .flatMap((place) => placeAliases(place)).sort((a, b) => b.length - a.length)
+    .reduce((current, alias) => current.replace(new RegExp(`(^|[^a-z0-9])${escapeRegex(alias)}($|[^a-z0-9])`, "g"), "$1 $2"), text);
+  const terms = [...new Set(intentTokens(areaText).filter((token) => token.length >= 4 && !STOPWORDS.has(token)))];
 
   const scoredRaw = tagEligible
+    .filter((place) => !scoredPlaceIds || scoredPlaceIds.has(place.id))
     .map((place): ScoredCandidate => {
       const reasons: string[] = [];
       let score = 0;
@@ -309,7 +314,7 @@ export function filterAndRankCandidates(request: PlanRequest, allPlaces: NycPlac
         score += 30 * Math.min(2, textCategories.length);
         reasons.push(`Fits the ${textCategories.slice(0, 2).join(" & ")} you described`);
       }
-      const areaHits = namedMention ? [] : neighborhoodHits(place, text);
+      const areaHits = namedMention ? [] : neighborhoodHits(place, areaText);
       if (areaHits.length) {
         score += 90;
         reasons.push(`In ${areaHits[0]}, as requested`);

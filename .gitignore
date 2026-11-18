@@ -69,6 +69,7 @@ next-env.d.ts
 /scripts/*
 !/scripts/verify-nyc-catalog.mjs
 !/scripts/copy-maplibre-worker.mjs
+!/scripts/ch10-local-index-service.mjs
 /app/ops/*
 !/app/ops/page.tsx
 !/app/ops/login/

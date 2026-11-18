@@ -12,6 +12,7 @@
     "lint": "oxlint",
     "format": "oxfmt",
     "verify:catalog": "node scripts/verify-nyc-catalog.mjs",
+    "index:local": "node scripts/ch10-local-index-service.mjs",
     "postinstall": "node scripts/copy-maplibre-worker.mjs"
   },
   "dependencies": {

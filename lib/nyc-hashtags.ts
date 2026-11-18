@@ -19,6 +19,7 @@ const TAG_ALIASES: Record<string, PlaceCategory> = {
   park: "park", parks: "park", garden: "park", gardens: "park", nature: "park", outdoors: "park",
   waterfront: "waterfront", water: "waterfront", beach: "waterfront", beaches: "waterfront", river: "waterfront", harbor: "waterfront",
   food: "food", foodie: "food", eat: "food", eats: "food", restaurants: "food", restaurant: "food", dining: "food",
+  coffee: "food", cafe: "food", dessert: "food", desserts: "food", lunch: "food", dinner: "food", brunch: "food", snack: "food", snacks: "food", pizza: "food",
   views: "views", view: "views", skyline: "views", rooftop: "views", sunset: "views",
   architecture: "architecture", buildings: "architecture", building: "architecture",
   history: "history", historic: "history", heritage: "history",

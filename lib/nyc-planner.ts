@@ -60,8 +60,8 @@ export function resolvePlace(placeId: string): NycPlace | undefined {
 
 /* ---------- Candidate resolution ---------- */
 
-export function rankedPlaces(request: PlanRequest): CandidateResult {
-  const filtering = filterAndRankCandidates(request, publishedPlaces);
+export function rankedPlaces(request: PlanRequest, scoredPlaceIds?: ReadonlySet<string>): CandidateResult {
+  const filtering = filterAndRankCandidates(request, publishedPlaces, scoredPlaceIds);
   const stopCountPolicy = deriveStopCountPolicy(request, filtering.candidates.length);
   const budgetFeasibility = buildBudgetFeasibilityContext(request, filtering.candidates, stopCountPolicy);
   const blocked = (reason: string, kind: CandidateResult["insufficiencyKind"], note: string): CandidateResult => ({
@@ -95,7 +95,14 @@ export function rankedPlaces(request: PlanRequest): CandidateResult {
 export async function resolveCandidatesWithRealtimeFallback(request: PlanRequest, deps?: RealtimeFallbackDeps): Promise<CandidateResult> {
   const base = rankedPlaces(request);
   if (base.insufficiencyKind && base.insufficiencyKind !== "quantity") return base;
-  const augmented = await augmentCandidatesWithRealtimeGeoapify(request, base, publishedPlaces, deps);
+  // Live listings are optional: any unexpected data from Geoapify falls back to the curated shortlist instead of failing the plan.
+  let augmented: Awaited<ReturnType<typeof augmentCandidatesWithRealtimeGeoapify>>;
+  try {
+    augmented = await augmentCandidatesWithRealtimeGeoapify(request, base, publishedPlaces, deps);
+  } catch (error) {
+    console.warn(JSON.stringify({ event: "plan.realtime_listing_error", message: error instanceof Error ? error.message : String(error) }));
+    return base;
+  }
   if (!augmented.trace.usedRealtimeFallback || augmented.insufficiencyReason || augmented.candidates === base.candidates) return { ...base, trace: augmented.trace };
   for (const place of augmented.candidates) if (place.dataOrigin === "realtime_geoapify") remember(realtimePlaceMemory, place.id, place);
   const stopCountPolicy = deriveStopCountPolicy(request, augmented.candidates.length);

@@ -44,12 +44,21 @@ export function targetStop(message: string, stops: AskStop[]): AskStop | null {
   if (numbered) return stops[Number(numbered[1]) - 1] ?? null;
   for (const [word, index] of Object.entries(ORDINALS)) if (new RegExp(`\\b${word}\\b`).test(text)) return stops[index] ?? null;
   if (/\blast\b/.test(text)) return stops[stops.length - 1] ?? null;
-  return stops.find((stop) => {
+  const byName = stops.find((stop) => {
     const name = stop.name.toLowerCase();
     const core = name.replace(/^the\s+/, "").split(/[(–,-]/)[0].trim();
     return text.includes(name) || (core.length >= 4 && text.includes(core));
-  }) ?? null;
+  });
+  if (byName) return byName;
+  for (const word of new Set(text.split(/[^a-z']+/).filter((item) => item.length >= 4 && !STOP_WORDS.has(item)))) {
+    const stem = word.replace(/'s$/, "").slice(0, Math.max(4, word.length - 1)); // "pizza" → "pizz" matches "Pizzeria"
+    const matches = stops.filter((stop) => new RegExp(`\\b${stem}`).test(stop.name.toLowerCase()));
+    if (matches.length === 1) return matches[0];
+  }
+  return null;
 }
+
+const STOP_WORDS = new Set(["swap", "replace", "change", "skip", "instead", "switch", "want", "really", "don't", "dont", "something", "somewhere", "with", "that", "this", "there", "please", "could", "would", "stop", "place", "get", "more", "less", "make", "into", "from", "about", "like", "have", "want", "it's"]);
 
 function asItinerary(stops: AskStop[]): Itinerary {
   return { stops: stops.map((stop) => ({ ...stop, place: placeById[stop.placeId] })) } as unknown as Itinerary;
@@ -69,8 +78,12 @@ const label = (tags: PlaceCategory[]) => tags.map((tag) => `#${TAG_LABELS[tag]}`
 /** Deterministic answer used without a model, and as the model's safety net. */
 export function rulesAsk(message: string, request: PlanRequest, stops: AskStop[]): AskResult {
   const text = message.toLowerCase();
-  const tags = wantedTags(message);
   const hasRoute = stops.length > 0;
+  const target = hasRoute ? targetStop(message, stops) : null;
+  // Words that point at the stop being replaced ("the park", "the pizza place") are not what the user wants instead.
+  const targetName = target?.name.toLowerCase() ?? "";
+  const tags = wantedTags(message.replace(/(^|[^#a-z])([a-z']+)/gi, (all, lead: string, word: string) => (target && word.length >= 4 && new RegExp(`\\b${word.toLowerCase().replace(/'s$/, "").slice(0, Math.max(4, word.length - 1))}`).test(targetName) ? lead : all)));
+  const wantsSwap = /\b(swap|replace|change|skip|instead|switch|don't want|dont want|not interested|remove)\b/.test(text);
   const result = (reply: string, action: AskAction): AskResult => ({ reply, action, source: "rules" });
 
   if (hasRoute) {
@@ -82,8 +95,9 @@ export function rulesAsk(message: string, request: PlanRequest, stops: AskStop[]
     }
     if (/\b(shorter|shorten|less time|fewer stops|end earlier|finish earlier|leave early|too long|tired)\b/.test(text))
       return result("I can shorten the day by about two hours and drop the stops that no longer fit.", { type: "shorten" });
-    const target = targetStop(message, stops);
-    if (target && /\b(swap|replace|change|skip|instead|switch|don't want|dont want|not interested|remove)\b/.test(text)) {
+    if (!target && wantsSwap && !/\b(new|another|different) (route|plan|day)\b/.test(text))
+      return result(`Which stop should I change? ${stops.map((stop, index) => `${index + 1}. ${stop.name}`).join(" · ")} — e.g. “swap stop 2 for #food”.`, { type: "none" });
+    if (target && wantsSwap) {
       const [option] = replacementOptions(stops, target.id, request, tags, 1);
       if (option) return result(`How about ${option.name} instead of ${target.name}?${tags.length ? ` It matches ${label(tags)}.` : ""}`, { type: "replace", targetStopId: target.id, placeId: option.id, placeName: option.name });
       return result(`I couldn't find a published place that fits the budget to replace ${target.name}. Try a different stop or raise the budget.`, { type: "none" });
