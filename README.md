@@ -65,6 +65,6 @@ The build validates that the application routes compile. It does not establish l
 
 ## Data
 
-[`data/nyc-poi-v1.json`](./data/nyc-poi-v1.json) is the single catalog used by the current planner. All 300 published records have a source URL (a few building exteriors cite Wikipedia), a reviewed-on date, a USD planning allowance, coordinates, access notes, and a detail-image field.
+[`data/nyc-poi-v1.json`](./data/nyc-poi-v1.json) is the single catalog used by the current planner. All 340 published records have a source URL (a few building exteriors cite Wikipedia), a reviewed-on date, a USD planning allowance, coordinates, access notes, and a detail-image field.
 
 See [`docs/README.md`](./docs/README.md) for the NYC MVP documentation index.

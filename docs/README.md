@@ -6,9 +6,9 @@ The NYC MVP plans short visits from a fixed, source-linked catalog. The current 
 
 ## Evidence available in the repository
 
-- `data/nyc-poi-v1.json`: the 20-place published NYC catalog.
+- `data/nyc-poi-v1.json`: the 200-place published NYC catalog.
 - `lib/nyc-plan-contract.ts`: input contract and validation boundary.
-- `lib/nyc-planner.ts`: deterministic candidate selection, budget check, and static transport estimates.
+- `lib/nyc-planner.ts`: deterministic scoring (interests, free-text request, walking, dining, and accessibility preferences), compact route building within the available hours and budget, adjustment handling, replacement suggestions, and static transport estimates.
 - `app/page.tsx`: the mobile-first user flow, place detail view, adjustment flow, feedback interface, and map handoff preview.
 
 ## Evidence boundary
