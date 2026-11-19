@@ -473,6 +473,10 @@ export function inspectModelSelection(request: PlanRequest, selectedIds: string[
   const selected = selectedIds.map((id) => candidates.candidates.find((place) => place.id === id));
   if (selected.some((place) => !place)) return { intentParse: candidates.intentParse, selected: null, budgetGuard: null, reason: "The model returned a place outside the candidate set." };
   const places = selected as NycPlace[];
+  // Reject stale/tainted candidate records before route and budget calculation,
+  // which require trusted inputs and would otherwise throw instead of refusing.
+  if (places.some((place) => (!place.published && place.dataOrigin !== "realtime_geoapify") || !hasCompleteEvidence(place)))
+    return { intentParse: candidates.intentParse, selected: null, budgetGuard: null, reason: "The model selected a place without published status or complete source evidence." };
   const budgetGuard = inspectSelectionBudget(request, places);
   if (!budgetGuard.valid)
     return { intentParse: candidates.intentParse, selected: places, budgetGuard, reason: budgetGuard.unknownPlaceIds.length ? "The selection includes a place whose price can't be shown to fit the budget." : "The selection's place spend plus static transport exceeds the total budget." };
