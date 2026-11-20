@@ -19,3 +19,13 @@ the catalog schema, and write first-pass documentation.
 The product must plan only from the published catalog. It must show USD planning
 allowances and source links, and it must not claim live ticketing, availability,
 directions, accessibility, or opening-hour confirmation.
+
+## Lab 12 assistance
+
+An assistant inspected the existing guardrails, drafted `docs/risks.md`, wrote
+offline adversarial tests and added earlier publication/source-evidence rejection.
+The requester confirmed the five risks' ratings, owners and P1 priority on
+November 19, 2026. Additional risks remain unscored pending team review.
+See `LAB12_VERIFICATION.md` for local test results and excluded deployment checks.
+The current code also allows explicitly offered, sourced Geoapify live listings;
+tests preserve their unreviewed label rather than treating them as curated records.

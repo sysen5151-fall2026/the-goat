@@ -13,7 +13,8 @@
     "format": "oxfmt",
     "verify:catalog": "node scripts/verify-nyc-catalog.mjs",
     "index:local": "node scripts/ch10-local-index-service.mjs",
-    "postinstall": "node scripts/copy-maplibre-worker.mjs"
+    "postinstall": "node scripts/copy-maplibre-worker.mjs",
+    "test:risk": "vitest run --config vitest.risk.config.ts"
   },
   "dependencies": {
     "@base-ui/react": "1.7.0",
@@ -59,6 +60,7 @@
     "tailwindcss": "4.2.1",
     "typescript": "5.9.3",
     "vite": "8.0.13",
+    "vitest": "^5.1.1",
     "wrangler": "4.92.0"
   },
   "type": "module"
